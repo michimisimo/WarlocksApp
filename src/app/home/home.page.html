@@ -1,0 +1,29 @@
+<ion-content [fullscreen]="true">
+
+  <div id="container">
+    <div class="sup">
+      <img src="../../assets/logos/logo_texto.png" alt="logo_texto">
+    </div>
+    <div class="inf"></div>
+  </div>
+
+  <ion-card>
+    <img src="../../assets/logos/logo_black.png" alt="logo_black">
+    <ion-card-header>
+      <ion-card-title class="titulo">Iniciar sesión</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <form (ngSubmit)="login()">
+        <ion-input type="text" label="Rut" label-placement="floating" fill="outline" placeholder="Rut"
+          (ionInput)="soloNumeros($event)" [(ngModel)]="rut" name="rut" required>
+        </ion-input>
+        <ion-input type="password" label="Contraseña" label-placement="floating" [counter]="true" fill="outline"
+          placeholder="Contraseña" [(ngModel)]="password" name="password" required>
+        </ion-input>
+        <ion-button type="submit" [disabled]="!rut || !password">Ingresar</ion-button>
+      </form>
+    </ion-card-content>
+
+  </ion-card>
+</ion-content>

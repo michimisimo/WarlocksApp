@@ -1,0 +1,14 @@
+<ion-content [fullscreen]="true">
+  <app-banner-top (categorySelected)="filtrarPartidosPorCategoria($event)"></app-banner-top>
+
+  <div *ngIf="partidos?.length">
+    <div *ngFor="let partido of partidosFiltrados">
+      <app-card-partido [fecha]="(partido.fecha | date:'dd, MMM, yyyy') || ''" [nombreLiga]="'Campeonato Juvenil'"
+        [equipoLocal]="partido.local_ == 1 ? 'warloks' : partido.contrincante"
+        [hora]="partido.hora.substring(0, 5) || ''"
+        [equipoVisitante]="partido.local_ == 0 ? 'warloks' : partido.contrincante">
+      </app-card-partido>
+    </div>
+  </div>
+
+</ion-content>

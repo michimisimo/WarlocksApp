@@ -1,0 +1,65 @@
+#container {
+  height: 100%;
+}
+
+#container .sup {
+  display: flex;
+  height: 50%;
+  justify-content: center;
+  background-color: #e06e35;
+
+  img {
+    height: 100px;
+    margin-top: 30%;
+  }
+}
+
+#container .inf {
+  height: 50%;
+  background-color: #064dbf;
+}
+
+ion-card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  height: 380px;
+  width: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border-radius: 15px;
+
+  img {
+    height: 100px;
+    width: 100px;
+  }
+
+  ion-card-title {
+    text-align: center;
+  }
+
+  ion-card-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    ion-input {
+      justify-self: center;
+      margin-bottom: 10px;
+      width: 90%;
+    }
+
+    ion-button {
+      justify-self: center;
+      display: flex;
+      width: 70%;
+      margin-top: 25px;
+      background-color: #064dbf;
+      border-radius: 10px;
+    }
+  }
+
+}

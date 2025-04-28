@@ -1,0 +1,112 @@
+.container {
+    background-color: #0d0d0d;
+    color: #fff;
+    overflow: hidden;
+    margin-bottom: 15px;
+
+    .banner {
+        height: 160px;
+        display: flex;
+        justify-content: space-between;
+
+        .space {
+            width: 100px;
+
+            .conf {
+                display: flex;
+                width: 30px;
+                height: 30px;
+                background-color: #E06E35;
+                border-radius: 50%;
+                margin-left: auto;
+                margin-top: 30px;
+                margin-right: 30px;
+                justify-content: center;
+                align-items: center;
+
+                img {
+                    width: 25px;
+                    height: 25px;
+                }
+            }
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+
+            img {
+                margin-top: auto;
+                width: 130px;
+                height: 130px;
+            }
+        }
+    }
+
+    .tabs-selection {
+        display: flex;
+        justify-content: space-around;
+        margin: 10px 0;
+        padding: 0 20px;
+        font-weight: bold;
+        font-size: 16px;
+        align-items: center;
+    }
+
+    .tab {
+        position: relative;
+        padding-bottom: 8px;
+        cursor: pointer;
+    }
+
+    .active-tab {
+        border-bottom: 3px solid #00ABEE;
+    }
+
+    .orange-tabs {
+        display: flex;
+        background-color: #E35b1de7;
+        margin-top: 10px;
+        overflow: hidden;
+        align-items: center;
+    }
+
+    .orange-tab {
+        flex: 1;
+        padding: 10px;
+        color: #fff;
+        font-weight: bold;
+        font-size: 14px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .orange-tab.selected {
+        background-color: #E8B077;
+        color: white;
+        border-radius: 16px;
+        margin: 6px;
+    }
+
+    .categories-bar {
+        display: flex;
+        background-color: #064DBF;
+        padding: 8px 0;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    .category {
+        font-weight: bold;
+        font-size: 14px;
+        color: white;
+        padding: 4px 8px;
+        cursor: pointer;
+    }
+
+    .selected-category {
+        background-color: #00ABEE;
+        padding: 6px 12px;
+        border-radius: 20px;
+    }
+}

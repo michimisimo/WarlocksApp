@@ -1,0 +1,7 @@
+{
+  "name": "Proyecto_warlocksApp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

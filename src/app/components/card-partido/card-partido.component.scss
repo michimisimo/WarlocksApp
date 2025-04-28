@@ -1,0 +1,50 @@
+#container {
+    display: flex;
+    flex-direction: column;
+
+    ion-chip {
+        margin-left: 30px;
+        display: flex;
+        justify-content: center;
+        background-color: white;
+        width: 28%;
+    }
+
+    ion-card {
+        margin-left: 30px;
+        margin-right: 30px;
+        border-radius: 15px;
+        overflow: hidden;
+        background: white;
+        color: #0D0D0D;
+
+        ion-card-header {
+            color: #0D0D0D;
+            font-weight: bold;
+            text-align: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #d9d9d9;
+        }
+
+        ion-card-content {
+            padding: 16px;
+
+            .match-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                .team-name {
+                    font-weight: bold;
+                    font-size: 18px;
+                }
+
+                .match-time {
+                    font-weight: bold;
+                    font-size: 20px;
+                    color: #00ABEE;
+                }
+            }
+        }
+    }
+}
