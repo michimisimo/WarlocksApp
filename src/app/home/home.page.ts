@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { IonContent, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonInput, IonButton } from '@ionic/angular/standalone';
 import { ApiService } from '../services/api.service';
 
@@ -14,7 +15,7 @@ export class HomePage {
   rut: string = '';
   password: string = '';
 
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService, private router: Router) { }
 
   soloNumeros(event: any) {
     let input = event.target.value;
@@ -24,21 +25,18 @@ export class HomePage {
 
   login() {
     if (this.rut && this.password) {
-      // Aquí puedes agregar la lógica de autenticación, por ejemplo, una llamada a un servicio
       console.log('Datos válidos. Realizando autenticación...');
       this.apiService.login(this.rut, this.password).subscribe({
         next: (respuesta) => {
           console.log('Login exitoso', respuesta);
-          // Aquí haces navegación o guardas token
+          this.router.navigate(['/inicio']); // <-- Navega a 'pages/inicio'
         },
         error: (error) => {
           console.error('Error de login', error);
         }
-      })
-    }
-    else {
+      });
+    } else {
       console.log('Por favor, ingresa un RUT y contraseña válidos');
     }
   }
-
 }
