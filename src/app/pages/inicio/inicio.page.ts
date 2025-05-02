@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent } from '@ionic/angular/standalone';
-import { ApiService } from 'src/app/services/api.service';
+
+import { SyncPartidoService } from 'src/app/services/sincronizar/sincronizar-partido/sincronizar-partido.service';
+import { PartidoService } from 'src/app/services/partido/partido.service';
+import { PartidoModel } from 'src/app/services/mappers/map-partido/map-partido.service';
 
 import { CardPartidoComponent } from 'src/app/components/card-partido/card-partido.component';
 import { BannerTopComponent } from 'src/app/components/banner-top/banner-top.component';
@@ -12,58 +15,63 @@ import { BannerTopComponent } from 'src/app/components/banner-top/banner-top.com
   templateUrl: './inicio.page.html',
   styleUrls: ['./inicio.page.scss'],
   standalone: true,
-  imports: [BannerTopComponent, CardPartidoComponent, IonContent, CommonModule, FormsModule]
+  imports: [
+    BannerTopComponent,
+    CardPartidoComponent,
+    IonContent,
+    CommonModule,
+    FormsModule
+  ]
 })
-export class InicioPage implements OnInit {
+export class InicioPage implements OnInit, AfterViewInit {
 
-  partidos: any[] = [];
-  partidosFiltrados: any[] = [];
+  activeTab = 'Temporada'
+  tabs = ['Temporada', 'Plantel']
+  partidos: PartidoModel[] = [];
+  partidosFiltrados: PartidoModel[] = [];
 
-  constructor(private apiService: ApiService) { }
+  constructor(
+    private syncService: SyncPartidoService,
+    private partidoService: PartidoService
+  ) { }
 
-  ngOnInit() {
-    this.getpartidos();  // Obtenemos los partidos al inicio
+  async ngOnInit() {
+    // 1) Sincronizar y luego cargar desde storage
+    await this.syncService.sincronizarTodos();
+    const dict = await this.partidoService.obtenerTodosLosPartidos();
+    this.partidos = Object.values(dict);
+    // 2) Inicializar filtrados con todos
+    this.partidosFiltrados = [...this.partidos];
+
+    this.filtrarPartidosPorCategoria('U 11');
   }
 
-  // Método para obtener los partidos desde la API
-  getpartidos() {
-    this.apiService.getPartidos().subscribe(
-      (response: any) => {
-        this.partidos = response; // Asigna el array de partidos
-        console.log('partidos:', this.partidos);
-        this.filtrarPartidosPorCategoria('U 11');  // Filtra por categoría U 11 después de obtener los datos
-      },
-      (error) => {
-        console.error('Error al obtener los partidos:', error);
-      }
-    );
-  };
+  ngAfterViewInit() {
+    this.componente.desactivarBack();
+  }
 
-  // Método que filtra los partidos según la categoría seleccionada
+  @ViewChild(BannerTopComponent) componente!: BannerTopComponent;
+
   filtrarPartidosPorCategoria(categoria: string) {
-    const categoriaNum = this.getCategoriaNum(categoria);
-    this.partidosFiltrados = this.partidos.filter(partido => partido.id_categoria === categoriaNum);
+    if (categoria === 'Todas') {
+      this.partidosFiltrados = [...this.partidos];
+      return;
+    }
+    const catNum = this.getCategoriaNum(categoria);
+    this.partidosFiltrados = this.partidos.filter(
+      p => p.info_global.id_categoria === catNum
+    );
   }
 
-  // Convertir categoría a número para hacer el filtrado
   getCategoriaNum(categoria: string): number {
     switch (categoria) {
-      case 'U 11':
-        return 1;
-      case 'U 13':
-        return 2;
-      case 'U 15':
-        return 3;
-      case 'U 18':
-        return 4;
-      default:
-        return 0;  // En caso de que la categoría no esté definida
+      case 'U 11': return 1;
+      case 'U 13': return 2;
+      case 'U 15': return 3;
+      case 'U 18': return 4;
+      default: return 0;
     }
   }
 
-  // Aquí escuchamos el evento de categoría seleccionada y filtramos
-  onCategorySelected(category: string) {
-    this.filtrarPartidosPorCategoria(category);
-  }
 
 }

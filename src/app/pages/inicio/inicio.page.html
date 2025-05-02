@@ -1,14 +1,19 @@
 <ion-content [fullscreen]="true">
-  <app-banner-top (categorySelected)="filtrarPartidosPorCategoria($event)"></app-banner-top>
+  <app-banner-top [activeTab]="activeTab" [tabs]="tabs" (categorySelected)="filtrarPartidosPorCategoria($event)">
+  </app-banner-top>
 
-  <div *ngIf="partidos?.length">
+  <div *ngIf="partidosFiltrados?.length; else empty">
     <div *ngFor="let partido of partidosFiltrados">
-      <app-card-partido [fecha]="(partido.fecha | date:'dd, MMM, yyyy') || ''" [nombreLiga]="'Campeonato Juvenil'"
-        [equipoLocal]="partido.local_ == 1 ? 'warloks' : partido.contrincante"
-        [hora]="partido.hora.substring(0, 5) || ''"
-        [equipoVisitante]="partido.local_ == 0 ? 'warloks' : partido.contrincante">
+      <app-card-partido [fecha]="(partido.info_global.fecha | date:'dd, MMM, yyyy') || ''"
+        [nombreLiga]="'Campeonato Juvenil'"
+        [equipoLocal]="partido.info_global.local ? 'warloks' : partido.info_global.contrincante"
+        [hora]="partido.info_global.hora.substring(0, 5) || ''"
+        [equipoVisitante]="!partido.info_global.local ? 'warloks' : partido.info_global.contrincante">
       </app-card-partido>
     </div>
   </div>
 
+  <ng-template #empty>
+    <div class="empty">No hay partidos para mostrar.</div>
+  </ng-template>
 </ion-content>

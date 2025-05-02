@@ -18,7 +18,7 @@ export class ApiService {
       'api-key': 'clavejugador456',
     });
 
-    return this.http.post(`${this.apiUrl}/login`, { usuario, password }, { headers });
+    return this.http.post(`${this.apiUrl}/user/login`, { usuario, password }, { headers });
   }
 
   getPartidos() {
@@ -27,6 +27,7 @@ export class ApiService {
       'rol': 'jugador',
       'api-key': 'clavejugador456',
     });
-    return this.http.get(`${this.apiUrl}/getPartidos`, { headers });
+    return this.http.get(`${this.apiUrl}/partidos/`, { headers });
   }
+
 }
