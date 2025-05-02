@@ -35,6 +35,7 @@ export class BannerTopComponent implements OnInit {
     this.tabChanged.emit(tab);
     // Oculta/mostrar sub-pestañas y categorías en un solo lugar
     this.showCat2 = tab !== 'Plantel';
+    this.showCat3 = tab !== 'Mi cuenta';
   }
 
   cambiarOTab(oTab: string) {
