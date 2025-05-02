@@ -6,7 +6,7 @@
   display: flex;
   height: 50%;
   justify-content: center;
-  background-color: #e06e35;
+  background-color: #00B6F1;
 
   img {
     height: 100px;
@@ -16,7 +16,7 @@
 
 #container .inf {
   height: 50%;
-  background-color: #064dbf;
+  background-color: #EA3A84;
 }
 
 ion-card {
@@ -38,7 +38,10 @@ ion-card {
   }
 
   ion-card-title {
+    color: #EA3A84;
     text-align: center;
+    font-size: x-large;
+    font-weight: bold;
   }
 
   ion-card-content {
@@ -57,8 +60,7 @@ ion-card {
       display: flex;
       width: 70%;
       margin-top: 25px;
-      background-color: #064dbf;
-      border-radius: 10px;
+      background: #00B6F1;
     }
   }
 
