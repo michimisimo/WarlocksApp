@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -14,19 +14,26 @@ export class BannerTopComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() { }
+  ngOnInit() {
+  }
 
-  activeTab = 'Temporada';
+  @Input() activeTab: string = '';
   activeOrangeTab = 'Partidos';
   activeCategory = 'U 11';
 
-  tabs = ['Temporada', 'Plantel'];
+  @Input() tabs: string[] = [];
   orangeTabs = ['Partidos', 'Estadísticas del jugador'];
   categories = ['U 11', 'U 13', 'U 15', 'U 18'];
 
   // Función para seleccionar una pestaña
   selectTab(tab: string) {
     this.activeTab = tab;
+    const selector = document.getElementById('cat2')!;
+    selector.style.display = 'none';
+    if (this.activeTab === 'Plantel') {
+    } else {
+      selector.style.display = ''; // Por si quieres mostrarlo en otras pestañas
+    }
   }
 
   // Función para seleccionar una pestaña naranja
@@ -39,6 +46,11 @@ export class BannerTopComponent implements OnInit {
     this.activeCategory = category;
     // Emitir la categoría seleccionada hacia el componente principal
     this.categorySelected.emit(category);
+  }
+
+  desactivarBack() {
+    const back = document.getElementById('back')!
+    back.style.display = 'none';
   }
 
 }

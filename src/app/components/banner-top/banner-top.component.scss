@@ -16,7 +16,7 @@
                 display: flex;
                 width: 30px;
                 height: 30px;
-                background-color: #E06E35;
+                background-color: #EA3A84;
                 border-radius: 50%;
                 margin-left: auto;
                 margin-top: 30px;
@@ -28,6 +28,28 @@
                     width: 25px;
                     height: 25px;
                 }
+
+
+            }
+
+            .back {
+                display: flex;
+                width: 30px;
+                height: 30px;
+                background-color: #EA3A84;
+                border-radius: 50%;
+                margin-left: auto;
+                margin-top: 30px;
+                margin-left: 30px;
+                justify-content: center;
+                align-items: center;
+
+                img {
+                    width: 25px;
+                    height: 25px;
+                }
+
+
             }
         }
 
@@ -60,12 +82,12 @@
     }
 
     .active-tab {
-        border-bottom: 3px solid #00ABEE;
+        border-bottom: 3px solid #EA3A84;
     }
 
     .orange-tabs {
         display: flex;
-        background-color: #E35b1de7;
+        background-color: #00B6F1;
         margin-top: 10px;
         overflow: hidden;
         align-items: center;
@@ -82,7 +104,7 @@
     }
 
     .orange-tab.selected {
-        background-color: #E8B077;
+        background-color: #EA3A84;
         color: white;
         border-radius: 16px;
         margin: 6px;
@@ -90,7 +112,7 @@
 
     .categories-bar {
         display: flex;
-        background-color: #064DBF;
+        background-color: #EA3A84;
         padding: 8px 0;
         justify-content: space-around;
         align-items: center;
@@ -105,7 +127,7 @@
     }
 
     .selected-category {
-        background-color: #00ABEE;
+        background-color: #00B6F1;
         padding: 6px 12px;
         border-radius: 20px;
     }
