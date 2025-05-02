@@ -25,8 +25,14 @@ import { BannerTopComponent } from 'src/app/components/banner-top/banner-top.com
 })
 export class InicioPage implements OnInit, AfterViewInit {
 
-  activeTab = 'Temporada'
-  tabs = ['Temporada', 'Plantel']
+  @ViewChild(BannerTopComponent) componente!: BannerTopComponent;
+
+  activeTab = 'Temporada';
+  tabs = ['Temporada', 'Plantel'];
+
+  activeOTab = 'Partidos';
+  oTabs = ['Partidos', 'Estadisticas'];
+
   partidos: PartidoModel[] = [];
   partidosFiltrados: PartidoModel[] = [];
 
@@ -36,34 +42,34 @@ export class InicioPage implements OnInit, AfterViewInit {
   ) { }
 
   async ngOnInit() {
-    // 1) Sincronizar y luego cargar desde storage
-    await this.syncService.sincronizarTodos();
-    const dict = await this.partidoService.obtenerTodosLosPartidos();
-    this.partidos = Object.values(dict);
-    // 2) Inicializar filtrados con todos
-    this.partidosFiltrados = [...this.partidos];
-
-    this.filtrarPartidosPorCategoria('U 11');
+    try {
+      await this.syncService.sincronizarTodos();
+      const dict = await this.partidoService.obtenerTodosLosPartidos();
+      this.partidos = Object.values(dict);
+      this.partidosFiltrados = [...this.partidos];
+      this.filtrarPartidosPorCategoria('U 11');
+    } catch (err) {
+      console.error('Error cargando partidos:', err);
+    }
   }
 
   ngAfterViewInit() {
     this.componente.desactivarBack();
   }
 
-  @ViewChild(BannerTopComponent) componente!: BannerTopComponent;
-
+  // Este método se llama desde el template cuando BannerTop emite (categorySelected)
   filtrarPartidosPorCategoria(categoria: string) {
     if (categoria === 'Todas') {
       this.partidosFiltrados = [...this.partidos];
-      return;
+    } else {
+      const catNum = this.getCategoriaNum(categoria);
+      this.partidosFiltrados = this.partidos.filter(
+        p => p.info_global.id_categoria === catNum
+      );
     }
-    const catNum = this.getCategoriaNum(categoria);
-    this.partidosFiltrados = this.partidos.filter(
-      p => p.info_global.id_categoria === catNum
-    );
   }
 
-  getCategoriaNum(categoria: string): number {
+  private getCategoriaNum(categoria: string): number {
     switch (categoria) {
       case 'U 11': return 1;
       case 'U 13': return 2;
@@ -72,6 +78,4 @@ export class InicioPage implements OnInit, AfterViewInit {
       default: return 0;
     }
   }
-
-
 }

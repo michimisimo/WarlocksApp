@@ -5,52 +5,50 @@ import { CommonModule } from '@angular/common';
   selector: 'app-banner-top',
   templateUrl: './banner-top.component.html',
   styleUrls: ['./banner-top.component.scss'],
+  standalone: true,
   imports: [CommonModule]
 })
 export class BannerTopComponent implements OnInit {
+  @Input() activeTab = '';
+  @Input() activeOTab = '';
+  @Input() tabs: string[] = [];
+  @Input() oTabs: string[] = [];
 
-  // Se crea un Output para emitir la categoría seleccionada
+  @Output() tabChanged = new EventEmitter<string>();
+  @Output() otabChanged = new EventEmitter<string>();
   @Output() categorySelected = new EventEmitter<string>();
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
-  @Input() activeTab: string = '';
-  activeOrangeTab = 'Partidos';
+  categories = ['U 11', 'U 13', 'U 15', 'U 18'];
   activeCategory = 'U 11';
 
-  @Input() tabs: string[] = [];
-  orangeTabs = ['Partidos', 'Estadísticas del jugador'];
-  categories = ['U 11', 'U 13', 'U 15', 'U 18'];
+  showBack = true;
+  showCat2 = true;
+  showCat3 = true;
 
-  // Función para seleccionar una pestaña
-  selectTab(tab: string) {
+  ngOnInit() {
+    // Inicializa visibilidad según el tab activo que venga del padre
+    this.showCat2 = this.activeTab !== 'Plantel';
+  }
+
+  cambiarTab(tab: string) {
     this.activeTab = tab;
-    const selector = document.getElementById('cat2')!;
-    selector.style.display = 'none';
-    if (this.activeTab === 'Plantel') {
-    } else {
-      selector.style.display = ''; // Por si quieres mostrarlo en otras pestañas
-    }
+    this.tabChanged.emit(tab);
+    // Oculta/mostrar sub-pestañas y categorías en un solo lugar
+    this.showCat2 = tab !== 'Plantel';
   }
 
-  // Función para seleccionar una pestaña naranja
-  selectOrangeTab(tab: string) {
-    this.activeOrangeTab = tab;
+  cambiarOTab(oTab: string) {
+    this.activeOTab = oTab;
+    this.otabChanged.emit(oTab);
   }
 
-  // Función para seleccionar una categoría
-  selectCategory(category: string) {
-    this.activeCategory = category;
-    // Emitir la categoría seleccionada hacia el componente principal
-    this.categorySelected.emit(category);
+  selectCategory(cat: string) {
+    this.activeCategory = cat;
+    this.categorySelected.emit(cat);
   }
 
+  // Si necesitas ocultar el back button desde afuera
   desactivarBack() {
-    const back = document.getElementById('back')!
-    back.style.display = 'none';
+    this.showBack = false;
   }
-
 }

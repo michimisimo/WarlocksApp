@@ -1,15 +1,21 @@
-<ion-content [fullscreen]="true">
-  <app-banner-top [activeTab]="activeTab" [tabs]="tabs" (categorySelected)="filtrarPartidosPorCategoria($event)">
+<ion-content>
+  <app-banner-top [activeTab]="activeTab" [tabs]="tabs" [activeOTab]="activeOTab" [oTabs]="oTabs"
+    (categorySelected)="filtrarPartidosPorCategoria($event)" (tabChanged)="activeTab = $event"
+    (otabChanged)="activeOTab = $event">
   </app-banner-top>
 
-  <div *ngIf="partidosFiltrados?.length; else empty">
-    <div *ngFor="let partido of partidosFiltrados">
-      <app-card-partido [fecha]="(partido.info_global.fecha | date:'dd, MMM, yyyy') || ''"
-        [nombreLiga]="'Campeonato Juvenil'"
-        [equipoLocal]="partido.info_global.local ? 'warloks' : partido.info_global.contrincante"
-        [hora]="partido.info_global.hora.substring(0, 5) || ''"
-        [equipoVisitante]="!partido.info_global.local ? 'warloks' : partido.info_global.contrincante">
-      </app-card-partido>
+  <div *ngIf="activeTab !== 'Plantel' && activeOTab !== 'Estadisticas'">
+    <div *ngIf="partidosFiltrados?.length; else empty">
+      <div *ngFor="let partido of partidosFiltrados">
+
+        <app-card-partido [fecha]="(partido.info_global.fecha | date:'dd, MMM, yyyy') || ''"
+          [nombreLiga]="'Campeonato Juvenil'"
+          [equipoLocal]="partido.info_global.local ? 'warloks' : partido.info_global.contrincante"
+          [hora]="partido.info_global.hora.substring(0, 5) || ''"
+          [equipoVisitante]="!partido.info_global.local ? 'warloks' : partido.info_global.contrincante">
+        </app-card-partido>
+
+      </div>
     </div>
   </div>
 

@@ -1,35 +1,41 @@
 <div class="container">
 
+  <!-- Banner superior con logo, botón atrás y configuración -->
   <div class="banner">
     <div class="space">
-      <div class="back" id="back" #back>
-        <img src="../../../assets/icon/arrow_back.png" alt="">
+      <div class="back" *ngIf="showBack">
+        <img src="../../../assets/icon/arrow_back.png" alt="Volver">
       </div>
     </div>
+
     <div class="logo-container">
       <img src="../../../assets/logos/Warlocks Logotipo 02.png" alt="Warlocks Logo">
     </div>
+
     <div class="space">
       <div class="conf">
-        <img src="../../../assets/icon/settings.png" alt="">
+        <img src="../../../assets/icon/settings.png" alt="Configuración">
       </div>
     </div>
   </div>
 
+  <!-- Pestañas principales -->
   <div class="tabs-selection">
-    <div *ngFor="let tab of tabs" (click)="selectTab(tab)" [class.active-tab]="activeTab === tab" class="tab">
+    <div *ngFor="let tab of tabs" (click)="cambiarTab(tab)" [class.active-tab]="activeTab === tab" class="tab">
       {{ tab }}
     </div>
   </div>
 
-  <div class="orange-tabs" id="cat2" #cat2>
-    <div *ngFor="let oTab of orangeTabs" (click)="selectOrangeTab(oTab)" [class.selected]="activeOrangeTab === oTab"
+  <!-- Sub-pestañas naranjas (solo si showCat2 es true) -->
+  <div class="orange-tabs" *ngIf="showCat2">
+    <div *ngFor="let oTab of oTabs" (click)="cambiarOTab(oTab)" [class.selected]="activeOTab === oTab"
       class="orange-tab">
       {{ oTab }}
     </div>
   </div>
 
-  <div class="categories-bar">
+  <!-- Categorías (solo si showCat3 es true) -->
+  <div class="categories-bar" *ngIf="showCat3">
     <div *ngFor="let cat of categories" (click)="selectCategory(cat)" [class.selected-category]="activeCategory === cat"
       class="category">
       {{ cat }}
