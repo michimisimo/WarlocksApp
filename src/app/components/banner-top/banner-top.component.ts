@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -17,17 +17,20 @@ export class BannerTopComponent implements OnInit {
   @Output() tabChanged = new EventEmitter<string>();
   @Output() otabChanged = new EventEmitter<string>();
   @Output() categorySelected = new EventEmitter<string>();
+  @Output() abrirConfiguracion = new EventEmitter<void>(); // evento para la navegacion
+  @Output() volverAInicio = new EventEmitter<void>(); // evento para volver
 
   categories = ['U 11', 'U 13', 'U 15', 'U 18'];
   activeCategory = 'U 11';
 
   showBack = true;
   showCat2 = true;
-  showCat3 = true;
+  showCat3: boolean = true;
 
   ngOnInit() {
     // Inicializa visibilidad según el tab activo que venga del padre
     this.showCat2 = this.activeTab !== 'Plantel';
+    this.showCat3 = this.activeTab !== 'Mi Cuenta';
   }
 
   cambiarTab(tab: string) {
@@ -51,5 +54,14 @@ export class BannerTopComponent implements OnInit {
   // Si necesitas ocultar el back button desde afuera
   desactivarBack() {
     this.showBack = false;
+  }
+
+  //metodo para la navegacion 
+  onClickConfig(){
+    this.abrirConfiguracion.emit()
+  }
+  //metodo navegacion
+  onClickBack (){
+    this.volverAInicio.emit()
   }
 }

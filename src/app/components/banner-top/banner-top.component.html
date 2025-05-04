@@ -3,7 +3,7 @@
   <!-- Banner superior con logo, botón atrás y configuración -->
   <div class="banner">
     <div class="space">
-      <div class="back" *ngIf="showBack">
+      <div class="back" *ngIf="showBack" (click)="onClickBack()">
         <img src="../../../assets/icon/arrow_back.png" alt="Volver">
       </div>
     </div>
@@ -13,7 +13,7 @@
     </div>
 
     <div class="space">
-      <div class="conf">
+      <div class="conf" (click)="onClickConfig()">
         <img src="../../../assets/icon/settings.png" alt="Configuración">
       </div>
     </div>

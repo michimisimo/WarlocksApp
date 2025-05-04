@@ -1,7 +1,7 @@
 <ion-content>
   <app-banner-top [activeTab]="activeTab" [tabs]="tabs" [activeOTab]="activeOTab" [oTabs]="oTabs"
     (categorySelected)="filtrarPartidosPorCategoria($event)" (tabChanged)="activeTab = $event"
-    (otabChanged)="activeOTab = $event">
+    (otabChanged)="activeOTab = $event" (abrirConfiguracion)="irACuenta()">
   </app-banner-top>
 
   <div *ngIf="activeTab !== 'Plantel' && activeOTab !== 'Estadisticas'">

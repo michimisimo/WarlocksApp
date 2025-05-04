@@ -24,7 +24,7 @@ export class UserService {
     await this.storage.set(CURRENT_USER_KEY, user);
   }
 
-  /** Recupera tu perfil */
+  /** Recupera tu perfil */    //blabla
   async getCurrentUser(): Promise<CurrentUser | null> {
     await this._ready;
     return (await this.storage.get(CURRENT_USER_KEY)) as CurrentUser | null;

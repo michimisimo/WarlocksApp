@@ -11,6 +11,8 @@ import { UserService } from 'src/app/services/user/user.service';
 import { CardPartidoComponent } from 'src/app/components/card-partido/card-partido.component';
 import { BannerTopComponent } from 'src/app/components/banner-top/banner-top.component';
 
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-inicio',
   templateUrl: './inicio.page.html',
@@ -40,7 +42,8 @@ export class InicioPage implements OnInit, AfterViewInit {
   constructor(
     private syncService: SyncPartidoService,
     private partidoService: PartidoService,
-    private userService: UserService
+    private userService: UserService,
+    private router: Router
 
   ) { }
 
@@ -82,5 +85,9 @@ export class InicioPage implements OnInit, AfterViewInit {
       case 'U 18': return 4;
       default: return 0;
     }
+  }
+  // funcion de navegacion
+  irACuenta(){
+    this.router.navigate(['/user']);
   }
 }
