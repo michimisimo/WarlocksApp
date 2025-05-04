@@ -1,20 +1,23 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { IonContent, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonInput, IonButton,} from '@ionic/angular/standalone';
+import { IonContent, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonInput, IonButton, IonSpinner} from '@ionic/angular/standalone';
 import { SincronizarUserService } from '../services/sincronizar/sincronizar-user/sincronizar-user.service';
 import { UserService } from '../services/user/user.service';
+import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
-  imports: [IonContent, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonInput, IonButton, FormsModule]
+  imports: [IonContent, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonInput, IonButton, FormsModule,IonSpinner,CommonModule]
 })
 export class HomePage {
 
   rut: string = '';
   password: string = '';
+  isLoading: boolean = false;
 
   constructor(
     private syncUserService: SincronizarUserService,
@@ -36,14 +39,17 @@ export class HomePage {
 
   login() {
     if (this.rut && this.password) {
+      this.isLoading = true;  // spinner
       console.log('Datos válidos. Realizando autenticación...');
       this.syncUserService.syncUser(this.rut, this.password).subscribe({
         next: (respuesta) => {
           console.log('Login exitoso', respuesta);
+          this.isLoading = false; // ocultar spinner
           this.router.navigate(['/inicio']); // <-- Navega a 'pages/inicio'
         },
         error: (error) => {
           console.error('Error de login', error);
+          this.isLoading = false;
         }
       });
     } else {
