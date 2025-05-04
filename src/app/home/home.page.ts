@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { IonContent, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonInput, IonButton, IonSpinner} from '@ionic/angular/standalone';
+import { IonContent, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonInput, IonButton, IonSpinner } from '@ionic/angular/standalone';
 import { SincronizarUserService } from '../services/sincronizar/sincronizar-user/sincronizar-user.service';
 import { UserService } from '../services/user/user.service';
 import { CommonModule } from '@angular/common';
@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
-  imports: [IonContent, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonInput, IonButton, FormsModule,IonSpinner,CommonModule]
+  imports: [IonContent, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonInput, IonButton, FormsModule, IonSpinner, CommonModule]
 })
 export class HomePage {
 
@@ -24,9 +24,9 @@ export class HomePage {
     private userService: UserService,
     private router: Router) { }
 
-  async ngOnInit(){
+  async ngOnInit() {
     const CurrentUser = await this.userService.getCurrentUser();
-    if (CurrentUser){
+    if (CurrentUser) {
       this.router.navigate(['/inicio']);
     }
   }
