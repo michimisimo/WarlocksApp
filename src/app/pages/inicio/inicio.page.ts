@@ -6,6 +6,7 @@ import { IonContent } from '@ionic/angular/standalone';
 import { SyncPartidoService } from 'src/app/services/sincronizar/sincronizar-partido/sincronizar-partido.service';
 import { PartidoService } from 'src/app/services/partido/partido.service';
 import { PartidoModel } from 'src/app/services/mappers/map-partido/map-partido.service';
+import { UserService } from 'src/app/services/user/user.service';
 
 import { CardPartidoComponent } from 'src/app/components/card-partido/card-partido.component';
 import { BannerTopComponent } from 'src/app/components/banner-top/banner-top.component';
@@ -38,7 +39,9 @@ export class InicioPage implements OnInit, AfterViewInit {
 
   constructor(
     private syncService: SyncPartidoService,
-    private partidoService: PartidoService
+    private partidoService: PartidoService,
+    private userService: UserService
+
   ) { }
 
   async ngOnInit() {
@@ -51,6 +54,8 @@ export class InicioPage implements OnInit, AfterViewInit {
     } catch (err) {
       console.error('Error cargando partidos:', err);
     }
+
+    console.log(this.userService.getCurrentUser())
   }
 
   ngAfterViewInit() {

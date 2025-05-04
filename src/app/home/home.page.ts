@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IonContent, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonInput, IonButton } from '@ionic/angular/standalone';
-import { ApiService } from '../services/api.service';
+import { SincronizarUserService } from '../services/sincronizar/sincronizar-user/sincronizar-user.service';
 
 @Component({
   selector: 'app-home',
@@ -15,7 +15,7 @@ export class HomePage {
   rut: string = '';
   password: string = '';
 
-  constructor(private apiService: ApiService, private router: Router) { }
+  constructor(private syncUserService: SincronizarUserService, private router: Router) { }
 
   soloNumeros(event: any) {
     let input = event.target.value;
@@ -26,7 +26,7 @@ export class HomePage {
   login() {
     if (this.rut && this.password) {
       console.log('Datos válidos. Realizando autenticación...');
-      this.apiService.login(this.rut, this.password).subscribe({
+      this.syncUserService.syncUser(this.rut, this.password).subscribe({
         next: (respuesta) => {
           console.log('Login exitoso', respuesta);
           this.router.navigate(['/inicio']); // <-- Navega a 'pages/inicio'

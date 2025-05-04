@@ -3,7 +3,9 @@ import { Storage } from '@ionic/storage-angular';
 import { PartidoModel } from '../mappers/map-partido/map-partido.service';
 
 @Injectable({ providedIn: 'root' })
+
 export class PartidoService {
+
   private storageKey = 'partidos';
 
   constructor(private storage: Storage) { }
