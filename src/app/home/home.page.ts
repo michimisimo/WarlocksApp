@@ -1,21 +1,32 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { IonContent, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonInput, IonButton } from '@ionic/angular/standalone';
+import { IonContent, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonInput, IonButton,} from '@ionic/angular/standalone';
 import { SincronizarUserService } from '../services/sincronizar/sincronizar-user/sincronizar-user.service';
+import { UserService } from '../services/user/user.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
-  imports: [IonContent, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonInput, IonButton, FormsModule,]
+  imports: [IonContent, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonInput, IonButton, FormsModule]
 })
 export class HomePage {
 
   rut: string = '';
   password: string = '';
 
-  constructor(private syncUserService: SincronizarUserService, private router: Router) { }
+  constructor(
+    private syncUserService: SincronizarUserService,
+    private userService: UserService,
+    private router: Router) { }
+
+  async ngOnInit(){
+    const CurrentUser = await this.userService.getCurrentUser();
+    if (CurrentUser){
+      this.router.navigate(['/inicio']);
+    }
+  }
 
   soloNumeros(event: any) {
     let input = event.target.value;
