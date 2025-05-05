@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { ToastController } from '@ionic/angular';
-import { timeout } from 'rxjs/operators'
+import { timeout } from 'rxjs/operators';
 import { firstValueFrom } from 'rxjs';
 
 import { UserService } from '../../user/user.service';
@@ -22,9 +22,9 @@ export class SyncPartidoService {
     private toastController: ToastController
   ) { }
 
-  private async presentOfflineToast() {
+  private async presentOfflineToast(message: string = '⚠️ Modo offline: mostrando datos almacenados.') {
     const toast = await this.toastController.create({
-      message: '⚠️ Modo offline: mostrando datos almacenados.',
+      message,
       duration: 3000,
       color: 'warning',
       position: 'bottom',
@@ -32,15 +32,12 @@ export class SyncPartidoService {
     await toast.present();
   }
 
-  private async getHeadersFromStorage(): Promise<HttpHeaders> {
-    const currentUser = await this.userService.getCurrentUser();
-    console.log(currentUser);
-    const rol = currentUser?.rol || '';
-    const apiKey = currentUser?.api_key || '';
+  private async getHeaders(): Promise<HttpHeaders> {
+    const user = await this.userService.getCurrentUser();
     return new HttpHeaders({
       'Content-Type': 'application/json',
-      'rol': rol,
-      'api-key': apiKey,
+      'rol': user?.rol || '',
+      'api-key': user?.api_key || '',
     });
   }
 
@@ -48,9 +45,8 @@ export class SyncPartidoService {
     return navigator.onLine;
   }
 
-  async sincronizarTodos(): Promise<void> {
-    await this.versionService.init();
-    await this.partidoService.init();
+  public async sincronizarTodos(): Promise<void> {
+    await this.inicializarStorages();
 
     if (!await this.isOnline()) {
       console.warn('📴 Sin conexión, usando datos locales.');
@@ -58,69 +54,113 @@ export class SyncPartidoService {
       return;
     }
 
-    const headers = await this.getHeadersFromStorage();
-    console.log(headers);
+    const headers = await this.getHeaders();
 
-    // 3) Obtener versiones del servidor
-    let serverData;
+    const versionesServidor = await this.obtenerVersionesDelServidor(headers);
+    if (!versionesServidor) return;
 
-    try {
-      serverData = await this.http
-        .get<{ id_partido: string; version: number }[]>(`${this.apiUrl}/partidos/version`, { headers })
-        .pipe(
-          timeout(7000)   // <— si pasan 5 s sin respuesta, salta al catch
-        );
+    const partidosLocales = await this.partidoService.obtenerTodosLosPartidos();
+    const storageVacio = Object.keys(partidosLocales).length === 0;
 
-      serverData = await firstValueFrom(serverData);
-
-    } catch (err) {
-      console.error('❌ No se pudo obtener versiones del servidor:', err);
-      await this.presentOfflineToast();
+    if (storageVacio) {
+      await this.descargarTodosLosPartidos(headers, versionesServidor);
+      console.log('✅ Sincronización completa desde cero.');
       return;
     }
 
-    if (!serverData) {
-      console.warn('⚠️ Lista de versiones llegó vacía.');
-      await this.presentOfflineToast();
-      return;
-    }
-
-    // 4) Filtrar desactualizados
     const versionesLocales = await this.versionService.obtenerTodasLasVersiones();
-    const desactualizados = serverData.filter(p => {
-      const vLocal = versionesLocales[p.id_partido] || 0;
-      return p.version > vLocal;
-    });
-    console.log(`🔎 ${desactualizados.length} partidos desactualizados.`);
+    const desactualizados = this.filtrarPartidosDesactualizados(versionesServidor, versionesLocales);
 
-    // 5) Para cada partido, descargar detalle, mapear y guardar
-    for (const p of desactualizados) {
-      const id = p.id_partido;
-      try {
-        const rawArray = await this.http
-          .get<RawPartido[]>(`${this.apiUrl}/partidos/${id}`, { headers })
-          .toPromise();
-
-        if (!rawArray || rawArray.length === 0) {
-          console.warn(`⚠️ Partido ${id} llegó vacío. Eliminando localmente.`);
-          await this.partidoService.eliminarPartido(id); // Método que debes tener en tu servicio
-          await this.versionService.eliminarVersion(id);
-          continue;
-        }
-
-        const raw = rawArray[0];
-        const model: PartidoModel = mapRawToPartido(raw, p.version);
-
-        await this.partidoService.guardarPartido(id, model);
-        await this.versionService.setVersion(id, p.version);
-        console.log(`✅ Partido ${id} actualizado a v${p.version}`);
-      } catch (err) {
-        console.error(`❌ Error al procesar partido ${id}:`, err);
-      }
-    }
+    await this.descargarYActualizar(desactualizados, headers);
 
     if (desactualizados.length === 0) {
       console.log('🟢 Todos los partidos están actualizados.');
+    }
+  }
+
+  private async inicializarStorages() {
+    await Promise.all([
+      this.versionService.init(),
+      this.partidoService.init()
+    ]);
+  }
+
+  private async obtenerVersionesDelServidor(headers: HttpHeaders): Promise<{ id_partido: string; version: number }[] | null> {
+    try {
+      const response = await firstValueFrom(
+        this.http
+          .get<{ id_partido: string; version: number }[]>(`${this.apiUrl}/partidos/version`, { headers })
+          .pipe(timeout(10000))
+      );
+      return response;
+    } catch (error) {
+      console.error('❌ Error al obtener versiones del servidor:', error);
+      await this.presentOfflineToast('❌ No se pudo obtener datos del servidor.');
+      return null;
+    }
+  }
+
+  private filtrarPartidosDesactualizados(
+    servidor: { id_partido: string; version: number }[],
+    local: { [id: string]: number }
+  ): { id_partido: string; version: number }[] {
+    return servidor.filter(p => (p.version > (local[p.id_partido] || 0)));
+  }
+
+  private async descargarYActualizar(
+    partidos: { id_partido: string; version: number }[],
+    headers: HttpHeaders
+  ): Promise<void> {
+    for (const { id_partido, version } of partidos) {
+      try {
+        const rawArray = await this.http
+          .get<RawPartido[]>(`${this.apiUrl}/partidos/${id_partido}`, { headers })
+          .toPromise();
+
+        if (!rawArray || rawArray.length === 0) {
+          console.warn(`⚠️ Partido ${id_partido} llegó vacío. Eliminando localmente.`);
+          await this.eliminarPartidoCompleto(id_partido);
+          continue;
+        }
+
+        const model = mapRawToPartido(rawArray[0], version);
+        await this.guardarPartidoConVersion(id_partido, model, version);
+        console.log(`✅ Partido ${id_partido} actualizado a v${version}`);
+
+      } catch (err) {
+        console.error(`❌ Error al procesar partido ${id_partido}:`, err);
+      }
+    }
+  }
+
+  private async guardarPartidoConVersion(id: string, model: PartidoModel, version: number) {
+    await this.partidoService.guardarPartido(id, model);
+    await this.versionService.setVersion(id, version);
+  }
+
+  private async eliminarPartidoCompleto(id: string) {
+    await this.partidoService.eliminarPartido(id);
+    await this.versionService.eliminarVersion(id);
+  }
+
+  private async descargarTodosLosPartidos(headers: HttpHeaders, versiones: { id_partido: string; version: number }[]) {
+    console.log('📥 Storage vacío. Descargando todos los partidos...');
+    for (const { id_partido, version } of versiones) {
+      try {
+        const rawArray = await this.http
+          .get<RawPartido[]>(`${this.apiUrl}/partidos/${id_partido}`, { headers })
+          .toPromise();
+
+        if (!rawArray || rawArray.length === 0) {
+          console.warn(`⚠️ Partido ${id_partido} llegó vacío. Saltando.`);
+          continue;
+        }
+
+        const model = mapRawToPartido(rawArray[0], version);
+        await this.guardarPartidoConVersion(id_partido, model, version);
+      } catch (err) {
+        console.error(`❌ Error al descargar partido ${id_partido}:`, err);
+      }
     }
   }
 }

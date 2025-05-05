@@ -7,6 +7,8 @@ import { SyncPartidoService } from 'src/app/services/sincronizar/sincronizar-par
 import { PartidoService } from 'src/app/services/partido/partido.service';
 import { PartidoModel } from 'src/app/services/mappers/map-partido/map-partido.service';
 import { UserService } from 'src/app/services/user/user.service';
+import { SincronizarMiembrosService } from 'src/app/services/sincronizar/sincronizar-miembros/sincronizar-miembros.service';
+import { MiembrosService } from 'src/app/services/miembros/miembros.service';
 
 import { CardPartidoComponent } from 'src/app/components/card-partido/card-partido.component';
 import { BannerTopComponent } from 'src/app/components/banner-top/banner-top.component';
@@ -24,7 +26,7 @@ import { Router } from '@angular/router';
     IonContent,
     CommonModule,
     FormsModule,
-    IonSpinner
+    IonSpinner,
   ]
 })
 export class InicioPage implements OnInit, AfterViewInit {
@@ -46,7 +48,8 @@ export class InicioPage implements OnInit, AfterViewInit {
     private syncService: SyncPartidoService,
     private partidoService: PartidoService,
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private syncMiembros: SincronizarMiembrosService,
 
   ) { }
 
@@ -58,6 +61,7 @@ export class InicioPage implements OnInit, AfterViewInit {
       this.partidos = Object.values(dict);
       this.partidosFiltrados = [...this.partidos];
       this.filtrarPartidosPorCategoria('U 11');
+      this.syncMiembros.sincronizarTodos();
       this.isLoading = false;
     } catch (err) {
       console.error('Error cargando partidos:', err);

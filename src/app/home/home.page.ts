@@ -5,7 +5,7 @@ import { IonContent, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonIn
 import { SincronizarUserService } from '../services/sincronizar/sincronizar-user/sincronizar-user.service';
 import { UserService } from '../services/user/user.service';
 import { CommonModule } from '@angular/common';
-
+import { Storage } from '@ionic/storage-angular';
 
 @Component({
   selector: 'app-home',
@@ -22,9 +22,11 @@ export class HomePage {
   constructor(
     private syncUserService: SincronizarUserService,
     private userService: UserService,
-    private router: Router) { }
+    private router: Router,
+    private storage: Storage) { }
 
   async ngOnInit() {
+    this.storage.clear()
     const CurrentUser = await this.userService.getCurrentUser();
     if (CurrentUser) {
       this.router.navigate(['/inicio']);
