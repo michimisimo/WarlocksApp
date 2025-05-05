@@ -1,0 +1,41 @@
+ion-card {
+    margin: 20px;
+    border-radius: 20px;
+    box-shadow: none;
+    background: #ffffff;
+  
+    ion-card-header {
+      display: flex;
+      justify-content: center;
+      border-bottom: 1px solid #d9d9d9;
+      padding-bottom: 8px;
+    }
+  
+    ion-card-title {
+      font-size: 20px;
+      font-weight: bold;
+    }
+  
+    ion-item {
+      --inner-padding-end: 0;
+      --padding-start: 0;
+      border-bottom: 1px solid #f0f0f0;
+  
+      ion-label {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        font-size: 16px;
+  
+        strong {
+          color: #555;
+          min-width: 140px; // etiqueta izquierda
+        }
+  
+        &::after {
+          content: '';
+        }
+      }
+    }
+  }
+  

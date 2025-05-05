@@ -3,9 +3,13 @@
     <app-banner-top [tabs]="tabs" [activeTab]="activeTab" (tabChanged)="activeTab = $event"
         (volverAInicio)="volverAInicio()" (categorySelected)="filtrarMiembrosPorCategoria($event)"></app-banner-top>
 
-    <div *ngIf="activeTab=='Mi cuenta'||''">
-        <ion-button (click)="cerrarSesion()">Cerrar sesión</ion-button>
-    </div>
+        <div *ngIf="activeTab === 'Mi cuenta' && usuario">
+          <app-card-datos [usuario]="usuario"></app-card-datos>
+          <app-card-campass></app-card-campass>
+          <div class="container-Cerrar">
+            <ion-button class="btn-Cerrarsesion" (click)="cerrarSesion()">Cerrar sesión</ion-button>
+          </div>
+        </div>
 
 
     <div *ngIf="activeTab=='Usuarios'">

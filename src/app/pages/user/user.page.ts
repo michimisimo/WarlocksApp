@@ -10,6 +10,8 @@ import { TableMiembrosConfigComponent } from 'src/app/components/table-miembros-
 import { MiembrosService } from 'src/app/services/miembros/miembros.service';
 import { TeamMember } from 'src/app/services/mappers/map-user/map-user.service';
 import { CurrentUser } from 'src/app/services/mappers/map-user/map-user.service';
+import { CardDatosComponent } from 'src/app/components/card-datos/card-datos.component';
+import { CardCampassComponent } from 'src/app/components/card-campass/card-campass.component';
 
 
 @Component({
@@ -17,7 +19,7 @@ import { CurrentUser } from 'src/app/services/mappers/map-user/map-user.service'
   templateUrl: './user.page.html',
   styleUrls: ['./user.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, BannerTopComponent, IonicModule, TableMiembrosConfigComponent]
+  imports: [CommonModule, FormsModule, BannerTopComponent, IonicModule, TableMiembrosConfigComponent,CardDatosComponent,CardCampassComponent]
 })
 export class UserPage implements OnInit, AfterViewInit {
 
@@ -25,6 +27,7 @@ export class UserPage implements OnInit, AfterViewInit {
 
   tabs = ['Mi cuenta', 'Usuarios'];
   activeTab = 'Mi Cuenta';
+  usuario: CurrentUser | null = null;
 
   entrenadores: TeamMember[] = []
   estadisticos: TeamMember[] = []
@@ -44,6 +47,7 @@ export class UserPage implements OnInit, AfterViewInit {
     this.activeTab = 'Mi cuenta';
     this.showCategoria();
     await this.getUsuarios();
+    await this.cargarDatosUser();
 
     const CurrentUser = await this.userService.getCurrentUser();
     if (CurrentUser!.rol != 'entrenador') {
@@ -54,6 +58,11 @@ export class UserPage implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.showCategoria();
+  }
+
+  async cargarDatosUser(){
+    this.usuario = await this.userService.getCurrentUser();
+    console.log(this.usuario)
   }
 
   showCategoria() {

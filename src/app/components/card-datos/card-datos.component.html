@@ -1,0 +1,39 @@
+<ion-card>
+  <ion-card-header>
+    <ion-card-title>Datos Personales</ion-card-title>
+  </ion-card-header>
+
+  <ion-card-content>
+    <ion-list>
+      <ion-item >
+        <ion-label>
+          <strong>Nombre:</strong> {{ usuario.pnombre }}
+        </ion-label>
+      </ion-item>
+      
+      <ion-item >
+        <ion-label>
+          <strong>Apellido Paterno:</strong> {{ usuario.appaterno }}
+        </ion-label>
+      </ion-item>
+
+      <ion-item >
+        <ion-label>
+          <strong>Apellido Materno:</strong> {{ usuario.apmaterno }}
+        </ion-label>
+      </ion-item>
+
+      <ion-item >
+        <ion-label>
+          <strong>RUT:</strong> {{ usuario.rut }}-{{usuario.dv_rut}}
+        </ion-label>
+      </ion-item>
+
+      <ion-item >
+        <ion-label>
+          <strong>Rol:</strong> {{ usuario.rol }}
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-card-content>
+</ion-card>
