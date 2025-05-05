@@ -1,3 +1,13 @@
 ion-content {
     --background: #D9D9D9;
+
+    .loading {
+        display: flex;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 30px;
+        height: 50px;
+        width: 50px;
+        color: #00B6F1;
+    }
 }

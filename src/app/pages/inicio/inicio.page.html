@@ -4,6 +4,7 @@
     (otabChanged)="activeOTab = $event" (abrirConfiguracion)="irACuenta()">
   </app-banner-top>
 
+  <ion-spinner name="bubbles" *ngIf="isLoading" class="loading"></ion-spinner>
   <div *ngIf="activeTab !== 'Plantel' && activeOTab !== 'Estadisticas'">
     <div *ngIf="partidosFiltrados?.length; else empty">
       <div *ngFor="let partido of partidosFiltrados">
@@ -20,6 +21,6 @@
   </div>
 
   <ng-template #empty>
-    <div class="empty">No hay partidos para mostrar.</div>
+    <div *ngIf="!isLoading">No hay partidos para mostrar.</div>
   </ng-template>
 </ion-content>

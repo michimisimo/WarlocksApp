@@ -1,10 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
+import { ToastController } from '@ionic/angular';
+import { timeout } from 'rxjs/operators'
+import { firstValueFrom } from 'rxjs';
+
+import { UserService } from '../../user/user.service';
 import { PartidoService } from '../../partido/partido.service';
 import { VersionPartidoService } from '../../version/version-partido/version-partido.service';
 import { PartidoModel, RawPartido, mapRawToPartido } from '../../mappers/map-partido/map-partido.service';
-import { environment } from '../../../../environments/environment';
-import { Storage } from '@ionic/storage-angular';
 
 @Injectable({ providedIn: 'root' })
 export class SyncPartidoService {
@@ -14,30 +18,70 @@ export class SyncPartidoService {
     private http: HttpClient,
     private partidoService: PartidoService,
     private versionService: VersionPartidoService,
-    private storage: Storage
+    private userService: UserService,
+    private toastController: ToastController
   ) { }
 
-  async sincronizarTodos(): Promise<void> {
+  private async presentOfflineToast() {
+    const toast = await this.toastController.create({
+      message: '⚠️ Modo offline: mostrando datos almacenados.',
+      duration: 3000,
+      color: 'warning',
+      position: 'bottom',
+    });
+    await toast.present();
+  }
 
-    // 1) Inicializar Storage
+  private async getHeadersFromStorage(): Promise<HttpHeaders> {
+    const currentUser = await this.userService.getCurrentUser();
+    console.log(currentUser);
+    const rol = currentUser?.rol || '';
+    const apiKey = currentUser?.api_key || '';
+    return new HttpHeaders({
+      'Content-Type': 'application/json',
+      'rol': rol,
+      'api-key': apiKey,
+    });
+  }
+
+  private async isOnline(): Promise<boolean> {
+    return navigator.onLine;
+  }
+
+  async sincronizarTodos(): Promise<void> {
     await this.versionService.init();
     await this.partidoService.init();
 
-    // 2) Headers comunes
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'rol': 'jugador',
-      'api-key': 'clavejugador456',
-    });
+    if (!await this.isOnline()) {
+      console.warn('📴 Sin conexión, usando datos locales.');
+      await this.presentOfflineToast();
+      return;
+    }
+
+    const headers = await this.getHeadersFromStorage();
+    console.log(headers);
 
     // 3) Obtener versiones del servidor
-    let serverData = await this.http
-      .get<{ id_partido: string; version: number }[]>(`${this.apiUrl}/partidos/version`, { headers })
-      .toPromise();
+    let serverData;
 
-    // 3.1) Si no llegó data, salimos
+    try {
+      serverData = await this.http
+        .get<{ id_partido: string; version: number }[]>(`${this.apiUrl}/partidos/version`, { headers })
+        .pipe(
+          timeout(7000)   // <— si pasan 5 s sin respuesta, salta al catch
+        );
+
+      serverData = await firstValueFrom(serverData);
+
+    } catch (err) {
+      console.error('❌ No se pudo obtener versiones del servidor:', err);
+      await this.presentOfflineToast();
+      return;
+    }
+
     if (!serverData) {
-      console.error('❌ No se recibió lista de versiones del servidor.');
+      console.warn('⚠️ Lista de versiones llegó vacía.');
+      await this.presentOfflineToast();
       return;
     }
 
@@ -58,7 +102,9 @@ export class SyncPartidoService {
           .toPromise();
 
         if (!rawArray || rawArray.length === 0) {
-          console.warn(`⚠️ Partido ${id} llegó vacío desde el servidor.`);
+          console.warn(`⚠️ Partido ${id} llegó vacío. Eliminando localmente.`);
+          await this.partidoService.eliminarPartido(id); // Método que debes tener en tu servicio
+          await this.versionService.eliminarVersion(id);
           continue;
         }
 

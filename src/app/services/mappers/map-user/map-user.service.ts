@@ -17,7 +17,7 @@ export interface MiembroEquipoBase {
 // tu propio usuario, con credenciales y rol
 export interface CurrentUser extends MiembroEquipoBase {
   rol: Role;
-  apiKey: string;
+  api_key: string;
 }
 
 // otros miembros del equipo, solo datos públicos

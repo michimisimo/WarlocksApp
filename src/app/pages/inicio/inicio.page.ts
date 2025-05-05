@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent } from '@ionic/angular/standalone';
+import { IonContent, IonSpinner } from '@ionic/angular/standalone';
 
 import { SyncPartidoService } from 'src/app/services/sincronizar/sincronizar-partido/sincronizar-partido.service';
 import { PartidoService } from 'src/app/services/partido/partido.service';
@@ -23,7 +23,8 @@ import { Router } from '@angular/router';
     CardPartidoComponent,
     IonContent,
     CommonModule,
-    FormsModule
+    FormsModule,
+    IonSpinner
   ]
 })
 export class InicioPage implements OnInit, AfterViewInit {
@@ -39,6 +40,8 @@ export class InicioPage implements OnInit, AfterViewInit {
   partidos: PartidoModel[] = [];
   partidosFiltrados: PartidoModel[] = [];
 
+  isLoading: boolean = false;
+
   constructor(
     private syncService: SyncPartidoService,
     private partidoService: PartidoService,
@@ -49,11 +52,13 @@ export class InicioPage implements OnInit, AfterViewInit {
 
   async ngOnInit() {
     try {
+      this.isLoading = true;
       await this.syncService.sincronizarTodos();
       const dict = await this.partidoService.obtenerTodosLosPartidos();
       this.partidos = Object.values(dict);
       this.partidosFiltrados = [...this.partidos];
       this.filtrarPartidosPorCategoria('U 11');
+      this.isLoading = false;
     } catch (err) {
       console.error('Error cargando partidos:', err);
     }
@@ -87,7 +92,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     }
   }
   // funcion de navegacion
-  irACuenta(){
+  irACuenta() {
     this.router.navigate(['/user']);
   }
 }
