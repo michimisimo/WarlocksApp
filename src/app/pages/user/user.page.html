@@ -1,2 +1,17 @@
-<app-banner-top [tabs]="tabs" [activeTab]="activeTab" (tabChanged)="activeTab = $event"  (volverAInicio)="volverAInicio()" ></app-banner-top>
-<ion-button (click)="cerrarSesion()">Cerrar sesión</ion-button>
+<ion-content>
+
+    <app-banner-top [tabs]="tabs" [activeTab]="activeTab" (tabChanged)="activeTab = $event"
+        (volverAInicio)="volverAInicio()" (categorySelected)="filtrarMiembrosPorCategoria($event)"></app-banner-top>
+
+    <div *ngIf="activeTab=='Mi cuenta'||''">
+        <ion-button (click)="cerrarSesion()">Cerrar sesión</ion-button>
+    </div>
+
+
+    <div *ngIf="activeTab=='Usuarios'">
+        <app-table-miembros-config [rol]="'Entrenador'" [usuarios]="entrenadoresFiltrados"></app-table-miembros-config>
+        <app-table-miembros-config [rol]="'Estadistico'" [usuarios]="estadisticosFiltrados"></app-table-miembros-config>
+        <app-table-miembros-config [rol]="'Jugador'" [usuarios]="jugadoresFiltrados"></app-table-miembros-config>
+    </div>
+
+</ion-content>
