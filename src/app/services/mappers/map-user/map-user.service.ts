@@ -11,12 +11,12 @@ export interface MiembroEquipoBase {
   apmaterno?: string;
   categoria?: string;
   posicion?: string;
+  rol: Role;
   // …otros campos públicos…
 }
 
 // tu propio usuario, con credenciales y rol
 export interface CurrentUser extends MiembroEquipoBase {
-  rol: Role;
   api_key: string;
 }
 

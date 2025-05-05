@@ -20,8 +20,8 @@ export class BannerTopComponent implements OnInit {
   @Output() abrirConfiguracion = new EventEmitter<void>(); // evento para la navegacion
   @Output() volverAInicio = new EventEmitter<void>(); // evento para volver
 
-  categories = ['U 11', 'U 13', 'U 15', 'U 18'];
-  activeCategory = 'U 11';
+  categories = ['U11', 'U13', 'U15', 'U18'];
+  activeCategory = 'U11';
 
   showBack = true;
   showCat2 = true;
@@ -57,11 +57,11 @@ export class BannerTopComponent implements OnInit {
   }
 
   //metodo para la navegacion 
-  onClickConfig(){
+  onClickConfig() {
     this.abrirConfiguracion.emit()
   }
   //metodo navegacion
-  onClickBack (){
+  onClickBack() {
     this.volverAInicio.emit()
   }
 }

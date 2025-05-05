@@ -88,10 +88,10 @@ export class InicioPage implements OnInit, AfterViewInit {
 
   private getCategoriaNum(categoria: string): number {
     switch (categoria) {
-      case 'U 11': return 1;
-      case 'U 13': return 2;
-      case 'U 15': return 3;
-      case 'U 18': return 4;
+      case 'U11': return 1;
+      case 'U13': return 2;
+      case 'U15': return 3;
+      case 'U18': return 4;
       default: return 0;
     }
   }
