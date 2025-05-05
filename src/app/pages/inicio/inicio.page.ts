@@ -56,19 +56,21 @@ export class InicioPage implements OnInit, AfterViewInit {
   async ngOnInit() {
     try {
       this.isLoading = true;
+
       await this.syncService.sincronizarTodos();
+
       const dict = await this.partidoService.obtenerTodosLosPartidos();
       this.partidos = Object.values(dict);
-      this.partidosFiltrados = [...this.partidos];
-      this.filtrarPartidosPorCategoria('U 11');
-      this.syncMiembros.sincronizarTodos();
-      this.isLoading = false;
+
+      await this.syncMiembros.sincronizarTodos(); // <-- le agregué await si es una promesa
     } catch (err) {
       console.error('Error cargando partidos:', err);
+    } finally {
+      this.isLoading = false;
+      this.partidosFiltrados = [...this.partidos];
+      this.filtrarPartidosPorCategoria('U11');
     }
-
-    console.log(this.userService.getCurrentUser())
-  }
+  };
 
   ngAfterViewInit() {
     this.componente.desactivarBack();

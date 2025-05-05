@@ -21,6 +21,6 @@
   </div>
 
   <ng-template #empty>
-    <div *ngIf="!isLoading">No hay partidos para mostrar.</div>
+    <div *ngIf="!isLoading && !partidosFiltrados">No hay partidos para mostrar.</div>
   </ng-template>
 </ion-content>

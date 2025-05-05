@@ -26,8 +26,8 @@ export class MiembrosService {
   }
 
   async getAllMembers(): Promise<{ [rut: string]: TeamMember }> {
-    await this._ready;
-    return (await this.storage.get(MIEMBROS_KEY)) || {};
+    const data = await this.storage.get(MIEMBROS_KEY);
+    return data || {};
   }
 
   async getMember(rut: string): Promise<TeamMember | null> {
