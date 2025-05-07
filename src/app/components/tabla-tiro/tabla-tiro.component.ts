@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonSegment, IonSegmentButton, IonLabel, IonButton, IonAccordion, IonItem, IonAccordionGroup, IonSelect, IonSelectOption } from '@ionic/angular/standalone';
+import { IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonSegment, IonSegmentButton, IonLabel, IonAccordion, IonItem, IonAccordionGroup } from '@ionic/angular/standalone';
 
 interface Lanzamiento {
   x: number;
@@ -15,7 +15,7 @@ interface Lanzamiento {
   templateUrl: './tabla-tiro.component.html',
   styleUrls: ['./tabla-tiro.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonSegment, IonSegmentButton, IonLabel, IonButton, IonAccordion, IonItem, IonAccordionGroup, IonSelect, IonSelectOption]
+  imports: [CommonModule, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonSegment, IonSegmentButton, IonLabel, IonAccordion, IonItem, IonAccordionGroup]
 })
 export class TablaTiroComponent implements OnChanges {
 
@@ -23,7 +23,7 @@ export class TablaTiroComponent implements OnChanges {
 
   @Input() lanzamientos: Lanzamiento[] = [];
   @Input() filtroCuarto: string = 'Todos';
-  @Input() filtroJugador: string = 'Todos';
+  @Input() filtroJugador: string = 'Todos los jugadores';
 
   lanzamientosFiltrados: Lanzamiento[] = [];
   jugadores: string[] = [];
@@ -64,7 +64,7 @@ export class TablaTiroComponent implements OnChanges {
   aplicarFiltros() {
     this.lanzamientosFiltrados = this.lanzamientos.filter(l => {
       const matchCuarto = this.filtroCuarto === 'Todos' || l.cuarto === this.filtroCuarto;
-      const matchJugador = this.filtroJugador === 'Todos' || l.jugador === this.filtroJugador;
+      const matchJugador = this.filtroJugador === 'Todos los jugadores' || l.jugador === this.filtroJugador;
       return matchCuarto && matchJugador;
     });
   }

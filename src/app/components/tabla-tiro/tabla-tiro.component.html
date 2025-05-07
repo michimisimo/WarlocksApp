@@ -46,8 +46,8 @@
             <ion-label><ion-label>{{ filtroJugador }}</ion-label></ion-label>
           </ion-item>
           <div class="ion-padding" slot="content">
-            <ion-item button (click)="seleccionarJugador('Todos')">
-              <ion-label>Todos</ion-label>
+            <ion-item button (click)="seleccionarJugador('Todos los jugadores')">
+              <ion-label>Todos los jugadores</ion-label>
             </ion-item>
             <ion-item button *ngFor="let jugador of jugadores" (click)="seleccionarJugador(jugador)">
               <ion-label>{{ jugador }}</ion-label>
