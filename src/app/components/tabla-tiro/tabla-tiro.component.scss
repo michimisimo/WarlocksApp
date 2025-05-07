@@ -1,0 +1,85 @@
+ion-card {
+    border-radius: 15px;
+    margin-left: 20px;
+    margin-right: 20px;
+
+    ion-card-header {
+        height: 30px;
+        display: flex;
+        justify-content: center;
+    }
+
+    ion-card-content {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+
+        .contenedor {
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+            width: 350px;
+            height: 320px;
+
+            .rectangulo1,
+            .rectangulo2 {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+
+            .rectangulo1 {
+                background-image: url(../../../assets/img/cancha.png);
+            }
+
+            .rectangulo2 {
+                z-index: 2;
+                opacity: 1;
+            }
+
+            .tiro {
+                position: absolute;
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                transform: translate(-50%, -50%);
+                border: 2px solid #EA3A84;
+            }
+
+            .tiro.encestado {
+                background-color: #EA3A84;
+            }
+
+            .tiro.fallado {
+                background-color: transparent;
+            }
+        }
+
+        .segment {
+            align-self: center;
+            display: flex;
+            width: 350px;
+
+            ion-segment {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+
+                ion-segment-button {
+                    flex: 0 1 auto;
+                    min-width: fit-content;
+                    color: #00B6F1;
+                    --indicator-color: #EA3A84;
+                }
+            }
+        }
+
+        .drop {
+            align-self: center;
+            width: 350px;
+        }
+
+    }
+}
