@@ -11,7 +11,7 @@
             <ion-label>Contraseña actual</ion-label>
           </ion-col>
           <ion-col size="7">
-            <ion-input type="password" placeholder="••••••"></ion-input>
+            <ion-input type="password" [(ngModel)]="contrasenaActual" name="contrasenaActual"></ion-input>
           </ion-col>
         </ion-row>
 
@@ -20,7 +20,7 @@
             <ion-label>Nueva contraseña</ion-label>
           </ion-col>
           <ion-col size="7">
-            <ion-input type="password" placeholder="••••••"></ion-input>
+            <ion-input [(ngModel)]="nuevaContrasena" name="nuevaContrasena"></ion-input>
           </ion-col>
         </ion-row>
 
@@ -29,13 +29,13 @@
             <ion-label>validacion contraseña</ion-label>
           </ion-col>
           <ion-col size="7">
-            <ion-input type="password" placeholder="••••••"></ion-input>
+            <ion-input [(ngModel)]="confirmarContrasena" name="confirmarContrasena"></ion-input>
           </ion-col>
         </ion-row>
       </ion-grid>
 
       <div class="boton-cambiar-container">
-        <ion-button expand="block">Cambiar</ion-button>
+        <ion-button expand="block" (click)="cambiarContrasena()">Cambiar</ion-button>
       </div>
     </ion-card-content>
   </ion-card>
