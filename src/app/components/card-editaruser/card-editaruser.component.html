@@ -1,0 +1,45 @@
+<ion-content>
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Editar {{ usuario.pnombre }} {{ usuario.appaterno }}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content class="ion-padding">
+    <ion-item>
+      <ion-label position="floating">Primer Nombre</ion-label>
+      <ion-input [(ngModel)]="usuario.pnombre"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Segundo Nombre</ion-label>
+      <ion-input [(ngModel)]="usuario.snombre"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Apellido Paterno</ion-label>
+      <ion-input [(ngModel)]="usuario.appaterno"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Apellido Materno</ion-label>
+      <ion-input [(ngModel)]="usuario.apmaterno"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Rut</ion-label>
+      <ion-input [(ngModel)]="usuario.rut"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Categoria</ion-label>
+      <ion-input [(ngModel)]="usuario.categoria"></ion-input>
+    </ion-item>
+
+    
+
+    <ion-button expand="full" color="primary" (click)="guardarCambios()">Guardar cambios</ion-button>
+    <ion-button expand="full" fill="clear" (click)="cancelar()">Cancelar</ion-button>
+  </ion-content>
+
+</ion-content>
