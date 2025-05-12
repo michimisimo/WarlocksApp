@@ -1,5 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -10,48 +9,43 @@ import { Role, TeamMember } from 'src/app/services/mappers/map-user/map-user.ser
   standalone: true,
   templateUrl: './card-crearuser.component.html',
   styleUrls: ['./card-crearuser.component.scss'],
-  imports: [IonicModule,CommonModule, FormsModule]
+  imports: [IonicModule, CommonModule, FormsModule,]
 })
-export class CardCrearuserComponent  implements OnInit {
+export class CardCrearuserComponent implements OnInit {
 
   @Input() rol!: Role;
+  @Output() cancel = new EventEmitter<void>();
+  @Output() submit = new EventEmitter<TeamMember>();
   usuario!: TeamMember;
 
-  /*usuario: TeamMember = {
-    pnombre: '',
-    snombre: '',
-    appaterno: '',
-    apmaterno: '',
-    rut: '',
-    posicion: '',
-    categoria: ''
-  };*/
+  constructor() { }
 
-  constructor(
-    private modalCtrl : ModalController
-  ) { }
-
-  ngOnInit():void {
+  ngOnInit(): void {
     this.usuario = {
-    pnombre: '',
-    snombre: '',
-    appaterno: '',
-    apmaterno: '',
-    rut: '',
-    posicion: '',
-    categoria: '',
-    rol: this.rol     
+      pnombre: '',
+      snombre: '',
+      appaterno: '',
+      apmaterno: '',
+      rut: '',
+      posicion: '',
+      categoria: '',
+      rol: this.rol
+    }
+
+    if (this.rol != 'jugador') {
+      this.usuario.categoria = 'ALL';
+      this.usuario.posicion = 'ALL';
+
     }
   }
 
-
-  cerrar(){
-    this.modalCtrl.dismiss();
+  cerrar() {
+    this.cancel.emit();
   }
 
-  guardar(): void{
-    console.log('Crear:',this.usuario);
-    this.modalCtrl.dismiss(this.usuario);
+  guardar(): void {
+    this.submit.emit(this.usuario);
+    this.cerrar()
   }
 
 }

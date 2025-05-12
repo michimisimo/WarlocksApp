@@ -1,45 +1,71 @@
-<ion-content>
-  <ion-header>
-    <ion-toolbar>
-      <ion-title>Editar {{ usuario.pnombre }} {{ usuario.appaterno }}</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<div class="container">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Editar {{rol}}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <form (ngSubmit)="onSubmit()" #form="ngForm">
 
-  <ion-content class="ion-padding">
-    <ion-item>
-      <ion-label position="floating">Primer Nombre</ion-label>
-      <ion-input [(ngModel)]="usuario.pnombre"></ion-input>
-    </ion-item>
+        <ion-item class="rut">
+          <ion-label position="floating">RUT</ion-label>
+          <ion-input [(ngModel)]="usuario.rut" name="rut" readonly>
+          </ion-input>
+        </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">Segundo Nombre</ion-label>
-      <ion-input [(ngModel)]="usuario.snombre"></ion-input>
-    </ion-item>
+        <ion-item>
+          <ion-label position="floating">Primer Nombre</ion-label>
+          <ion-input [(ngModel)]="usuario.pnombre" name="pnombre" required>
+          </ion-input>
+        </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">Apellido Paterno</ion-label>
-      <ion-input [(ngModel)]="usuario.appaterno"></ion-input>
-    </ion-item>
+        <ion-item>
+          <ion-label position="floating">Segundo Nombre</ion-label>
+          <ion-input [(ngModel)]="usuario.snombre" name="snombre">
+          </ion-input>
+        </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">Apellido Materno</ion-label>
-      <ion-input [(ngModel)]="usuario.apmaterno"></ion-input>
-    </ion-item>
+        <ion-item>
+          <ion-label position="floating">Apellido Paterno</ion-label>
+          <ion-input [(ngModel)]="usuario.appaterno" name="appaterno">
+          </ion-input>
+        </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">Rut</ion-label>
-      <ion-input [(ngModel)]="usuario.rut"></ion-input>
-    </ion-item>
+        <ion-item>
+          <ion-label position="floating">Apellido Materno</ion-label>
+          <ion-input [(ngModel)]="usuario.apmaterno" name="apmaterno">
+          </ion-input>
+        </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">Categoria</ion-label>
-      <ion-input [(ngModel)]="usuario.categoria"></ion-input>
-    </ion-item>
+        <ion-item *ngIf="rol === 'jugador'">
+          <ion-label position="floating">Posición</ion-label>
+          <ion-select [(ngModel)]="usuario.posicion" name="posicion" interface="popover" required>
+            <ion-select-option value="Base">Base</ion-select-option>
+            <ion-select-option value="Escolta">Escolta</ion-select-option>
+            <ion-select-option value="Alero">Alero</ion-select-option>
+            <ion-select-option value="Ala-Pívot">Ala-Pívot</ion-select-option>
+            <ion-select-option value="Pívot">Pívot</ion-select-option>
+          </ion-select>
+        </ion-item>
 
-    
+        <ion-item *ngIf="rol === 'jugador'">
+          <ion-label position="floating">Categoría</ion-label>
+          <ion-select [(ngModel)]="usuario.categoria" name="categoria" interface="popover" required>
+            <ion-select-option value="U11">U11</ion-select-option>
+            <ion-select-option value="U13">U13</ion-select-option>
+            <ion-select-option value="U15">U15</ion-select-option>
+            <ion-select-option value="U18">U18</ion-select-option>
+          </ion-select>
+        </ion-item>
 
-    <ion-button expand="full" color="primary" (click)="guardarCambios()">Guardar cambios</ion-button>
-    <ion-button expand="full" fill="clear" (click)="cancelar()">Cancelar</ion-button>
-  </ion-content>
-
-</ion-content>
+        <div class="form-buttons">
+          <ion-button expand="block" fill="clear" type="button" (click)="onCancel()">
+            Cancelar
+          </ion-button>
+          <ion-button expand="block" type="submit" [disabled]="form.invalid">
+            Guardar Cambios
+          </ion-button>
+        </div>
+      </form>
+    </ion-card-content>
+  </ion-card>
+</div>

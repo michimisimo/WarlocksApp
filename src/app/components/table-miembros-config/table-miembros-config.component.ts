@@ -1,9 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonButton, IonCard, IonCardContent, IonCardHeader, IonRow, IonCol, IonGrid, IonCardTitle } from '@ionic/angular/standalone';
-import { ModalController, AlertController } from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
 
-import { TeamMember } from 'src/app/services/mappers/map-user/map-user.service';
+import { Role, TeamMember } from 'src/app/services/mappers/map-user/map-user.service';
 import { CardCrearuserComponent } from '../card-crearuser/card-crearuser.component';
 import { MiembrosService } from 'src/app/services/miembros/miembros.service';
 import { CardEditaruserComponent } from '../card-editaruser/card-editaruser.component';
@@ -12,12 +12,12 @@ import { CardEditaruserComponent } from '../card-editaruser/card-editaruser.comp
   selector: 'app-table-miembros-config',
   templateUrl: './table-miembros-config.component.html',
   styleUrls: ['./table-miembros-config.component.scss'],
-  imports: [CommonModule, IonButton, IonCard, IonCardContent, IonCardHeader, IonRow, IonCol, IonGrid, IonCardTitle]
+  imports: [CommonModule, IonButton, IonCard, IonCardContent, IonCardHeader,
+    IonRow, IonCol, IonGrid, IonCardTitle, CardCrearuserComponent, CardEditaruserComponent]
 })
 export class TableMiembrosConfigComponent implements OnInit {
 
   constructor(
-    private modalCtrl: ModalController,
     private miembrosSvc: MiembrosService,
     private alertCtrl: AlertController
   ) { }
@@ -25,36 +25,22 @@ export class TableMiembrosConfigComponent implements OnInit {
   ngOnInit() { }
 
   @Input() usuarios: TeamMember[] = [];
-  @Input() rol: string = '';
+  @Input() rol: Role = 'jugador';
   mostrarTodos = false;
+  crear = false;
+  editarSeleccionado: TeamMember | null = null;
 
   toggleVerMas() {
     this.mostrarTodos = !this.mostrarTodos;
   }
 
-  async editar(usuario: TeamMember){
-    const modal = await this.modalCtrl.create({
-    component: CardEditaruserComponent,
-    componentProps: {usuario}  
-    });
-
-    modal.onDidDismiss().then(res =>{
-      if (res.data){
-        const index = this.usuarios.findIndex(u => u.rut === res.data.rut);
-        if (index >-1){
-          this.usuarios[index] = res.data;
-        }
-      }
-    });
-    return await modal.present();
-  }
 
   async eliminar(usuario: TeamMember) {
     const alert = await this.alertCtrl.create({
       header: 'confirmar eliminacion',
-      message:'¿Seguro que quieres borrar a ' + usuario.pnombre + ' ' + usuario.appaterno + '?',
+      message: '¿Seguro que quieres borrar a ' + usuario.pnombre + ' ' + usuario.appaterno + '?',
       buttons: [
-        {text: 'cancelar', role: 'cancel'},
+        { text: 'cancelar', role: 'cancel' },
         {
           text: 'Borrar',
           handler: async () => {
@@ -73,20 +59,21 @@ export class TableMiembrosConfigComponent implements OnInit {
     return this.mostrarTodos ? this.usuarios : this.usuarios.slice(0, 3);
   }
 
-  //posible
-  async abrirCrear(): Promise<void> {
-    const modal = await this.modalCtrl.create({
-      component: CardCrearuserComponent,
-      componentProps: { rol: this.rol },
-    });
+  handleCreate(nuevo: TeamMember) {
+    console.log('Usuario creado:', nuevo);
+    this.miembrosSvc.saveMember(nuevo)
+    this.crear = false;
+  }
 
-    await modal.present();
-    
-    const { data } = await modal.onDidDismiss<TeamMember>();
-    if (data){
-      await this.miembrosSvc.saveMember(data);
-      this.usuarios= [...this.usuarios, data];  
-    }
+  editar(usuario: TeamMember) {
+    this.editarSeleccionado = usuario;
+  }
+
+  // Cuando se recibe el submit del editar
+  handleEdit(actualizado: TeamMember) {
+    const idx = this.usuarios.findIndex(u => u.rut === actualizado.rut);
+    if (idx > -1) this.usuarios[idx] = actualizado;
+    this.editarSeleccionado = null;
   }
 
 }

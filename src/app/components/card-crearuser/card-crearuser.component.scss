@@ -1,4 +1,8 @@
 .container {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -8,12 +12,12 @@
     width: 90%;
     max-width: 450px;
     margin: 20px auto;
-    border-radius: 20px;
+    border-radius: 12px;
     overflow: hidden;
-    background-color: #f0f0f0;
+    background-color: #ffffff;
 
     ion-card-header {
-      background-color: #0047ab; // Azul fuerte
+      background-color: #00B6F1;
       color: #ffffff;
       display: flex;
       justify-content: center;
@@ -23,24 +27,26 @@
       ion-card-title {
         font-size: 18px;
         font-weight: 600;
+        color: #ffffff;
       }
     }
 
     ion-card-content {
-      padding: 16px;
-      background-color: #f0f0f0;
+      padding: 0;
+      background-color: #ffffff;
 
       form {
 
         .form-group {
           background-color: #ffffff;
-          border-radius: 12px;
-          padding: 16px;
+          border-radius: 10px;
+          padding: 15px;
           display: flex;
           flex-direction: column;
-          gap: 12px;
+          gap: 5px;
 
           ion-item {
+            display: flex;
             --background: transparent;
             --inner-padding-end: 0;
             --padding-start: 0;
@@ -55,10 +61,31 @@
               margin-bottom: 4px;
             }
 
-            ion-input,
             ion-select {
               background-color: #e0e0e0;
               border-radius: 5px;
+              text-align: center;
+              width: 320px;
+            }
+
+            ion-input {
+              background-color: #e0e0e0;
+              border-radius: 5px;
+              text-align: center;
+              width: 210px;
+              ;
+            }
+          }
+
+          .rut {
+            display: flex;
+
+            ion-label {
+              margin: 10px;
+            }
+
+            .dv_rut {
+              width: 100px;
             }
           }
         }
@@ -82,7 +109,7 @@
             }
 
             &:last-child {
-              color: #007bff;
+              color: #00B6F1;
               --background: #ffffff;
               margin-left: 5px;
             }

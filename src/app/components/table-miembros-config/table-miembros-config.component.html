@@ -25,7 +25,17 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-button (click)="abrirCrear()">Crear {{rol}}</ion-button>
-  
+  <ion-button (click)="this.crear = true" id="crear" #crear>Crear {{rol}}</ion-button>
 
+</div>
+
+<div *ngIf="this.crear" class="crear-background">
+  <app-card-crearuser [rol]="rol" (cancel)="this.crear = false" (submit)="handleCreate($event)">
+  </app-card-crearuser>
+</div>
+
+<div *ngIf="editarSeleccionado" class="editar-background">
+  <app-card-editaruser [usuario]="editarSeleccionado" [rol]="rol" (cancel)="editarSeleccionado = null"
+    (submit)="handleEdit($event)">
+  </app-card-editaruser>
 </div>

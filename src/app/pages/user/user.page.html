@@ -1,21 +1,21 @@
 <ion-content>
 
-    <app-banner-top [tabs]="tabs" [activeTab]="activeTab" (tabChanged)="activeTab = $event"
-        (volverAInicio)="volverAInicio()" (categorySelected)="filtrarMiembrosPorCategoria($event)"></app-banner-top>
+  <app-banner-top [tabs]="tabs" [activeTab]="activeTab" (tabChanged)="activeTab = $event"
+    (volverAInicio)="volverAInicio()" (categorySelected)="filtrarMiembrosPorCategoria($event)"></app-banner-top>
 
-        <div *ngIf="activeTab === 'Mi cuenta' && usuario">
-          <app-card-datos [usuario]="usuario"></app-card-datos>
-          <app-card-campass></app-card-campass>
-          <div class="container-Cerrar">
-            <ion-button class="btn-Cerrarsesion" (click)="cerrarSesion()">Cerrar sesión</ion-button>
-          </div>
-        </div>
-
-
-    <div *ngIf="activeTab=='Usuarios'">
-        <app-table-miembros-config [rol]="'Entrenador'" [usuarios]="entrenadoresFiltrados"></app-table-miembros-config>
-        <app-table-miembros-config [rol]="'Estadistico'" [usuarios]="estadisticosFiltrados"></app-table-miembros-config>
-        <app-table-miembros-config [rol]="'Jugador'" [usuarios]="jugadoresFiltrados"></app-table-miembros-config>
+  <div *ngIf="activeTab === 'Mi cuenta' && usuario">
+    <app-card-datos [usuario]="usuario"></app-card-datos>
+    <app-card-campass></app-card-campass>
+    <div class="container-Cerrar">
+      <ion-button class="btn-Cerrarsesion" (click)="cerrarSesion()">Cerrar sesión</ion-button>
     </div>
+  </div>
+
+
+  <div *ngIf="activeTab=='Usuarios'">
+    <app-table-miembros-config [rol]="'entrenador'" [usuarios]="entrenadoresFiltrados"></app-table-miembros-config>
+    <app-table-miembros-config [rol]="'estadistico'" [usuarios]="estadisticosFiltrados"></app-table-miembros-config>
+    <app-table-miembros-config [rol]="'jugador'" [usuarios]="jugadoresFiltrados"></app-table-miembros-config>
+  </div>
 
 </ion-content>
