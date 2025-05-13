@@ -25,7 +25,7 @@ export class HomePage {
     private router: Router,
     private storage: Storage) { }
 
-  async ngOnInit() {
+  async ngAfterInit() {
     this.storage.clear()
     const CurrentUser = await this.userService.getCurrentUser();
     if (CurrentUser) {
