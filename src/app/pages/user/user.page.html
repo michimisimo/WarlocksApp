@@ -11,25 +11,33 @@
     </div>
   </div>
 
-
   <!-- Componente de Crear Usuario -->
   <div *ngIf="activeTab == 'Usuarios'">
 
-    <app-card-crearuser *ngIf="modalAbierto" [rol]="rolSeleccionado" (cancel)="cerrarModal()"
+    <app-card-crearuser *ngIf="modalAbiertoCrear" [rol]="rolSeleccionado!" (cancel)="cerrarModalCrear()"
       (submit)="agregarUsuario($event)">
     </app-card-crearuser>
 
+    <app-card-editaruser *ngIf="modalAbiertoEditar" [usuario]="usuarioSeleccionado!" [rol]="rolSeleccionado!"
+      (cancel)="cerrarModalEditar()" (submit)="actualizarUsuario($event)">
+    </app-card-editaruser>
+
+
     <!-- Tablas para cada tipo de usuario -->
-    <app-table-miembros-config [rol]="'entrenador'" [usuarios]="entrenadoresFiltrados" (editar)="editarUsuario($event)"
-      (eliminar)="eliminarUsuario($event)" (crear)="abrirModalCrear('entrenador')">
+    <app-table-miembros-config [rol]="'entrenador'" [usuarios]="entrenadoresFiltrados"
+      (editar)="abrirModalEditar($event, 'entrenador')" (eliminar)="eliminarUsuario($event)"
+      (crear)="abrirModalCrear('entrenador')">
     </app-table-miembros-config>
 
-    <app-table-miembros-config [rol]="'estadistico'" [usuarios]="estadisticosFiltrados" (editar)="editarUsuario($event)"
-      (eliminar)="eliminarUsuario($event)" (crear)="abrirModalCrear('estadistico')">
+    <app-table-miembros-config [rol]="'estadistico'" [usuarios]="estadisticosFiltrados"
+      (editar)="abrirModalEditar($event, 'estadistico')" (eliminar)="eliminarUsuario($event)"
+      (crear)="abrirModalCrear('estadistico')">
     </app-table-miembros-config>
 
-    <app-table-miembros-config [rol]="'jugador'" [usuarios]="jugadoresFiltrados" (editar)="editarUsuario($event)"
-      (eliminar)="eliminarUsuario($event)" (crear)="abrirModalCrear('jugador')">
+    <app-table-miembros-config [rol]="'jugador'" [usuarios]="jugadoresFiltrados"
+      (editar)="abrirModalEditar($event, 'jugador')" (eliminar)="eliminarUsuario($event)"
+      (crear)="abrirModalCrear('jugador')">
     </app-table-miembros-config>
   </div>
+
 </ion-content>

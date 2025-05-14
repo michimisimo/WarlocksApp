@@ -13,6 +13,7 @@ import { CurrentUser } from 'src/app/services/mappers/map-user/map-user.service'
 import { CardDatosComponent } from 'src/app/components/card-datos/card-datos.component';
 import { CardCampassComponent } from 'src/app/components/card-campass/card-campass.component';
 import { CardCrearuserComponent } from 'src/app/components/card-crearuser/card-crearuser.component';
+import { CardEditaruserComponent } from 'src/app/components/card-editaruser/card-editaruser.component';
 import { Role } from 'src/app/services/mappers/map-user/map-user.service';
 
 
@@ -21,7 +22,7 @@ import { Role } from 'src/app/services/mappers/map-user/map-user.service';
   templateUrl: './user.page.html',
   styleUrls: ['./user.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, BannerTopComponent, IonicModule, TableMiembrosConfigComponent, CardDatosComponent, CardCampassComponent, CardCrearuserComponent]
+  imports: [CommonModule, FormsModule, BannerTopComponent, IonicModule, TableMiembrosConfigComponent, CardDatosComponent, CardCampassComponent, CardCrearuserComponent, CardEditaruserComponent]
 })
 export class UserPage implements OnInit, AfterViewInit {
 
@@ -30,9 +31,12 @@ export class UserPage implements OnInit, AfterViewInit {
   tabs = ['Mi cuenta', 'Usuarios'];
   activeTab = 'Mi Cuenta';
   usuario: CurrentUser | null = null;
+  usuarioSeleccionado: TeamMember | undefined;
 
-  modalAbierto: boolean = false;
-  rolSeleccionado: Role = 'jugador';
+
+  modalAbiertoEditar = false;
+  modalAbiertoCrear: boolean = false;
+  rolSeleccionado: Role | undefined;
 
   entrenadores: TeamMember[] = []
   estadisticos: TeamMember[] = []
@@ -82,24 +86,6 @@ export class UserPage implements OnInit, AfterViewInit {
     this.showCategoria();
   }
 
-  volverAInicio() {
-    this.router.navigate(['/inicio'])
-  }
-
-  cerrarSesion() {
-    this.userService.removeCurrentUser();
-    this.router.navigate(['/home'])
-  }
-
-  abrirModalCrear(rol: Role) {
-    this.rolSeleccionado = rol;
-    this.modalAbierto = true;
-  }
-
-  cerrarModal() {
-    this.modalAbierto = false;
-  }
-
   async getUsuarios() {
     const usuariosObj = await this.miembroService.getAllMembers();
     const usuariosArray = Object.values(usuariosObj); // convierte el objeto a array
@@ -120,9 +106,39 @@ export class UserPage implements OnInit, AfterViewInit {
       j => j.categoria === categoria);
   }
 
+  volverAInicio() {
+    this.router.navigate(['/inicio'])
+  }
+
+  cerrarSesion() {
+    this.userService.removeCurrentUser();
+    this.router.navigate(['/home'])
+  }
+
+  abrirModalCrear(rol: Role) {
+    this.rolSeleccionado = rol;
+    this.modalAbiertoCrear = true;
+  }
+
+  cerrarModalCrear() {
+    this.modalAbiertoCrear = false;
+  }
+
+  abrirModalEditar(usuario: TeamMember, rol: Role) {
+    this.usuarioSeleccionado = usuario;
+    this.rolSeleccionado = rol;
+    this.modalAbiertoEditar = true;
+  }
+
+  cerrarModalEditar() {
+    this.modalAbiertoEditar = false;
+    this.usuarioSeleccionado = undefined;
+    this.rolSeleccionado = undefined;
+  }
+
   agregarUsuario(usuario: TeamMember) {
 
-    this.cerrarModal();
+    this.cerrarModalCrear();
   }
 
   editarUsuario(usuario: TeamMember) {
@@ -139,6 +155,11 @@ export class UserPage implements OnInit, AfterViewInit {
     } else if (usuario.rol === 'jugador') {
       this.jugadoresFiltrados = this.jugadoresFiltrados.filter(u => u !== usuario);
     }
+  }
+
+  actualizarUsuario(usuarioActualizado: TeamMember) {
+    console.log('Usuario actualizado:', usuarioActualizado);
+    this.cerrarModalEditar();
   }
 }
 

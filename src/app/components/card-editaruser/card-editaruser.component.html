@@ -4,7 +4,7 @@
       <ion-card-title>Editar {{rol}}</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <form (ngSubmit)="onSubmit()" #form="ngForm">
+      <form #form="ngForm" (ngSubmit)="guardarCambios(form)">
 
         <ion-item class="rut">
           <ion-label position="floating">RUT</ion-label>
@@ -58,10 +58,10 @@
         </ion-item>
 
         <div class="form-buttons">
-          <ion-button expand="block" fill="clear" type="button" (click)="onCancel()">
+          <ion-button class="cancelar" expand="block" fill="clear" type="button" (click)="onCancel()">
             Cancelar
           </ion-button>
-          <ion-button expand="block" type="submit" [disabled]="form.invalid">
+          <ion-button class="guardar" expand="block" type="submit" [disabled]="form.invalid">
             Guardar Cambios
           </ion-button>
         </div>
