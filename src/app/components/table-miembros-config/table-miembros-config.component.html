@@ -1,5 +1,4 @@
 <div class="container">
-
   <ion-card>
     <ion-card-header>
       <ion-card-title>{{rol}}</ion-card-title>
@@ -10,10 +9,10 @@
         <ion-row *ngFor="let usuario of usuariosSlice(); let last = last" [ngClass]="{ 'fila-con-borde': !last }">
           <ion-col size="6">{{ usuario.pnombre }} {{usuario.appaterno}}</ion-col>
           <ion-col size="2.7" class="ion-text-center">
-            <ion-button class="editar" fill="clear" size="small" (click)="editar(usuario)">Editar</ion-button>
+            <ion-button class="editar" fill="clear" size="small" (click)="onEditar(usuario)">Editar</ion-button>
           </ion-col>
           <ion-col size="2.7" class="ion-text-center">
-            <ion-button class="borrar" fill="clear" size="small" (click)="eliminar(usuario)">Borrar</ion-button>
+            <ion-button class="borrar" fill="clear" size="small" (click)="onEliminar(usuario)">Borrar</ion-button>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -25,17 +24,5 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-button (click)="this.crear = true" id="crear" #crear>Crear {{rol}}</ion-button>
-
-</div>
-
-<div *ngIf="this.crear" class="crear-background">
-  <app-card-crearuser [rol]="rol" (cancel)="this.crear = false" (submit)="handleCreate($event)">
-  </app-card-crearuser>
-</div>
-
-<div *ngIf="editarSeleccionado" class="editar-background">
-  <app-card-editaruser [usuario]="editarSeleccionado" [rol]="rol" (cancel)="editarSeleccionado = null"
-    (submit)="handleEdit($event)">
-  </app-card-editaruser>
+  <ion-button (click)="onCrear()" id="crear">Crear {{rol}}</ion-button>
 </div>

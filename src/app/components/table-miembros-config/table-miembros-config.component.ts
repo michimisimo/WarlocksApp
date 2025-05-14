@@ -1,79 +1,42 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { TeamMember } from 'src/app/services/mappers/map-user/map-user.service';
+import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
-import { IonButton, IonCard, IonCardContent, IonCardHeader, IonRow, IonCol, IonGrid, IonCardTitle } from '@ionic/angular/standalone';
-import { AlertController } from '@ionic/angular';
-
-import { Role, TeamMember } from 'src/app/services/mappers/map-user/map-user.service';
-import { CardCrearuserComponent } from '../card-crearuser/card-crearuser.component';
-import { MiembrosService } from 'src/app/services/miembros/miembros.service';
-import { CardEditaruserComponent } from '../card-editaruser/card-editaruser.component';
 
 @Component({
   selector: 'app-table-miembros-config',
+  standalone: true,
   templateUrl: './table-miembros-config.component.html',
   styleUrls: ['./table-miembros-config.component.scss'],
-  imports: [CommonModule, IonButton, IonCard, IonCardContent, IonCardHeader,
-    IonRow, IonCol, IonGrid, IonCardTitle, CardCrearuserComponent, CardEditaruserComponent]
+  imports: [IonicModule, CommonModule] // Solo esto es necesario
 })
-export class TableMiembrosConfigComponent implements OnInit {
-
-  constructor(
-    private miembrosSvc: MiembrosService,
-    private alertCtrl: AlertController
-  ) { }
-
-  ngOnInit() { }
+export class TableMiembrosConfigComponent {
 
   @Input() usuarios: TeamMember[] = [];
-  @Input() rol: Role = 'jugador';
+  @Input() rol: string = 'jugador';
+  @Output() crear = new EventEmitter<void>();
+  @Output() editar = new EventEmitter<TeamMember>();
+  @Output() eliminar = new EventEmitter<TeamMember>();
+
   mostrarTodos = false;
-  crear = false;
-  editarSeleccionado: TeamMember | null = null;
 
   toggleVerMas() {
     this.mostrarTodos = !this.mostrarTodos;
-  }
-
-
-  async eliminar(usuario: TeamMember) {
-    const alert = await this.alertCtrl.create({
-      header: 'confirmar eliminacion',
-      message: '¿Seguro que quieres borrar a ' + usuario.pnombre + ' ' + usuario.appaterno + '?',
-      buttons: [
-        { text: 'cancelar', role: 'cancel' },
-        {
-          text: 'Borrar',
-          handler: async () => {
-            //eliminar storage
-            await this.miembrosSvc.removeMember(usuario.rut);
-            //refresca el listado 
-            this.usuarios = this.usuarios.filter(u => u.rut !== usuario.rut);
-          }
-        }
-      ]
-    });
-    await alert.present();
   }
 
   usuariosSlice(): TeamMember[] {
     return this.mostrarTodos ? this.usuarios : this.usuarios.slice(0, 3);
   }
 
-  handleCreate(nuevo: TeamMember) {
-    console.log('Usuario creado:', nuevo);
-    this.miembrosSvc.saveMember(nuevo)
-    this.crear = false;
+  onCrear() {
+    this.crear.emit();
   }
 
-  editar(usuario: TeamMember) {
-    this.editarSeleccionado = usuario;
+  onEditar(usuario: TeamMember) {
+    this.editar.emit(usuario);
   }
 
-  // Cuando se recibe el submit del editar
-  handleEdit(actualizado: TeamMember) {
-    const idx = this.usuarios.findIndex(u => u.rut === actualizado.rut);
-    if (idx > -1) this.usuarios[idx] = actualizado;
-    this.editarSeleccionado = null;
+  onEliminar(usuario: TeamMember) {
+    this.eliminar.emit(usuario);
   }
-
 }

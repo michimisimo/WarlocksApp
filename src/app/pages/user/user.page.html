@@ -12,10 +12,24 @@
   </div>
 
 
-  <div *ngIf="activeTab=='Usuarios'">
-    <app-table-miembros-config [rol]="'entrenador'" [usuarios]="entrenadoresFiltrados"></app-table-miembros-config>
-    <app-table-miembros-config [rol]="'estadistico'" [usuarios]="estadisticosFiltrados"></app-table-miembros-config>
-    <app-table-miembros-config [rol]="'jugador'" [usuarios]="jugadoresFiltrados"></app-table-miembros-config>
-  </div>
+  <!-- Componente de Crear Usuario -->
+  <div *ngIf="activeTab == 'Usuarios'">
 
+    <app-card-crearuser *ngIf="modalAbierto" [rol]="rolSeleccionado" (cancel)="cerrarModal()"
+      (submit)="agregarUsuario($event)">
+    </app-card-crearuser>
+
+    <!-- Tablas para cada tipo de usuario -->
+    <app-table-miembros-config [rol]="'entrenador'" [usuarios]="entrenadoresFiltrados" (editar)="editarUsuario($event)"
+      (eliminar)="eliminarUsuario($event)" (crear)="abrirModalCrear('entrenador')">
+    </app-table-miembros-config>
+
+    <app-table-miembros-config [rol]="'estadistico'" [usuarios]="estadisticosFiltrados" (editar)="editarUsuario($event)"
+      (eliminar)="eliminarUsuario($event)" (crear)="abrirModalCrear('estadistico')">
+    </app-table-miembros-config>
+
+    <app-table-miembros-config [rol]="'jugador'" [usuarios]="jugadoresFiltrados" (editar)="editarUsuario($event)"
+      (eliminar)="eliminarUsuario($event)" (crear)="abrirModalCrear('jugador')">
+    </app-table-miembros-config>
+  </div>
 </ion-content>

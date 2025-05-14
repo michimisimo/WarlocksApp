@@ -12,6 +12,8 @@ import { TeamMember } from 'src/app/services/mappers/map-user/map-user.service';
 import { CurrentUser } from 'src/app/services/mappers/map-user/map-user.service';
 import { CardDatosComponent } from 'src/app/components/card-datos/card-datos.component';
 import { CardCampassComponent } from 'src/app/components/card-campass/card-campass.component';
+import { CardCrearuserComponent } from 'src/app/components/card-crearuser/card-crearuser.component';
+import { Role } from 'src/app/services/mappers/map-user/map-user.service';
 
 
 @Component({
@@ -19,7 +21,7 @@ import { CardCampassComponent } from 'src/app/components/card-campass/card-campa
   templateUrl: './user.page.html',
   styleUrls: ['./user.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, BannerTopComponent, IonicModule, TableMiembrosConfigComponent,CardDatosComponent,CardCampassComponent]
+  imports: [CommonModule, FormsModule, BannerTopComponent, IonicModule, TableMiembrosConfigComponent, CardDatosComponent, CardCampassComponent, CardCrearuserComponent]
 })
 export class UserPage implements OnInit, AfterViewInit {
 
@@ -28,6 +30,9 @@ export class UserPage implements OnInit, AfterViewInit {
   tabs = ['Mi cuenta', 'Usuarios'];
   activeTab = 'Mi Cuenta';
   usuario: CurrentUser | null = null;
+
+  modalAbierto: boolean = false;
+  rolSeleccionado: Role = 'jugador';
 
   entrenadores: TeamMember[] = []
   estadisticos: TeamMember[] = []
@@ -60,7 +65,7 @@ export class UserPage implements OnInit, AfterViewInit {
     this.showCategoria();
   }
 
-  async cargarDatosUser(){
+  async cargarDatosUser() {
     this.usuario = await this.userService.getCurrentUser();
     console.log(this.usuario)
   }
@@ -86,6 +91,15 @@ export class UserPage implements OnInit, AfterViewInit {
     this.router.navigate(['/home'])
   }
 
+  abrirModalCrear(rol: Role) {
+    this.rolSeleccionado = rol;
+    this.modalAbierto = true;
+  }
+
+  cerrarModal() {
+    this.modalAbierto = false;
+  }
+
   async getUsuarios() {
     const usuariosObj = await this.miembroService.getAllMembers();
     const usuariosArray = Object.values(usuariosObj); // convierte el objeto a array
@@ -106,4 +120,25 @@ export class UserPage implements OnInit, AfterViewInit {
       j => j.categoria === categoria);
   }
 
+  agregarUsuario(usuario: TeamMember) {
+
+    this.cerrarModal();
+  }
+
+  editarUsuario(usuario: TeamMember) {
+    console.log('Editar usuario:', usuario);
+    // Lógica de edición aquí
+  }
+
+  eliminarUsuario(usuario: TeamMember) {
+    console.log('Eliminar usuario:', usuario);
+    if (usuario.rol === 'entrenador') {
+      this.entrenadoresFiltrados = this.entrenadoresFiltrados.filter(u => u !== usuario);
+    } else if (usuario.rol === 'estadistico') {
+      this.estadisticosFiltrados = this.estadisticosFiltrados.filter(u => u !== usuario);
+    } else if (usuario.rol === 'jugador') {
+      this.jugadoresFiltrados = this.jugadoresFiltrados.filter(u => u !== usuario);
+    }
+  }
 }
+
