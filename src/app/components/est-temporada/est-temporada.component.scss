@@ -1,0 +1,29 @@
+ion-card {
+    margin-left: 20px;
+    margin-bottom: 20px;
+    border-radius: 15px;
+
+    ion-card-title {
+        font-weight: bold;
+        text-align: left;
+    }
+
+    ion-item {
+        --background: #ffffff;
+
+        ion-label h2 {
+            font-weight: normal;
+        }
+
+        div[slot="end"] {
+            font-weight: bold;
+        }
+    }
+
+    .show-all {
+        width: 100%;
+        text-align: center;
+        font-size: 0.9rem;
+        color: var(--ion-color-primary);
+    }
+}
