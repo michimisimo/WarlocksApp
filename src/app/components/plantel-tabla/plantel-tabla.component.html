@@ -1,0 +1,19 @@
+<ion-card class="plantel-tabla">
+  <ion-card-header>
+    <ion-card-title>{{ title }}</ion-card-title>
+  </ion-card-header>
+
+  <ion-list>
+    <ion-item *ngFor="let player of displayedPlayers" (click)="selectPlayer(player)" button detail>
+      <ion-label>
+        <h2>{{ player.pnombre }} {{ player.appaterno }}</h2>
+        <p>{{ player.posicion }} – {{ player.categoria }}</p>
+      </ion-label>
+
+      <img *ngIf="player.rol === 'jugador'" [src]="jerseySrc()" alt="Polera {{ padJersey() }}" class="jersey-img" />
+    </ion-item>
+    <ion-item *ngIf="displayedPlayers.length === 0" lines="none">
+      No hay jugadores para estos filtros.
+    </ion-item>
+  </ion-list>
+</ion-card>

@@ -1,0 +1,28 @@
+/* src/app/components/plantel-tabla/plantel-tabla.component.scss */
+ion-card {
+    margin-left: 20px;
+    margin-right: 20px;
+    border-radius: 15px;
+
+    ion-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        --background: #ffffff;
+
+        ion-label h2 {
+            font-weight: bold;
+        }
+
+        ion-label p {
+            color: #6b6b6b;
+        }
+
+        .jersey-img {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+            margin-left: 8px;
+        }
+    }
+}
