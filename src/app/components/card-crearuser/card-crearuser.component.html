@@ -8,35 +8,45 @@
       <form #form="ngForm" (ngSubmit)="guardar(form)">
 
         <ion-item>
-          <ion-label>Primer Nombre</ion-label>
+          <ion-label position="floating">Primer Nombre</ion-label>
           <ion-input [(ngModel)]="usuario.pnombre" name="nombre" required></ion-input>
         </ion-item>
 
         <ion-item>
-          <ion-label>Segundo Nombre</ion-label>
+          <ion-label position="floating">Segundo Nombre</ion-label>
           <ion-input [(ngModel)]="usuario.snombre" name="segundoNombre"></ion-input>
         </ion-item>
 
         <ion-item>
-          <ion-label>Primer Apellido</ion-label>
+          <ion-label position="floating">Primer Apellido</ion-label>
           <ion-input [(ngModel)]="usuario.appaterno" name="primerApellido" required></ion-input>
         </ion-item>
 
         <ion-item>
-          <ion-label>Segundo Apellido</ion-label>
+          <ion-label position="floating">Segundo Apellido</ion-label>
           <ion-input [(ngModel)]="usuario.apmaterno" name="segundoApellido"></ion-input>
         </ion-item>
 
         <ion-item class="rut">
-          <ion-label>RUT</ion-label>
-          <ion-input [(ngModel)]="usuario.rut" name="rut" required></ion-input>
-          <ion-label>DV RUT</ion-label>
-          <ion-input [(ngModel)]="usuario.dv_rut" class="dv_rut" name="dv_rut" required></ion-input>
+          <ion-grid>
+            <ion-row>
+              <ion-col size="8">
+                <ion-label position="floating">Rut</ion-label>
+                <ion-input (ionBlur)="validarRut()" maxlength="8" [(ngModel)]="usuario.rut" name="rut"
+                  required></ion-input>
+              </ion-col>
+              <ion-col size="4">
+                <ion-label position="floating">Dv_rut</ion-label>
+                <ion-input (ionBlur)="validarDv()" maxlength="1" [(ngModel)]="usuario.dv_rut" name="dv_rut"
+                  required></ion-input>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
         </ion-item>
 
         <div *ngIf="rol === 'jugador'">
           <ion-item>
-            <ion-label>Posición</ion-label>
+            <ion-label position="floating">Posición</ion-label>
             <ion-select [(ngModel)]="usuario.posicion" name="posicion" interface="popover" required>
               <ion-select-option value="Base">Base</ion-select-option>
               <ion-select-option value="Escolta">Escolta</ion-select-option>
@@ -47,7 +57,7 @@
           </ion-item>
 
           <ion-item>
-            <ion-label>Categoría</ion-label>
+            <ion-label position="floating">Categoría</ion-label>
             <ion-select [(ngModel)]="usuario.categoria" name="categoria" interface="popover" required>
               <ion-select-option value="U11">U11</ion-select-option>
               <ion-select-option value="U13">U13</ion-select-option>
@@ -58,8 +68,8 @@
         </div>
 
         <div class="form-buttons">
-          <ion-button expand="block" fill="clear" (click)="cerrar()">Cancelar</ion-button>
-          <ion-button expand="block" type="submit" [disabled]="form.invalid">Crear {{rol}}</ion-button>
+          <ion-button class="cancelar" expand="block" fill="clear" (click)="cerrar()">Cancelar</ion-button>
+          <ion-button class="Crear" expand="block" type="submit" [disabled]="form.invalid">Crear {{rol}}</ion-button>
         </div>
 
       </form>

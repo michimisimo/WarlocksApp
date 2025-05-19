@@ -17,6 +17,9 @@ export class CardCrearuserComponent implements OnInit {
   @Output() cancel = new EventEmitter<void>();
   @Output() submit = new EventEmitter<TeamMember>();
 
+  errorRut: string | null = null;
+  errorDv: string | null = null;
+
   usuario: TeamMember = {
     pnombre: '',
     snombre: '',
@@ -65,4 +68,23 @@ export class CardCrearuserComponent implements OnInit {
       this.cerrar();
     }
   }
+
+  validarRut() {
+    const rutPattern = /^[0-9]{8}$/;
+    if (!rutPattern.test(this.usuario.rut)) {
+      this.errorRut = "El RUT debe contener exactamente 8 dígitos numéricos.";
+    } else {
+      this.errorRut = null;
+    }
+  }
+
+  validarDv() {
+    const dvPattern = /^[0-9Kk]{1}$/;
+    if (!dvPattern.test(this.usuario.dv_rut!)) {
+      this.errorDv = "El Dígito Verificador debe ser un número o 'K'.";
+    } else {
+      this.errorDv = null;
+    }
+  }
+
 }
