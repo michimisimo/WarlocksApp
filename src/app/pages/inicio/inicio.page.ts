@@ -9,9 +9,13 @@ import { PartidoModel } from 'src/app/services/mappers/map-partido/map-partido.s
 import { UserService } from 'src/app/services/user/user.service';
 import { SincronizarMiembrosService } from 'src/app/services/sincronizar/sincronizar-miembros/sincronizar-miembros.service';
 import { MiembrosService } from 'src/app/services/miembros/miembros.service';
+import { TeamMember } from 'src/app/services/mappers/map-user/map-user.service';
+import { StatEntry } from 'src/app/components/est-temporada/est-temporada.component';
 
 import { CardPartidoComponent } from 'src/app/components/card-partido/card-partido.component';
 import { BannerTopComponent } from 'src/app/components/banner-top/banner-top.component';
+import { PlantelTablaComponent } from 'src/app/components/plantel-tabla/plantel-tabla.component';
+import { EstTemporadaComponent } from 'src/app/components/est-temporada/est-temporada.component';
 
 import { Router } from '@angular/router';
 
@@ -23,6 +27,8 @@ import { Router } from '@angular/router';
   imports: [
     BannerTopComponent,
     CardPartidoComponent,
+    PlantelTablaComponent,
+    EstTemporadaComponent,
     IonContent,
     CommonModule,
     FormsModule,
@@ -41,6 +47,7 @@ export class InicioPage implements OnInit, AfterViewInit {
 
   partidos: PartidoModel[] = [];
   partidosFiltrados: PartidoModel[] = [];
+  categoriaActiva: string = 'U11';
 
   isLoading: boolean = false;
 
@@ -50,6 +57,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     private userService: UserService,
     private router: Router,
     private syncMiembros: SincronizarMiembrosService,
+    private miembrosService: MiembrosService
 
   ) { }
 
@@ -67,6 +75,9 @@ export class InicioPage implements OnInit, AfterViewInit {
       console.error('Error cargando partidos:', err);
     } finally {
       this.isLoading = false;
+      const miembrosMap = await this.miembrosService.getAllMembers();
+      // Convierte el diccionario en array:
+      this.jugadores = Object.values(miembrosMap);
       this.partidosFiltrados = [...this.partidos];
       this.filtrarPartidosPorCategoria('U11');
     }
@@ -81,6 +92,8 @@ export class InicioPage implements OnInit, AfterViewInit {
     if (categoria === 'Todas') {
       this.partidosFiltrados = [...this.partidos];
     } else {
+      this.categoriaActiva = categoria;
+      console.log(this.categoriaActiva)
       const catNum = this.getCategoriaNum(categoria);
       this.partidosFiltrados = this.partidos.filter(
         p => p.info_global.id_categoria === catNum
@@ -101,4 +114,45 @@ export class InicioPage implements OnInit, AfterViewInit {
   irACuenta() {
     this.router.navigate(['/user']);
   }
+
+
+
+  jugadores: TeamMember[] = [];
+
+  onPlayerSelected(player: any) {
+    console.log('Jugador seleccionado:', player);
+  }
+
+  stats: {
+    puntos: StatEntry[];
+    asistencias: StatEntry[];
+    rebotes: StatEntry[];
+    robos: StatEntry[];
+  } = {
+      puntos: [
+        { name: 'Nombre Jugador 1', value: 25.7 },
+        { name: 'Nombre Jugador 2', value: 12.9 },
+        { name: 'Nombre Jugador 3', value: 12.4 },
+        { name: 'Nombre Jugador 4', value: 9.1 },
+        { name: 'Nombre Jugador 5', value: 8.3 },
+      ],
+      asistencias: [
+        { name: 'Nombre Jugador 1', value: 4.7 },
+        { name: 'Nombre Jugador 2', value: 3.4 },
+        { name: 'Nombre Jugador 3', value: 1.4 },
+        { name: 'Nombre Jugador 4', value: 1.1 },
+      ],
+      rebotes: [
+        { name: 'Nombre Jugador 1', value: 11.9 },
+        { name: 'Nombre Jugador 2', value: 5.0 },
+        { name: 'Nombre Jugador 3', value: 4.7 },
+        { name: 'Nombre Jugador 4', value: 3.8 },
+      ],
+      robos: [
+        { name: 'Nombre Jugador 1', value: 1.3 },
+        { name: 'Nombre Jugador 2', value: 1.0 },
+        { name: 'Nombre Jugador 3', value: 0.8 },
+        { name: 'Nombre Jugador 4', value: 0.6 },
+      ],
+    };
 }

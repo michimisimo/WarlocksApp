@@ -1,4 +1,5 @@
 <ion-content>
+
   <app-banner-top [activeTab]="activeTab" [tabs]="tabs" [activeOTab]="activeOTab" [oTabs]="oTabs"
     (categorySelected)="filtrarPartidosPorCategoria($event)" (tabChanged)="activeTab = $event"
     (otabChanged)="activeOTab = $event" (abrirConfiguracion)="irACuenta()">
@@ -20,7 +21,26 @@
     </div>
   </div>
 
+
+  <div *ngIf="activeTab !== 'Plantel' && activeOTab !== 'Partidos'">
+    <h2 class="section-title">–Ataque–</h2>
+    <app-est-temporada title="Puntos" [entries]="stats.puntos" [limit]="3"></app-est-temporada>
+    <app-est-temporada title="Asistencias" [entries]="stats.asistencias" [limit]="3"></app-est-temporada>
+
+    <!-- Sección Defensa -->
+    <h2 class="section-title">–Defensa–</h2>
+    <app-est-temporada title="Rebotes" [entries]="stats.rebotes" [limit]="3"></app-est-temporada>
+    <app-est-temporada title="Robos" [entries]="stats.robos" [limit]="3"></app-est-temporada>
+  </div>
+
+
+  <div *ngIf="activeTab !== 'Temporada'">
+    <app-plantel-tabla title="Bases" [players]="jugadores" (playerSelected)="onPlayerSelected($event)"
+      [categoryFilter]="categoriaActiva"></app-plantel-tabla>
+  </div>
+
+
   <ng-template #empty>
-    <div *ngIf="!isLoading && !partidosFiltrados">No hay partidos para mostrar.</div>
+    <div *ngIf=" !isLoading && !partidosFiltrados">No hay partidos para mostrar.</div>
   </ng-template>
 </ion-content>
