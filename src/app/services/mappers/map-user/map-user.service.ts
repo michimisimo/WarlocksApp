@@ -12,6 +12,7 @@ export interface MiembroEquipoBase {
   categoria?: string;
   posicion?: string;
   rol: Role;
+  numero: number;
   // …otros campos públicos…
 }
 

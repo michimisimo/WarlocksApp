@@ -30,7 +30,6 @@ export class PlantelTablaComponent implements OnInit, OnChanges {
   @Output() playerSelected = new EventEmitter<TeamMember>();
 
   displayedPlayers: TeamMember[] = [];
-  private readonly DEFAULT_NUMBER = 10;
 
   ngOnInit() {
     this.applyFilters();
@@ -58,12 +57,12 @@ export class PlantelTablaComponent implements OnInit, OnChanges {
   }
 
   /** Formatea con dos dígitos */
-  padJersey(num: number = this.DEFAULT_NUMBER): string {
+  padJersey(num: number): string {
     return num < 10 ? '0' + num : '' + num;
   }
 
   /** Ruta al PNG según el número (por defecto 10) */
-  jerseySrc(num: number = this.DEFAULT_NUMBER): string {
+  jerseySrc(num: number): string {
     const code = this.padJersey(num);
     return `/assets/poleras/${code}.png`;
   }

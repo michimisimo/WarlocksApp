@@ -27,6 +27,7 @@ export class CardCrearuserComponent implements OnInit {
     apmaterno: '',
     rut: '',
     dv_rut: '',
+    numero: 0,
     posicion: '',
     categoria: '',
     rol: this.rol

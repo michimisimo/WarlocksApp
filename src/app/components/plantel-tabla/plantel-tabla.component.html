@@ -10,7 +10,8 @@
         <p>{{ player.posicion }} – {{ player.categoria }}</p>
       </ion-label>
 
-      <img *ngIf="player.rol === 'jugador'" [src]="jerseySrc()" alt="Polera {{ padJersey() }}" class="jersey-img" />
+      <img *ngIf="player.rol === 'jugador'" [src]="jerseySrc(player.numero)" alt="Polera {{ padJersey(player.numero) }}"
+        class="jersey-img" />
     </ion-item>
     <ion-item *ngIf="displayedPlayers.length === 0" lines="none">
       No hay jugadores para estos filtros.
