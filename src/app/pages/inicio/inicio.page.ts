@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonSpinner } from '@ionic/angular/standalone';
+import { Router } from '@angular/router';
 
 import { SyncPartidoService } from 'src/app/services/sincronizar/sincronizar-partido/sincronizar-partido.service';
 import { PartidoService } from 'src/app/services/partido/partido.service';
@@ -17,7 +18,6 @@ import { BannerTopComponent } from 'src/app/components/banner-top/banner-top.com
 import { PlantelTablaComponent } from 'src/app/components/plantel-tabla/plantel-tabla.component';
 import { EstTemporadaComponent } from 'src/app/components/est-temporada/est-temporada.component';
 
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-inicio',
@@ -116,7 +116,6 @@ export class InicioPage implements OnInit, AfterViewInit {
   }
 
   verPartido(partido: PartidoModel) {
-    console.log(partido)
     this.router.navigate(['/partido'], { state: { partido: partido } });
   }
 
