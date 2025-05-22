@@ -4,17 +4,25 @@
   </ion-card-header>
 
   <ion-list>
-    <ion-item *ngFor="let player of displayedPlayers" (click)="selectPlayer(player)" button detail>
-      <ion-label>
-        <h2>{{ player.pnombre }} {{ player.appaterno }}</h2>
-        <p>{{ player.posicion }} – {{ player.categoria }}</p>
-      </ion-label>
+    <!-- Solo se hace clickeable si el jugador es 'jugador' -->
+    <div *ngFor="let player of displayedPlayers">
+      <ion-item (click)="player.rol === 'jugador' ? selectPlayer(player) : null " button detail>
+        <ion-label>
+          <h2>{{ player.pnombre }} {{ player.appaterno }}</h2>
+          <div *ngIf="player.rol === 'jugador'">
+            <p>{{ player.posicion }} – {{ player.categoria }}</p>
+          </div>
+        </ion-label>
+        <div *ngIf="player.rol === 'jugador'">
+          <img [src]="jerseySrc(player.numero)" alt="Polera {{ padJersey(player.numero) }}" class="jersey-img" />
+        </div>
+      </ion-item>
+    </div>
 
-      <img *ngIf="player.rol === 'jugador'" [src]="jerseySrc(player.numero)" alt="Polera {{ padJersey(player.numero) }}"
-        class="jersey-img" />
-    </ion-item>
+    <!-- Mensaje si no hay jugadores para los filtros aplicados -->
     <ion-item *ngIf="displayedPlayers.length === 0" lines="none">
       No hay jugadores para estos filtros.
     </ion-item>
+
   </ion-list>
 </ion-card>

@@ -12,7 +12,7 @@ import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { TeamMember } from 'src/app/services/mappers/map-user/map-user.service';
 
-export type PositionGroup = 'Bases' | 'Aleros' | 'Pivots';
+export type PositionGroup = 'Bases' | 'Aleros' | 'Pivots' | 'Entrenador';
 
 
 @Component({
@@ -25,7 +25,7 @@ export type PositionGroup = 'Bases' | 'Aleros' | 'Pivots';
 export class PlantelTablaComponent implements OnInit, OnChanges {
   @Input() title: string = '';
   @Input() players: TeamMember[] = [];
-  @Input() positionFilter: PositionGroup = 'Bases';
+  @Input() positionFilter: PositionGroup = 'Aleros';
   @Input() categoryFilter: string = '';
   @Output() playerSelected = new EventEmitter<TeamMember>();
 
@@ -47,7 +47,6 @@ export class PlantelTablaComponent implements OnInit, OnChanges {
 
   private applyFilters() {
     this.displayedPlayers = this.players
-      .filter(p => p.rol === 'jugador')
       .filter(p => this.positionMatches(p))
       .filter(p => this.categoryMatches(p));
   }
@@ -78,12 +77,18 @@ export class PlantelTablaComponent implements OnInit, OnChanges {
     if (this.positionFilter === 'Pivots') {
       return pos === 'pivot';
     }
+    if (this.positionFilter === 'Entrenador') {
+      return pos === 'all';
+    }
     return false;
   }
 
   private categoryMatches(player: TeamMember): boolean {
-    return (
-      player.categoria === this.categoryFilter
-    );
+    if (player.categoria === 'ALL') {
+      return true;
+    } else {
+      return player.categoria === this.categoryFilter
+    }
   }
+
 }

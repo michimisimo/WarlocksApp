@@ -35,8 +35,15 @@
 
 
   <div *ngIf="activeTab !== 'Temporada'">
+    <app-plantel-tabla title="Dirección" [players]="jugadores" (playerSelected)="onPlayerSelected($event)"
+      [categoryFilter]="categoriaActiva" [positionFilter]="'Entrenador'"></app-plantel-tabla>
     <app-plantel-tabla title="Bases" [players]="jugadores" (playerSelected)="onPlayerSelected($event)"
-      [categoryFilter]="categoriaActiva"></app-plantel-tabla>
+      [categoryFilter]="categoriaActiva" [positionFilter]="'Bases'"></app-plantel-tabla>
+    <app-plantel-tabla title="Aleros" [players]="jugadores" (playerSelected)="onPlayerSelected($event)"
+      [categoryFilter]="categoriaActiva" [positionFilter]="'Aleros'"></app-plantel-tabla>
+    <app-plantel-tabla title="Pivots" [players]="jugadores" (playerSelected)="onPlayerSelected($event)"
+      [categoryFilter]="categoriaActiva" [positionFilter]="'Pivots'"></app-plantel-tabla>
+
   </div>
 
 
