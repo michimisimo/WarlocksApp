@@ -14,7 +14,8 @@
           [nombreLiga]="'Campeonato Juvenil'"
           [equipoLocal]="partido.info_global.local ? 'warloks' : partido.info_global.contrincante"
           [hora]="partido.info_global.hora.substring(0, 5) || ''"
-          [equipoVisitante]="!partido.info_global.local ? 'warloks' : partido.info_global.contrincante">
+          [equipoVisitante]="!partido.info_global.local ? 'warloks' : partido.info_global.contrincante"
+          (click)="verPartido(partido)">
         </app-card-partido>
 
       </div>
