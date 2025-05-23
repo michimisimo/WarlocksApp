@@ -133,4 +133,18 @@ export class PartidoPage implements OnInit {
     console.log('Jugador clicado:', jugador);
   }
 
+  datosEstadisticas = [
+    { nombre: 'Tiro de campo', valor: '39/86 (45.3%)' },
+    { nombre: 'Triples', valor: '18/47 (38.3%)' },
+    { nombre: 'Tiros libres', valor: '26/31 (87.0%)' },
+    { nombre: 'Asistencias', valor: 19 },
+    { nombre: 'Rebotes', valor: 64 },
+    { nombre: 'Rebotes ofensivos', valor: 17 },
+    { nombre: 'Rebotes defensivos', valor: 47 },
+    { nombre: 'Robos', valor: 4 },
+    { nombre: 'Bloqueos', valor: 3 },
+    { nombre: 'Pérdidas de balón', valor: 64 },
+    { nombre: 'Faltas', valor: 18 }
+  ];
+
 }

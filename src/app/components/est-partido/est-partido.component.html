@@ -1,3 +1,7 @@
-<p>
-  est-partido works!
-</p>
+<div class="estadisticas-box">
+  <div class="header">Estadísticas</div>
+  <div class="fila" *ngFor="let stat of estadisticas">
+    <div class="label">{{ stat.nombre }}</div>
+    <div class="valor">{{ stat.valor }}</div>
+  </div>
+</div>
