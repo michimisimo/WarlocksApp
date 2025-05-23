@@ -1,0 +1,111 @@
+/* 1) Box-sizing unificado */
+.tabla-container,
+.tabla-container * {
+    box-sizing: border-box;
+}
+
+/* 2) Contenedor principal */
+.tabla-container {
+    display: flex;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 15px 30px;
+    font-family: sans-serif;
+}
+
+/* 3) Columna fija */
+.columna-fija {
+    flex-shrink: 0;
+    background-color: #f8f8f8;
+    width: 200px;
+}
+
+/* 3a) Encabezado y total en columna fija */
+.columna-fija .celda.encabezado,
+.columna-fija .celda.total {
+    display: flex;
+    align-items: center;
+    height: 30px;
+    padding: 0 15px;
+    border-bottom: 1px solid #d9d9d9;
+    font-weight: bold;
+    background-color: #ffffff;
+}
+
+.columna-fija .celda.total {
+    background-color: #ffffff;
+}
+
+/* 3b) Filas de jugador en columna fija */
+.columna-fija .jugador {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 50px;
+    padding: 0 15px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #d9d9d9;
+    border-right: 1px solid #d9d9d9;
+    cursor: pointer;
+}
+
+.columna-fija .jugador img {
+    width: 25px;
+    margin-right: 8px;
+}
+
+.columna-fija .jugador div {
+    flex-grow: 1;
+    text-align: left;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* 4) Datos con scroll */
+.datos-scroll {
+    overflow-x: auto;
+    /* opcional: si quieres tope vertical */
+    max-height: 500px;
+}
+
+/* 4a) Cada fila como grid de 11 columnas fijas */
+.datos-scroll .fila {
+    display: grid;
+    grid-template-columns: repeat(11, 60px);
+    align-items: center;
+    height: 50px;
+    border-bottom: 1px solid #d9d9d9;
+    width: max-content;
+    /* para que incluya todo el ancho al hacer scroll */
+}
+
+/* 4b) Encabezado y total de datos */
+.datos-scroll .fila.encabezado {
+    background-color: #ffffff;
+    font-weight: bold;
+    height: 30px;
+}
+
+.datos-scroll .fila.total {
+    background-color: #ffffff;
+    font-weight: bold;
+    height: 30px;
+}
+
+/* 4c) Striping de filas de datos */
+.datos-scroll .fila:not(.encabezado):not(.total):nth-child(2n+1) {
+    background-color: #ffffff;
+}
+
+.datos-scroll .fila:not(.encabezado):not(.total):nth-child(2n) {
+    background-color: #ffffff;
+}
+
+/* 4d) Celdas internas de datos */
+.datos-scroll .fila>div {
+    text-align: center;
+    padding: 0 5px;
+    background: transparent;
+    /* para dejar ver el fondo de la fila */
+}

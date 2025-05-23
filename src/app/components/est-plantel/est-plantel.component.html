@@ -1,0 +1,52 @@
+<div class="tabla-container">
+  <!-- Columna fija -->
+  <div class="columna-fija">
+    <div class="celda encabezado">Inicio</div>
+    <div *ngFor="let jugador of jugadores" class="jugador" (click)="onJugadorClick(jugador)">
+      <img [src]="jerseySrc(jugador.numero)" alt="Polera {{ padJersey(jugador.numero) }}" class="jersey-img" />
+      <div>
+        <div>N. {{ jugador.apellido }}</div>
+        <small>({{ jugador.posicion }})</small>
+      </div>
+    </div>
+    <div class="celda total">Total de titulares</div>
+  </div>
+
+  <!-- Datos con scroll lateral -->
+  <div class="datos-scroll">
+    <div class="fila encabezado">
+      <div>Min</div>
+      <div>Pts</div>
+      <div>Reb</div>
+      <div>Ast</div>
+      <div>Rob</div>
+      <div>Blq</div>
+      <div>Per</div>
+      <div>T</div>
+      <div>3P</div>
+      <div>TL</div>
+      <div>Fal</div>
+    </div>
+    <div *ngFor="let jugador of jugadores" class="fila">
+      <div>{{ jugador.min }}</div>
+      <div>{{ jugador.pts }}</div>
+      <div>{{ jugador.reb }}</div>
+      <div>{{ jugador.ast }}</div>
+      <div>{{ jugador.rob }}</div>
+      <div>{{ jugador.blq }}</div>
+      <div>{{ jugador.per }}</div>
+      <div>{{ jugador.t }}</div>
+      <div>{{ jugador.t3 }}</div>
+      <div>{{ jugador.tl }}</div>
+      <div>{{ jugador.fal }}</div>
+    </div>
+
+    <div class="fila total">
+      <!-- <div>{{ jugadores.reduce((a, j) => a + j.minNum, 0) | number:'2.0-0' }}</div>
+      <div>{{ jugadores.reduce((a, j) => a + j.pts, 0) }}</div>
+      <div>{{ jugadores.reduce((a, j) => a + j.ast, 0) }}</div>
+      <div>{{ jugadores.reduce((a, j) => a + j.rob, 0) }}</div>
+      <div>{{ jugadores.reduce((a, j) => a + j.blq, 0) }}</div>
+    </div> -->
+    </div>
+  </div>

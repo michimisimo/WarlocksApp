@@ -1,5 +1,18 @@
 <ion-content [fullscreen]="true">
   <app-banner-partido [fecha]="(partido!.info_global.fecha | date:'dd, MMM, yyyy') || ''"
-    [hora]="partido!.info_global.hora.substring(0, 5) || ''"
-    [equipoVisitante]="partido!.info_global.contrincante"></app-banner-partido>
+    [hora]="partido!.info_global.hora.substring(0, 5) || ''" [equipoVisitante]="partido!.info_global.contrincante"
+    (tabChanged)="selectedTab($event)"></app-banner-partido>
+
+  <div *ngIf="activeTab=='Resumen'">
+
+  </div>
+
+  <div *ngIf="activeTab=='Alineación'">
+    <app-est-plantel [jugadores]="listaJugadores" (jugadorSeleccionado)="verDetalle($event)">></app-est-plantel>
+  </div>
+
+  <div *ngIf="activeTab=='Estadísticas'">
+    <app-est-partido></app-est-partido>
+  </div>
+
 </ion-content>
