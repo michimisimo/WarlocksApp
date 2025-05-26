@@ -7,6 +7,7 @@ import { IonContent } from '@ionic/angular/standalone';
 import { BannerJugadorComponent } from 'src/app/components/banner-jugador/banner-jugador.component';
 import { UltimosPartidosComponent } from 'src/app/components/ultimos-partidos/ultimos-partidos.component';
 import { TeamMember } from 'src/app/services/mappers/map-user/map-user.service';
+import { PartidoModel } from 'src/app/services/mappers/map-partido/map-partido.service';
 
 @Component({
   selector: 'app-jugador',
@@ -20,7 +21,9 @@ import { TeamMember } from 'src/app/services/mappers/map-user/map-user.service';
 })
 export class JugadorPage implements OnInit {
 
+  partidos: PartidoModel[] = []
   jugador: TeamMember | undefined
+  activeTab: string = "Temporada"
 
   constructor(private location: Location,
     private router: Router,
@@ -33,4 +36,10 @@ export class JugadorPage implements OnInit {
       console.log(this.jugador)
     }
   }
+
+  onTabChanged(tab: string) {
+    console.log(tab);
+    this.activeTab = tab
+  }
+
 }

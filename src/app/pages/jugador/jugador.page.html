@@ -1,3 +1,12 @@
 <ion-content [fullscreen]="true">
-  <app-banner-jugador [jugador]="jugador"></app-banner-jugador>
+  <app-banner-jugador [jugador]="jugador" (tabChanged)="onTabChanged($event)"></app-banner-jugador>
+
+  <div *ngIf="activeTab == 'Temporada'">
+    <app-ultimos-partidos [partidos]="partidos"></app-ultimos-partidos>
+  </div>
+
+  <div *ngIf="activeTab == 'Historico'">
+
+  </div>
+
 </ion-content>

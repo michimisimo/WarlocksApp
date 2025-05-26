@@ -1,3 +1,41 @@
-<p>
-  ultimos-partidos works!
-</p>
+<div class="tabla-container">
+  <!-- Columna fija -->
+  <div class="columna-fija">
+    <div class="celda encabezado">Últimos partidos</div>
+    <div *ngFor="let jugador of jugadores" class="jugador">
+      <div>
+        <div>N. {{ jugador.apellido }}</div>
+        <small>({{ jugador.posicion }})</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- Datos con scroll lateral -->
+  <div class="datos-scroll">
+    <div class="fila encabezado">
+      <div>Min</div>
+      <div>Pts</div>
+      <div>Reb</div>
+      <div>Ast</div>
+      <div>Rob</div>
+      <div>Blq</div>
+      <div>Per</div>
+      <div>T</div>
+      <div>3P</div>
+      <div>TL</div>
+      <div>Fal</div>
+    </div>
+    <div *ngFor="let jugador of jugadores" class="fila">
+      <div>{{ jugador.min }}</div>
+      <div>{{ jugador.pts }}</div>
+      <div>{{ jugador.reb }}</div>
+      <div>{{ jugador.ast }}</div>
+      <div>{{ jugador.rob }}</div>
+      <div>{{ jugador.blq }}</div>
+      <div>{{ jugador.per }}</div>
+      <div>{{ jugador.t }}</div>
+      <div>{{ jugador.t3 }}</div>
+      <div>{{ jugador.tl }}</div>
+      <div>{{ jugador.fal }}</div>
+    </div>
+  </div>
