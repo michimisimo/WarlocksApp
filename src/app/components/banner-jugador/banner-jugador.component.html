@@ -1,0 +1,33 @@
+<div class="container">
+
+  <!-- Banner superior con botón atrás y configuración -->
+  <div class="banner">
+
+    <div class="space">
+      <div class="back" (click)="onClickBack()">
+        <img src="../../../assets/icon/arrow_back.png" alt="Volver">
+      </div>
+      <div class="conf" (click)="onClickConfig()">
+        <img src="../../../assets/icon/settings.png" alt="Configuración">
+      </div>
+    </div>
+
+    <div class="detalle">
+      <div class="polera">
+        <img [src]="jerseySrc(jugador!.numero)" alt="Polera {{ padJersey(jugador!.numero) }}" class="jersey-img" />
+      </div>
+      <div class="nombre">
+        <h5>{{jugador!.pnombre}} {{jugador!.appaterno}}</h5>
+        <small>({{jugador!.posicion}})</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pestañas principales -->
+  <div class="tabs-selection">
+    <div *ngFor="let tab of tabs" (click)="cambiarTab(tab)" [class.active-tab]="activeTab === tab" class="tab">
+      {{ tab }}
+    </div>
+  </div>
+
+</div>

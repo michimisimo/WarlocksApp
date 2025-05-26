@@ -121,8 +121,8 @@ export class InicioPage implements OnInit, AfterViewInit {
 
   jugadores: TeamMember[] = [];
 
-  onPlayerSelected(player: any) {
-    console.log('Jugador seleccionado:', player);
+  onPlayerSelected(jugador: any) {
+    this.router.navigate(['/jugador'], { state: { jugador: jugador } });
   }
 
   stats: {

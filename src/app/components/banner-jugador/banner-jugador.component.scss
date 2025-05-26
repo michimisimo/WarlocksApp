@@ -1,0 +1,99 @@
+.container {
+    background-color: #0d0d0d;
+    color: #fff;
+    overflow: hidden;
+    margin-bottom: 15px;
+
+    .banner {
+        height: 160px;
+        display: flex;
+        flex-direction: column;
+
+        .space {
+            display: flex;
+            width: 100%;
+            height: 40%;
+
+            .conf {
+                display: flex;
+                width: 30px;
+                height: 30px;
+                background-color: #EA3A84;
+                border-radius: 50%;
+                margin-left: auto;
+                margin-right: 30px;
+                margin-top: 30px;
+                justify-content: center;
+                align-items: center;
+
+                img {
+                    width: 25px;
+                    height: 25px;
+                }
+            }
+
+            .back {
+                display: flex;
+                width: 30px;
+                height: 30px;
+                background-color: #EA3A84;
+                border-radius: 50%;
+                margin-left: 30px;
+                margin-top: 30px;
+                justify-content: center;
+                align-items: center;
+
+                img {
+                    width: 25px;
+                    height: 25px;
+                }
+            }
+        }
+
+        .detalle {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            .nombre {
+                display: inline-block;
+                margin-left: 10px;
+                text-align: center;
+                line-height: 1.2;
+            }
+
+            .nombre h5 {
+                margin: 0;
+                font-size: 14px;
+            }
+
+            .nombre small {
+                margin: 0;
+                font-size: 12px;
+            }
+
+        }
+    }
+
+    .tabs-selection {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        background-color: #00B6F1;
+        font-weight: bold;
+        font-size: 16px;
+        padding: 7px;
+        align-items: center;
+
+        .tab {
+            position: relative;
+            padding-bottom: 8px;
+            cursor: pointer;
+        }
+
+        .active-tab {
+            border-bottom: 3px solid #EA3A84;
+        }
+    }
+}

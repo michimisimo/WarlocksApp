@@ -25,6 +25,10 @@ export const routes: Routes = [
   {
     path: 'partido',
     loadComponent: () => import('./pages/partido/partido.page').then(m => m.PartidoPage)
+  },  {
+    path: 'jugador',
+    loadComponent: () => import('./pages/jugador/jugador.page').then( m => m.JugadorPage)
   },
+
 
 ]
