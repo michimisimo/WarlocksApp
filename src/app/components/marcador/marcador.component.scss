@@ -1,0 +1,48 @@
+.marcador-container {
+    border-radius: 15px;
+    border: 1px solid #ddd;
+    font-family: sans-serif;
+    width: max-content;
+    margin: 0 auto;
+    background: white;
+}
+
+.marcador-header {
+    font-weight: bold;
+    padding: 7px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+.marcador-tabla {
+    display: flex;
+    flex-direction: column;
+}
+
+.marcador-fila {
+    display: grid;
+    grid-template-columns: 100px repeat(5, 40px) 70px;
+    align-items: center;
+}
+
+.marcador-fila>div {
+    padding: 10px;
+    text-align: center;
+}
+
+.encabezado>div {
+    font-weight: bold;
+    font-size: 14px;
+    border-bottom: 1px solid #d9d9d9;
+}
+
+.punto {
+    color: black;
+}
+
+.resultado {
+    background-color: #e86a2f;
+    color: white;
+    font-weight: bold;
+    border-bottom-right-radius: 15px;
+}
