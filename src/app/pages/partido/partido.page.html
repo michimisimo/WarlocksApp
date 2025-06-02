@@ -17,4 +17,8 @@
     <app-est-partido [estadisticas]="datosEstadisticas"></app-est-partido>
   </div>
 
+  <div *ngIf="jugadorSeleccionado==true">
+    <app-jugador-partido [jugador]="jugadorDetalle" (cerrarModal)="onCerrarModal()"
+      (detalleClick)="onDetalleClick()"></app-jugador-partido>
+  </div>
 </ion-content>

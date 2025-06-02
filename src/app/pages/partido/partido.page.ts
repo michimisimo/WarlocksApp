@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent } from '@ionic/angular/standalone';
+import { Router } from '@angular/router';
 
 import { PartidoModel } from 'src/app/services/mappers/map-partido/map-partido.service';
 import { BannerPartidoComponent } from 'src/app/components/banner-partido/banner-partido.component';
@@ -10,6 +11,8 @@ import { EstPartidoComponent } from 'src/app/components/est-partido/est-partido.
 import { ResumenEstadisticaComponent } from 'src/app/components/resumen-estadistica/resumen-estadistica.component';
 import { MarcadorComponent } from 'src/app/components/marcador/marcador.component';
 import { TablaTiroComponent } from 'src/app/components/tabla-tiro/tabla-tiro.component';
+import { JugadorPartidoComponent } from 'src/app/components/jugador-partido/jugador-partido.component';
+import { TeamMember } from 'src/app/services/mappers/map-user/map-user.service';
 
 @Component({
   selector: 'app-partido',
@@ -22,16 +25,20 @@ import { TablaTiroComponent } from 'src/app/components/tabla-tiro/tabla-tiro.com
     EstPartidoComponent,
     ResumenEstadisticaComponent,
     MarcadorComponent,
-    TablaTiroComponent
+    TablaTiroComponent,
+    JugadorPartidoComponent,
   ]
 })
 export class PartidoPage implements OnInit {
 
   partido: PartidoModel | undefined;
   activeTab: string = "Resumen"
+  jugadorSeleccionado: boolean = false;
+  jugadorDetalle: TeamMember | undefined;
 
   constructor(
-    private location: Location
+    private location: Location,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -140,7 +147,18 @@ export class PartidoPage implements OnInit {
   ];
 
   verDetalle(jugador: any) {
+    this.jugadorSeleccionado = true;
+    this.jugadorDetalle = jugador;
     console.log('Jugador clicado:', jugador);
+  }
+
+  onCerrarModal() {
+    this.jugadorSeleccionado = false;
+  }
+
+  onDetalleClick() {
+    this.router.navigate(['/jugador'], { state: { jugador: this.jugadorDetalle } });
+
   }
 
   datosEstadisticas = [
