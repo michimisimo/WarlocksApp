@@ -6,7 +6,7 @@
   <div *ngIf="activeTab=='Resumen'">
     <app-marcador></app-marcador>
     <app-resumen-estadistica (verMasClicked)="onVerMas()"></app-resumen-estadistica>
-    <app-tabla-tiro></app-tabla-tiro>
+    <app-tabla-tiro [lanzamientos]="listaTiros"></app-tabla-tiro>
   </div>
 
   <div *ngIf="activeTab=='Alineación'">
