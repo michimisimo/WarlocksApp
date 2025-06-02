@@ -1,12 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, } from '@ionic/angular/standalone';
+import { IonContent } from '@ionic/angular/standalone';
 
 import { PartidoModel } from 'src/app/services/mappers/map-partido/map-partido.service';
 import { BannerPartidoComponent } from 'src/app/components/banner-partido/banner-partido.component';
 import { EstPlantelComponent } from 'src/app/components/est-plantel/est-plantel.component';
 import { EstPartidoComponent } from 'src/app/components/est-partido/est-partido.component';
+import { ResumenEstadisticaComponent } from 'src/app/components/resumen-estadistica/resumen-estadistica.component';
+import { MarcadorComponent } from 'src/app/components/marcador/marcador.component';
+import { TablaTiroComponent } from 'src/app/components/tabla-tiro/tabla-tiro.component';
 
 @Component({
   selector: 'app-partido',
@@ -16,13 +19,16 @@ import { EstPartidoComponent } from 'src/app/components/est-partido/est-partido.
   imports: [IonContent, CommonModule, FormsModule,
     BannerPartidoComponent,
     EstPlantelComponent,
-    EstPartidoComponent
+    EstPartidoComponent,
+    ResumenEstadisticaComponent,
+    MarcadorComponent,
+    TablaTiroComponent
   ]
 })
 export class PartidoPage implements OnInit {
 
   partido: PartidoModel | undefined;
-  activeTab: string = ""
+  activeTab: string = "Resumen"
 
   constructor(
     private location: Location
@@ -39,6 +45,10 @@ export class PartidoPage implements OnInit {
   selectedTab(tab: any) {
     console.log(tab)
     this.activeTab = tab;
+  }
+
+  onVerMas() {
+    this.activeTab = 'Estadísticas'
   }
 
   listaJugadores = [
