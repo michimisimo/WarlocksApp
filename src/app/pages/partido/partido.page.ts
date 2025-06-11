@@ -13,6 +13,8 @@ import { MarcadorComponent } from 'src/app/components/marcador/marcador.componen
 import { TablaTiroComponent } from 'src/app/components/tabla-tiro/tabla-tiro.component';
 import { JugadorPartidoComponent } from 'src/app/components/jugador-partido/jugador-partido.component';
 import { TeamMember } from 'src/app/services/mappers/map-user/map-user.service';
+import { SincronizarEstadisticaService } from 'src/app/services/sincronizar/sincronizar-estadistica/sincronizar-estadistica.service';
+import { PartidoService } from 'src/app/services/partido/partido.service';
 
 @Component({
   selector: 'app-partido',
@@ -31,7 +33,7 @@ import { TeamMember } from 'src/app/services/mappers/map-user/map-user.service';
 })
 export class PartidoPage implements OnInit {
 
-  partido: PartidoModel | undefined;
+  partido: PartidoModel | null = null;
   activeTab: string = "Resumen"
   jugadorSeleccionado: boolean = false;
   jugadorDetalle: TeamMember | undefined;
@@ -39,15 +41,26 @@ export class PartidoPage implements OnInit {
   constructor(
     private location: Location,
     private router: Router,
+    private syncEstService: SincronizarEstadisticaService,
+    private partidoService: PartidoService,
+
   ) { }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     const navigation = history.state;
+
     if (navigation && navigation.partido) {
       this.partido = navigation.partido;
-      console.log(this.partido)
+      console.log('Partido recibido por navigation:', this.partido);
     }
+
+    await this.syncEstService.descargarEstadistica(this.partido!.id_partido!.toString());
+
+    // Esperar el partido actualizado desde el storage
+    this.partido = await this.partidoService.obtenerPartido(this.partido!.id_partido!.toString());
+    console.log('Partido visualizado:', this.partido);
   }
+
 
   selectedTab(tab: any) {
     console.log(tab)

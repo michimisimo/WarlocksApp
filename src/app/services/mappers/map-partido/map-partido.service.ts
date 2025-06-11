@@ -23,10 +23,10 @@ export interface PartidoModel {
     asistencias: any[];
     robos: any[];
     faltas: any[];
-    perdidas: any[];
     bloqueos: any[];
     tiempo_juego: any[];
   };
+  nomina: any[];
   version: number;
 }
 
@@ -46,10 +46,10 @@ export function mapRawToPartido(raw: RawPartido, version = 0): PartidoModel {
       asistencias: [],
       robos: [],
       faltas: [],
-      perdidas: [],
       bloqueos: [],
       tiempo_juego: []
     },
+    nomina: [],
     version
   };
 }
