@@ -71,12 +71,14 @@ export class SincronizarEstadisticaService {
         .get<any>(`${this.apiUrl}/estadistica/${id_partido}`, { headers })
         .toPromise();
 
+      const nomina = await this.http
+        .get<any>(`${this.apiUrl}/nomina/${id_partido}`, { headers })
+        .toPromise();
+
       if (!raw) {
         console.warn(`⚠️ Estadística de partido id ${id_partido} no existe.`);
         return;
       }
-
-      console.log(raw)
 
       // Obtengo partido actual guardado en storage
       const partidoExistente = await this.partidoService.obtenerPartido(id_partido);
@@ -91,18 +93,17 @@ export class SincronizarEstadisticaService {
         estadisticas: {
           lanzamientos: raw.lanzamientos || [],
           rebotes: {
-            ofensivos: (raw.rebotes || []).filter((r: any) => r.nombre === 'Ofensivo'),
-            defensivos: (raw.rebotes || []).filter((r: any) => r.nombre === 'Defensivo'),
+            ofensivos: (raw.rebotes || []).filter((r: any) => r.nombre_rebote === 'Ofensivo'),
+            defensivos: (raw.rebotes || []).filter((r: any) => r.nombre_rebote === 'Defensivo'),
           },
           asistencias: raw.asistencias || [],
           robos: raw.robos || [],
           faltas: raw.faltas || [],
           bloqueos: raw.bloqueos || [],
           tiempo_juego: raw.minutos || [],
-        }
+        },
+        nomina: nomina || []
       };
-
-      console.log(partidoActualizado)
 
       await this.partidoService.guardarPartido(id_partido, partidoActualizado);
 

@@ -14,8 +14,6 @@ export class PartidoService {
     await this.storage.create();
   }
 
-
-
   async guardarPartido(id: string, partido: PartidoModel): Promise<void> {
     await this.storage.set(`${this.storageKey}:${id}`, partido);
   }

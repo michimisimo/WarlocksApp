@@ -10,7 +10,8 @@
   </div>
 
   <div *ngIf="activeTab=='Alineación'">
-    <app-est-plantel [jugadores]="listaJugadores" (jugadorSeleccionado)="verDetalle($event)">></app-est-plantel>
+    <app-est-plantel [jugadores]="getListaJugadores(this.partido!)"
+      (jugadorSeleccionado)="verDetalle($event)">></app-est-plantel>
   </div>
 
   <div *ngIf="activeTab=='Estadísticas'">

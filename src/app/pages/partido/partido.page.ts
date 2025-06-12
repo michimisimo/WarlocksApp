@@ -15,6 +15,7 @@ import { JugadorPartidoComponent } from 'src/app/components/jugador-partido/juga
 import { TeamMember } from 'src/app/services/mappers/map-user/map-user.service';
 import { SincronizarEstadisticaService } from 'src/app/services/sincronizar/sincronizar-estadistica/sincronizar-estadistica.service';
 import { PartidoService } from 'src/app/services/partido/partido.service';
+import { MiembrosService } from 'src/app/services/miembros/miembros.service';
 
 @Component({
   selector: 'app-partido',
@@ -37,12 +38,31 @@ export class PartidoPage implements OnInit {
   activeTab: string = "Resumen"
   jugadorSeleccionado: boolean = false;
   jugadorDetalle: TeamMember | undefined;
+  jugadores: TeamMember[] = []
+
+  estadisticas: {
+    rut: any;
+    minutos: any;
+    puntos: any;
+    asistencias: number;
+    robos: number;
+    bloqueos: number;
+    faltas: number;
+    perdidas: number;
+    rebotesOfensivos: number;
+    rebotesDefensivos: number;
+    rebotesTotales: number;
+    t: string;
+    tl: string;
+    t3: string;
+  }[] | undefined;
 
   constructor(
     private location: Location,
     private router: Router,
     private syncEstService: SincronizarEstadisticaService,
     private partidoService: PartidoService,
+    private miembroService: MiembrosService
 
   ) { }
 
@@ -59,8 +79,10 @@ export class PartidoPage implements OnInit {
     // Esperar el partido actualizado desde el storage
     this.partido = await this.partidoService.obtenerPartido(this.partido!.id_partido!.toString());
     console.log('Partido visualizado:', this.partido);
+    this.estadisticas = this.getEstadisticas(this.partido!);
+    this.jugadores = await this.getJugadores(this.partido!);
+    console.log(this.jugadores)
   }
-
 
   selectedTab(tab: any) {
     console.log(tab)
@@ -71,93 +93,127 @@ export class PartidoPage implements OnInit {
     this.activeTab = 'Estadísticas'
   }
 
-  listaJugadores = [
-    {
-      numero: 1,
-      apellido: 'Jugador1',
-      posicion: 'Base',
-      min: '25:58',
-      minNum: 25.97,
-      pts: 14,
-      reb: 1,
-      ast: 9,
-      rob: 2,
-      blq: 0,
-      per: 3,
-      t: '5/12',
-      t3: '1/3',
-      tl: '3/4',
-      fal: 1
-    },
-    {
-      numero: 2,
-      apellido: 'Jugador2',
-      posicion: 'Escolta',
-      min: '16:33',
-      minNum: 16.55,
-      pts: 6,
-      reb: 5,
-      ast: 2,
-      rob: 1,
-      blq: 0,
-      per: 0,
-      t: '2/5',
-      t3: '0/3',
-      tl: '2/2',
-      fal: 1
-    },
-    {
-      numero: 3,
-      apellido: 'Jugador3',
-      posicion: 'Alero',
-      min: '15:46',
-      minNum: 15.77,
-      pts: 3,
-      reb: 1,
-      ast: 0,
-      rob: 1,
-      blq: 0,
-      per: 2,
-      t: '1/6',
-      t3: '0/2',
-      tl: '3/4',
-      fal: 1
-    },
-    {
-      numero: 4,
-      apellido: 'Jugador4',
-      posicion: 'Ala-Pívot',
-      min: '23:11',
-      minNum: 23.18,
-      pts: 9,
-      reb: 3,
-      ast: 1,
-      rob: 2,
-      blq: 0,
-      per: 2,
-      t: '2/7',
-      t3: '1/4',
-      tl: '4/6',
-      fal: 1
-    },
-    {
-      numero: 5,
-      apellido: 'Jugador5',
-      posicion: 'Pívot',
-      min: '15:12',
-      minNum: 15.2,
-      pts: 10,
-      reb: 5,
-      ast: 0,
-      rob: 0,
-      blq: 3,
-      per: 3,
-      t: '4/8',
-      t3: '2/4',
-      tl: '0/0',
-      fal: 1
-    }
-  ];
+  async getJugadores(partido: PartidoModel): Promise<TeamMember[]> {
+    const jugadores = await Promise.all(
+      partido.nomina.map(jugador => this.miembroService.getMember(jugador.rut))
+    );
+    return jugadores.filter((j): j is TeamMember => j !== null);
+  }
+
+
+  getEstadisticas(partido: PartidoModel) {
+    const jugadoresConEstadisticas = this.partido?.nomina.map(jugador => {
+
+      const rut = jugador.rut;
+
+      const tiempoJugador = partido.estadisticas.tiempo_juego.find(t => t.rut === rut);
+      const minutos = tiempoJugador?.minutos || '00:00:00';
+
+      // Lanzamientos
+      const lanzamientos = partido.estadisticas.lanzamientos.filter(l => l.rut === rut);
+      const puntos = lanzamientos.reduce((sum, l) => sum + (l.punto || 0), 0);
+      const tipoTiro = (nombre: string) => lanzamientos.filter(l => l.nombre_tiro === nombre);
+
+      const calcularTiro = (nombre: string) => {
+        const tiros = tipoTiro(nombre);
+        const aciertos = tiros.filter(t => t.exito === 1).length;
+        return `${aciertos}/${tiros.length}`;
+      };
+
+      const t = calcularTiro('doble');    // tiros de 2
+      const t3 = calcularTiro('triple');  // tiros de 3
+      const tl = calcularTiro('libre');   // tiros libres
+
+      // Asistencias
+      const asistencias = partido.estadisticas.asistencias.filter(a => a.rut === rut).length;
+
+      // Robos
+      const robos = partido.estadisticas.robos.filter(r => r.rut === rut).length;
+
+      // Bloqueos
+      const bloqueos = partido.estadisticas.bloqueos.filter(b => b.rut === rut).length;
+
+      // Faltas
+      const faltas = partido.estadisticas.faltas.filter(f => f.rut === rut).length;
+
+      // Rebotes
+      const rebotesOfensivos = partido.estadisticas.rebotes.ofensivos.filter(r => r.rut === rut).length;
+      const rebotesDefensivos = partido.estadisticas.rebotes.defensivos.filter(r => r.rut === rut).length;
+      const perdidas = lanzamientos.filter(l => l.exito === 0).length + faltas;
+
+      return {
+        rut,
+        minutos,
+        puntos,
+        asistencias,
+        robos,
+        bloqueos,
+        faltas,
+        rebotesOfensivos,
+        rebotesDefensivos,
+        rebotesTotales: rebotesOfensivos + rebotesDefensivos,
+        t,
+        tl,
+        t3,
+        perdidas
+      };
+    });
+
+    console.log(jugadoresConEstadisticas);
+    return jugadoresConEstadisticas;
+  }
+
+  getListaJugadores(partido: PartidoModel) {
+    const lista = this.jugadores.map(jugador => {
+      const stats = this.estadisticas!.find(e => e.rut === jugador.rut);
+
+      // Si no hay stats, usamos valores por defecto
+      if (!stats) {
+        return {
+          numero: jugador.numero,
+          apellido: jugador.appaterno,
+          posicion: jugador.posicion,
+          min: '00:00:00',
+          minNum: 0,
+          pts: 0,
+          reb: 0,
+          ast: 0,
+          rob: 0,
+          blq: 0,
+          per: 0,
+          t: '0/0',
+          t3: '0/0',
+          tl: '0/0',
+          fal: 0
+        };
+      }
+
+      // Conversión de minutos "hh:mm:ss" a número decimal
+      const partes = stats.minutos.split(':').map(Number);
+      const minutosDecimales = partes[0] * 60 + partes[1] + partes[2] / 60;
+
+      return {
+        numero: jugador.numero,
+        inicial: jugador.pnombre?.substring(0, 1),
+        apellido: jugador.appaterno,
+        posicion: jugador.posicion,
+        min: stats.minutos,
+        minNum: parseFloat(minutosDecimales.toFixed(2)),
+        pts: stats.puntos,
+        reb: stats.rebotesTotales,
+        ast: stats.asistencias,
+        rob: stats.robos,
+        blq: stats.bloqueos,
+        per: stats.perdidas,
+        t: stats.t,
+        t3: stats.t3,
+        tl: stats.tl,
+        fal: stats.faltas
+      };
+    });
+    console.log("lista jugadores: ", lista)
+    return lista;
+  }
 
   listaTiros = [
     { x: 20, y: 10, encestado: true, cuarto: '1C', jugador: 'Felipe' },
