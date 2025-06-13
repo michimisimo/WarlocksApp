@@ -111,7 +111,7 @@ export class PartidoPage implements OnInit {
 
       // Lanzamientos
       const lanzamientos = partido.estadisticas.lanzamientos.filter(l => l.rut === rut);
-      const puntos = lanzamientos.reduce((sum, l) => sum + (l.punto || 0), 0);
+      const puntos = lanzamientos.filter(l => l.exito === 1).reduce((sum, l) => sum + (l.punto || 0), 0);
       const tipoTiro = (nombre: string) => lanzamientos.filter(l => l.nombre_tiro === nombre);
 
       const calcularTiro = (nombre: string) => {
@@ -215,48 +215,22 @@ export class PartidoPage implements OnInit {
     return lista;
   }
 
-  listaTiros = [
-    { x: 20, y: 10, encestado: true, cuarto: '1C', jugador: 'Felipe' },
-    { x: 20, y: 10, encestado: false, cuarto: '1C', jugador: 'Felipe' },
-    { x: 55, y: 80, encestado: true, cuarto: '2C', jugador: 'Jean' },
-    { x: 30, y: 15, encestado: false, cuarto: '1C', jugador: 'Felipe' },
-    { x: 40, y: 25, encestado: true, cuarto: '2C', jugador: 'Jean' },
-    { x: 60, y: 70, encestado: false, cuarto: '3C', jugador: 'Laura' },
-    { x: 65, y: 75, encestado: true, cuarto: '3C', jugador: 'Laura' },
-    { x: 70, y: 20, encestado: false, cuarto: '4C', jugador: 'Carlos' },
-    { x: 10, y: 90, encestado: true, cuarto: '2C', jugador: 'Felipe' },
-    { x: 50, y: 50, encestado: true, cuarto: '1C', jugador: 'Jean' },
-    { x: 25, y: 40, encestado: false, cuarto: '3C', jugador: 'Laura' },
-    { x: 80, y: 60, encestado: true, cuarto: '4C', jugador: 'Carlos' },
-    { x: 15, y: 35, encestado: true, cuarto: '1C', jugador: 'Felipe' },
-    { x: 45, y: 55, encestado: false, cuarto: '2C', jugador: 'Jean' },
-    { x: 75, y: 65, encestado: true, cuarto: '3C', jugador: 'Laura' },
-    { x: 35, y: 30, encestado: false, cuarto: '4C', jugador: 'Carlos' },
-    { x: 90, y: 10, encestado: true, cuarto: '1C', jugador: 'Felipe' },
-    { x: 12, y: 22, encestado: false, cuarto: '2C', jugador: 'Jean' },
-    { x: 52, y: 72, encestado: true, cuarto: '3C', jugador: 'Laura' },
-    { x: 62, y: 82, encestado: false, cuarto: '4C', jugador: 'Carlos' },
-    { x: 18, y: 48, encestado: true, cuarto: '1C', jugador: 'Felipe' },
-    { x: 28, y: 58, encestado: false, cuarto: '2C', jugador: 'Jean' },
-    { x: 38, y: 68, encestado: true, cuarto: '3C', jugador: 'Laura' },
-    { x: 48, y: 78, encestado: false, cuarto: '4C', jugador: 'Carlos' },
-    { x: 58, y: 88, encestado: true, cuarto: '1C', jugador: 'Felipe' },
-    { x: 68, y: 18, encestado: false, cuarto: '2C', jugador: 'Jean' },
-    { x: 78, y: 28, encestado: true, cuarto: '3C', jugador: 'Laura' },
-    { x: 88, y: 38, encestado: false, cuarto: '4C', jugador: 'Carlos' },
-    { x: 95, y: 48, encestado: true, cuarto: '1C', jugador: 'Felipe' },
-    { x: 20, y: 60, encestado: false, cuarto: '2C', jugador: 'Jean' },
-    { x: 30, y: 70, encestado: true, cuarto: '3C', jugador: 'Laura' },
-    { x: 40, y: 80, encestado: false, cuarto: '4C', jugador: 'Carlos' },
-    { x: 50, y: 90, encestado: true, cuarto: '1C', jugador: 'Felipe' },
-    { x: 60, y: 10, encestado: false, cuarto: '2C', jugador: 'Jean' },
-    { x: 70, y: 20, encestado: true, cuarto: '3C', jugador: 'Laura' },
-    { x: 80, y: 30, encestado: false, cuarto: '4C', jugador: 'Carlos' },
-    { x: 90, y: 40, encestado: true, cuarto: '1C', jugador: 'Felipe' },
-    { x: 25, y: 50, encestado: false, cuarto: '2C', jugador: 'Jean' },
-    { x: 35, y: 60, encestado: true, cuarto: '3C', jugador: 'Laura' },
-    { x: 45, y: 70, encestado: false, cuarto: '4C', jugador: 'Carlos' }
-  ];
+  getLanzamientos(partido: PartidoModel) {
+    return partido.estadisticas.lanzamientos.map(lanz => {
+      const jugador = this.jugadores.find(j => j.rut === lanz.rut);
+      const nombreCompleto = jugador
+        ? `${jugador.pnombre} ${jugador.appaterno}`
+        : lanz.rut; // fallback a rut si no encuentra jugador
+
+      return {
+        x: lanz.coordenada_x ?? 0, // si es null, poner 0 o algún valor por defecto
+        y: lanz.coordenada_y ?? 0,
+        encestado: lanz.exito === 1,
+        cuarto: lanz.nombre_periodo,
+        jugador: nombreCompleto,
+      };
+    });
+  }
 
   verDetalle(jugador: any) {
     this.jugadorSeleccionado = true;
@@ -273,18 +247,59 @@ export class PartidoPage implements OnInit {
 
   }
 
-  datosEstadisticas = [
-    { nombre: 'Tiro de campo', valor: '39/86 (45.3%)' },
-    { nombre: 'Triples', valor: '18/47 (38.3%)' },
-    { nombre: 'Tiros libres', valor: '26/31 (87.0%)' },
-    { nombre: 'Asistencias', valor: 19 },
-    { nombre: 'Rebotes', valor: 64 },
-    { nombre: 'Rebotes ofensivos', valor: 17 },
-    { nombre: 'Rebotes defensivos', valor: 47 },
-    { nombre: 'Robos', valor: 4 },
-    { nombre: 'Bloqueos', valor: 3 },
-    { nombre: 'Pérdidas de balón', valor: 64 },
-    { nombre: 'Faltas', valor: 18 }
-  ];
+  calcularTotales() {
+    // Totales para tiros
+    const tirosCampoTotal = this.partido!.estadisticas.lanzamientos.filter(l => l.nombre_tiro !== 'libre');
+    const tirosCampoEncestados = tirosCampoTotal.filter(l => l.exito === 1);
+
+    const triplesTotal = this.partido!.estadisticas.lanzamientos.filter(l => l.nombre_tiro === 'triple');
+    const triplesEncestados = triplesTotal.filter(l => l.exito === 1);
+
+    const libresTotal = this.partido!.estadisticas.lanzamientos.filter(l => l.nombre_tiro === 'libre');
+    const libresEncestados = libresTotal.filter(l => l.exito === 1);
+
+    // Sumar estadisticas numéricas (sumar cada propiedad)
+    const sumEstadisticas = this.estadisticas!.reduce((acc, est) => {
+      acc.asistencias += est.asistencias;
+      acc.rebotes += est.rebotesTotales;
+      acc.rebotesOfensivos += est.rebotesOfensivos;
+      acc.rebotesDefensivos += est.rebotesDefensivos;
+      acc.robos += est.robos;
+      acc.bloqueos += est.bloqueos;
+      acc.perdidas += est.perdidas;
+      acc.faltas += est.faltas;
+      return acc;
+    }, {
+      asistencias: 0,
+      rebotes: 0,
+      rebotesOfensivos: 0,
+      rebotesDefensivos: 0,
+      robos: 0,
+      bloqueos: 0,
+      perdidas: 0,
+      faltas: 0
+    });
+
+    // Formatear %
+    function porcentaje(encestados: number, intentos: number): string {
+      return intentos === 0 ? '0%' : ((encestados / intentos) * 100).toFixed(1) + '%';
+    }
+
+    const datosEstadisticas = [
+      { nombre: 'Tiro de campo', valor: `${tirosCampoEncestados.length}/${tirosCampoTotal.length} (${porcentaje(tirosCampoEncestados.length, tirosCampoTotal.length)})` },
+      { nombre: 'Triples', valor: `${triplesEncestados.length}/${triplesTotal.length} (${porcentaje(triplesEncestados.length, triplesTotal.length)})` },
+      { nombre: 'Tiros libres', valor: `${libresEncestados.length}/${libresTotal.length} (${porcentaje(libresEncestados.length, libresTotal.length)})` },
+      { nombre: 'Asistencias', valor: sumEstadisticas.asistencias },
+      { nombre: 'Rebotes', valor: sumEstadisticas.rebotes },
+      { nombre: 'Rebotes ofensivos', valor: sumEstadisticas.rebotesOfensivos },
+      { nombre: 'Rebotes defensivos', valor: sumEstadisticas.rebotesDefensivos },
+      { nombre: 'Robos', valor: sumEstadisticas.robos },
+      { nombre: 'Bloqueos', valor: sumEstadisticas.bloqueos },
+      { nombre: 'Pérdidas de balón', valor: sumEstadisticas.perdidas },
+      { nombre: 'Faltas', valor: sumEstadisticas.faltas },
+    ];
+
+    return datosEstadisticas;
+  }
 
 }

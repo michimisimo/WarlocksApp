@@ -4,9 +4,9 @@
     (tabChanged)="selectedTab($event)"></app-banner-partido>
 
   <div *ngIf="activeTab=='Resumen'">
-    <app-marcador></app-marcador>
+    <app-marcador [partido]="this.partido!"></app-marcador>
     <app-resumen-estadistica (verMasClicked)="onVerMas()"></app-resumen-estadistica>
-    <app-tabla-tiro [lanzamientos]="listaTiros"></app-tabla-tiro>
+    <app-tabla-tiro [lanzamientos]="getLanzamientos(this.partido!)"></app-tabla-tiro>
   </div>
 
   <div *ngIf="activeTab=='Alineación'">
@@ -15,7 +15,7 @@
   </div>
 
   <div *ngIf="activeTab=='Estadísticas'">
-    <app-est-partido [estadisticas]="datosEstadisticas"></app-est-partido>
+    <app-est-partido [estadisticas]="calcularTotales()"></app-est-partido>
   </div>
 
   <div *ngIf="jugadorSeleccionado==true">
