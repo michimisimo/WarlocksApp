@@ -81,7 +81,6 @@ export class PartidoPage implements OnInit {
     console.log('Partido visualizado:', this.partido);
     this.estadisticas = this.getEstadisticas(this.partido!);
     this.jugadores = await this.getJugadores(this.partido!);
-    console.log(this.jugadores)
   }
 
   selectedTab(tab: any) {
@@ -159,7 +158,6 @@ export class PartidoPage implements OnInit {
       };
     });
 
-    console.log(jugadoresConEstadisticas);
     return jugadoresConEstadisticas;
   }
 
@@ -211,7 +209,6 @@ export class PartidoPage implements OnInit {
         fal: stats.faltas
       };
     });
-    console.log("lista jugadores: ", lista)
     return lista;
   }
 
@@ -305,7 +302,7 @@ export class PartidoPage implements OnInit {
       { nombre: 'Tiros libres', valor: `${libresEncestados.length}/${libresTotal.length} (${porcentaje(libresEncestados.length, libresTotal.length)})` },
     ]
 
-    return datosEstadisticas && datosResumen;
+    return datosEstadisticas;
   }
 
 }
