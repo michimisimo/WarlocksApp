@@ -299,7 +299,13 @@ export class PartidoPage implements OnInit {
       { nombre: 'Faltas', valor: sumEstadisticas.faltas },
     ];
 
-    return datosEstadisticas;
+    const datosResumen = [
+      { nombre: 'Tiro de campo', valor: `${tirosCampoEncestados.length}/${tirosCampoTotal.length} (${porcentaje(tirosCampoEncestados.length, tirosCampoTotal.length)})` },
+      { nombre: 'Triples', valor: `${triplesEncestados.length}/${triplesTotal.length} (${porcentaje(triplesEncestados.length, triplesTotal.length)})` },
+      { nombre: 'Tiros libres', valor: `${libresEncestados.length}/${libresTotal.length} (${porcentaje(libresEncestados.length, libresTotal.length)})` },
+    ]
+
+    return datosEstadisticas && datosResumen;
   }
 
 }

@@ -5,7 +5,7 @@
 
   <div *ngIf="activeTab=='Resumen'">
     <app-marcador [partido]="this.partido!"></app-marcador>
-    <app-resumen-estadistica (verMasClicked)="onVerMas()"></app-resumen-estadistica>
+    <app-resumen-estadistica [partido]="this.partido!" (verMasClicked)="onVerMas()"></app-resumen-estadistica>
     <app-tabla-tiro [lanzamientos]="getLanzamientos(this.partido!)"></app-tabla-tiro>
   </div>
 
