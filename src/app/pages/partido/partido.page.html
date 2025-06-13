@@ -19,7 +19,7 @@
   </div>
 
   <div *ngIf="jugadorSeleccionado==true">
-    <app-jugador-partido [jugador]="jugadorDetalle" (cerrarModal)="onCerrarModal()"
-      (detalleClick)="onDetalleClick()"></app-jugador-partido>
+    <app-jugador-partido [tirosJugador]="tirosJugador(this.jugadorDetalle!.rut)" [jugador]="jugadorDetalle"
+      (cerrarModal)="onCerrarModal()" (detalleClick)="onDetalleClick()"></app-jugador-partido>
   </div>
 </ion-content>

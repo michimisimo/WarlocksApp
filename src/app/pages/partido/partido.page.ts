@@ -192,6 +192,8 @@ export class PartidoPage implements OnInit {
 
       return {
         numero: jugador.numero,
+        nombre: jugador.pnombre,
+        rut: jugador.rut,
         inicial: jugador.pnombre?.substring(0, 1),
         apellido: jugador.appaterno,
         posicion: jugador.posicion,
@@ -304,5 +306,17 @@ export class PartidoPage implements OnInit {
 
     return datosEstadisticas;
   }
+
+  tirosJugador(rut: string) {
+    return this.partido?.estadisticas.lanzamientos
+      .filter(l => l.rut === rut)
+      .map(l => ({
+        x: l.coordenada_x ?? 0,
+        y: l.coordenada_y ?? 0,
+        acertado: l.exito === 1,
+        cuarto: l.nombre_periodo,
+      }));
+  }
+
 
 }

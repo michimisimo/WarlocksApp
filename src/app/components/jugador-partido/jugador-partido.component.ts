@@ -16,6 +16,7 @@ export class JugadorPartidoComponent implements OnInit {
   ngOnInit() { }
 
   @Input() jugador: any;
+  @Input() tirosJugador: any;
 
   @Output() cerrarModal = new EventEmitter<void>();
   @Output() detalleClick = new EventEmitter<void>();
@@ -33,15 +34,5 @@ export class JugadorPartidoComponent implements OnInit {
     this.detalleClick.emit(this.jugador);
   }
 
-  tirosJugador1 = [
-    { x: 20, y: 20, acertado: true },
-    { x: 15, y: 50, acertado: false },
-    { x: 30, y: 70, acertado: true },
-    { x: 70, y: 40, acertado: false },
-    { x: 80, y: 30, acertado: true },
-    { x: 75, y: 20, acertado: true },
-    { x: 85, y: 15, acertado: false },
-    { x: 60, y: 60, acertado: true }
-  ];
 
 }

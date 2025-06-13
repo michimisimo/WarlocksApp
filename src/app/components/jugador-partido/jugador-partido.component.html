@@ -8,7 +8,7 @@
         <div class="header-content">
           <img [src]="jerseySrc(jugador.numero)" class="jersey-img" />
           <div class="jugador-info">
-            <ion-card-title>{{ jugador.pnombre}} {{jugador.apellido}}</ion-card-title>
+            <ion-card-title>{{ jugador.inicial}}. {{jugador.apellido}}</ion-card-title>
             <ion-card-subtitle>({{ jugador.posicion }})</ion-card-subtitle>
           </div>
         </div>
@@ -17,7 +17,7 @@
       <!-- Cancha y tiros -->
       <div class="cancha-container">
         <img src="../../../assets/img/cancha.png" class="cancha-img" />
-        <ng-container *ngFor="let tiro of tirosJugador1">
+        <ng-container *ngFor="let tiro of tirosJugador">
           <div class="tiro" [ngClass]="{ 'acertado': tiro.acertado, 'fallado': !tiro.acertado }" [ngStyle]="{
       left: tiro.x + '%', top: tiro.y + '%'}">
           </div>
