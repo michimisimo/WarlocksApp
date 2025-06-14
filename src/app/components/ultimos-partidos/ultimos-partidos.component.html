@@ -1,11 +1,13 @@
-<div class="tabla-container">
+<div class="tabla-container" *ngIf="estadistica | keyvalue as partidos">
   <!-- Columna fija -->
   <div class="columna-fija">
     <div class="celda encabezado">Últimos partidos</div>
-    <div *ngFor="let jugador of jugadores" class="jugador">
+
+    <div *ngFor="let partido of partidos" class="jugador">
       <div>
-        <div>N. {{ jugador.apellido }}</div>
-        <small>({{ jugador.posicion }})</small>
+        <div>{{ partido.value.info.contrincante }}</div>
+        <small>{{ partido.value.info.fecha | date:'shortDate' }} - {{ partido.value.info.hora.toString().substring(0,5)
+          }}</small>
       </div>
     </div>
   </div>
@@ -25,17 +27,19 @@
       <div>TL</div>
       <div>Fal</div>
     </div>
-    <div *ngFor="let jugador of jugadores" class="fila">
-      <div>{{ jugador.min }}</div>
-      <div>{{ jugador.pts }}</div>
-      <div>{{ jugador.reb }}</div>
-      <div>{{ jugador.ast }}</div>
-      <div>{{ jugador.rob }}</div>
-      <div>{{ jugador.blq }}</div>
-      <div>{{ jugador.per }}</div>
-      <div>{{ jugador.t }}</div>
-      <div>{{ jugador.t3 }}</div>
-      <div>{{ jugador.tl }}</div>
-      <div>{{ jugador.fal }}</div>
+
+    <div *ngFor="let partido of partidos" class="fila">
+      <div>{{ partido.value.est.tiempo_juego[0]?.minutos!.toString().substring(3) || 0 }}</div>
+      <div>{{ partido.value.est.lanzamientos.length }}</div>
+      <div>{{ partido.value.est.rebotes.ofensivos.length + partido.value.est.rebotes.defensivos.length }}</div>
+      <div>{{ partido.value.est.asistencias.length }}</div>
+      <div>{{ partido.value.est.robos.length }}</div>
+      <div>{{ partido.value.est.bloqueos.length }}</div>
+      <div>{{ calcularPerdidas(partido.value.est.lanzamientos,partido.value.est.faltas)}}</div>
+      <div>{{ calcularTotales(partido.value.est.lanzamientos, "doble") }}</div>
+      <div>{{ calcularTotales(partido.value.est.lanzamientos, "triple") }}</div>
+      <div>{{ calcularTotales(partido.value.est.lanzamientos, "libre") }}</div>
+      <div>{{ partido.value.est.faltas.length }}</div>
     </div>
   </div>
+</div>

@@ -1,8 +1,8 @@
 <ion-content [fullscreen]="true">
   <app-banner-jugador [jugador]="jugador" (tabChanged)="onTabChanged($event)"></app-banner-jugador>
 
-  <div *ngIf="activeTab == 'Temporada'">
-    <app-ultimos-partidos [partidos]="partidos"></app-ultimos-partidos>
+  <div *ngIf="activeTab == 'Temporada' && this.agrupadoEstadistica">
+    <app-ultimos-partidos [estadistica]="this.agrupadoEstadistica"></app-ultimos-partidos>
   </div>
 
   <div *ngIf="activeTab == 'Historico'">

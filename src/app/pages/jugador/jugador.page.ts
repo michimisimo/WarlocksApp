@@ -28,6 +28,7 @@ export class JugadorPage implements OnInit {
   jugador: TeamMember | undefined
   activeTab: string = "Temporada"
   estadistica: any;
+  agrupadoEstadistica: any
 
   constructor(
     private location: Location,
@@ -42,7 +43,7 @@ export class JugadorPage implements OnInit {
       this.jugador = navigation.jugador;
       console.log(this.jugador)
       this.estadistica = await this.syncEstadistica.getEstadisticaByJugador(this.jugador!.rut)
-      this.agruparEstadisticasPorPartido()
+      await this.agruparEstadisticasPorPartido()
     }
   }
 
@@ -82,8 +83,7 @@ export class JugadorPage implements OnInit {
         info: info_global
       };
     }
-    console.log(agrupado)
-    return agrupado;
+    this.agrupadoEstadistica = agrupado;
   }
 
 
