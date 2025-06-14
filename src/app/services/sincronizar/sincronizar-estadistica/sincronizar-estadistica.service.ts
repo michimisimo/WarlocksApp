@@ -112,4 +112,45 @@ export class SincronizarEstadisticaService {
     }
   }
 
+  public async getEstadisticaByJugador(rut: string) {
+    const headers = await this.getHeaders();
+
+    try {
+      const estadisticas = await this.http
+        .get<any>(`${this.apiUrl}/estadistica/jugador/${rut}`, { headers })
+        .toPromise();
+
+      const nomina = await this.http
+        .get<any>(`${this.apiUrl}/nomina/jugador/${rut}`, { headers })
+        .toPromise();
+
+      if (!estadisticas) {
+        console.warn(`⚠️ Estadística de jugador ${rut} no existe.`);
+        return;
+      }
+
+      const estadisticaJugador = {
+        estadisticas: {
+          lanzamientos: estadisticas.lanzamientos || [],
+          rebotes: {
+            ofensivos: (estadisticas.rebotes || []).filter((r: any) => r.nombre_rebote === 'Ofensivo'),
+            defensivos: (estadisticas.rebotes || []).filter((r: any) => r.nombre_rebote === 'Defensivo'),
+          },
+          asistencias: estadisticas.asistencias || [],
+          robos: estadisticas.robos || [],
+          faltas: estadisticas.faltas || [],
+          bloqueos: estadisticas.bloqueos || [],
+          tiempo_juego: estadisticas.minutos || [],
+        },
+        nomina: nomina || []
+      };
+
+      return estadisticaJugador;
+
+    } catch (err) {
+      console.error(`❌ Error al descargar estadística del jugador ${rut}:`, err);
+      return;
+    }
+  }
+
 }
