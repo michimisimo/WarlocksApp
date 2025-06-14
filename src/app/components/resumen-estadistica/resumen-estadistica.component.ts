@@ -27,13 +27,13 @@ export class ResumenEstadisticaComponent implements OnInit {
 
   calcularTotales() {
     // Totales para tiros
-    const tirosCampoTotal = this.partido!.estadisticas.lanzamientos.filter(l => l.nombre_tiro !== 'libre');
+    const tirosCampoTotal = this.partido!.estadisticas.lanzamientos.filter(l => l.nombre_tiro === "doble");
     const tirosCampoEncestados = tirosCampoTotal.filter(l => l.exito === 1);
 
-    const triplesTotal = this.partido!.estadisticas.lanzamientos.filter(l => l.nombre_tiro === 'triple');
+    const triplesTotal = this.partido!.estadisticas.lanzamientos.filter(l => l.nombre_tiro === "triple");
     const triplesEncestados = triplesTotal.filter(l => l.exito === 1);
 
-    const libresTotal = this.partido!.estadisticas.lanzamientos.filter(l => l.nombre_tiro === 'libre');
+    const libresTotal = this.partido!.estadisticas.lanzamientos.filter(l => l.nombre_tiro === "libre");
     const libresEncestados = libresTotal.filter(l => l.exito === 1);
 
     // Formatear %
