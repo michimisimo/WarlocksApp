@@ -3,7 +3,7 @@
     [hora]="partido!.info_global.hora.substring(0, 5) || ''" [equipoVisitante]="partido!.info_global.contrincante"
     (tabChanged)="selectedTab($event)"></app-banner-partido>
 
-  <div *ngIf="activeTab=='Resumen'">
+  <div *ngIf="activeTab == 'Resumen' && partido && estadisticas">
     <app-marcador [partido]="this.partido!"></app-marcador>
     <app-resumen-estadistica [partido]="this.partido!" (verMasClicked)="onVerMas()"></app-resumen-estadistica>
     <app-tabla-tiro [lanzamientos]="getLanzamientos(this.partido!)"></app-tabla-tiro>
