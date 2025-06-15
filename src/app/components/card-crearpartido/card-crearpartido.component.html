@@ -1,0 +1,53 @@
+<div class="container">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Crear partido</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <form #form="ngForm" (ngSubmit)="guardarPartido()">
+
+        <ion-item class="Contrincante">
+          <ion-label position="floating">Contrincante</ion-label>
+          <ion-input type="text" name="contrincante" [(ngModel)]="partido.contrincante" required></ion-input>
+        </ion-item>
+
+        <ion-item class="fecha">
+          <ion-label position="floating">Fecha</ion-label>
+          <ion-input type="date" name="fecha" [(ngModel)]="partido.fecha" required></ion-input>
+        </ion-item>
+
+        <ion-item class="Hora">
+          <ion-label position="floating">Hora</ion-label>
+          <ion-input type="time" name="hora" [(ngModel)]="partido.hora" required></ion-input>
+        </ion-item>
+
+        <ion-item class="local">
+          <ion-select name="local" [(ngModel)]="partido.local" interface="popover" required>
+            <div slot="label">Local o Visitante</div>
+            <ion-select-option value="local">Local</ion-select-option>
+            <ion-select-option value="visitante">Visitante</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-select name="categoria" [(ngModel)]="partido.categoria" interface="popover" required>
+            <div slot="label">Categoría</div>
+            <ion-select-option value="U11">U11</ion-select-option>
+            <ion-select-option value="U13">U13</ion-select-option>
+            <ion-select-option value="U15">U15</ion-select-option>
+            <ion-select-option value="U18">U18</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <div class="form-buttons">
+          <ion-button class="cancelar" expand="block" fill="clear" type="button"
+            (click)="cancelar()">Cancelar</ion-button>
+          <ion-button class="guardar" expand="block" type="submit" [disabled]="form.invalid">Guardar
+            Cambios</ion-button>
+        </div>
+      </form>
+
+    </ion-card-content>
+  </ion-card>
+</div>
