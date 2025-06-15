@@ -17,7 +17,6 @@ export class BannerEstadisticaComponent implements OnInit {
   @Input() hora: string = '';
   @Input() equipoVisitante: string = '';
 
-  @Output() tabChanged = new EventEmitter<string>();
   @Output() otabChanged = new EventEmitter<string>();
   @Output() categorySelected = new EventEmitter<string>();
 

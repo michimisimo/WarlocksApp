@@ -1,6 +1,7 @@
 <ion-content [fullscreen]="true">
   <app-banner-estadistica [fecha]="(partido!.info_global.fecha | date:'dd, MMM, yyyy') || ''"
     [hora]="partido!.info_global.hora.substring(0, 5) || ''" [equipoVisitante]="partido!.info_global.contrincante"
-    (tabChanged)="selectedTab($event)" [oTabs]="tabs" [activeOTab]="activeTab"></app-banner-estadistica>
+    (otabChanged)="selectedTab($event)" (categorySelected)="selectedCuarto($event)" [oTabs]="tabs"
+    [activeOTab]="activeTab"></app-banner-estadistica>
 
 </ion-content>

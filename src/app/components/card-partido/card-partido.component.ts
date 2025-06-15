@@ -13,9 +13,7 @@ export class CardPartidoComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
-    console.log(this.usuario)
-  }
+  ngOnInit() { }
 
   @Input() fecha: string = '';
   @Input() nombreLiga: string = '';

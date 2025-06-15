@@ -14,8 +14,7 @@ import { BannerEstadisticaComponent } from 'src/app/components/banner-estadistic
   styleUrls: ['./estadistica.page.scss'],
   standalone: true,
   imports: [IonContent, CommonModule, FormsModule,
-    BannerEstadisticaComponent
-
+    BannerEstadisticaComponent,
   ]
 })
 export class EstadisticaPage implements OnInit {
@@ -23,6 +22,7 @@ export class EstadisticaPage implements OnInit {
   partido: PartidoModel | null = null;
   activeTab: string = "Plantel"
   tabs = ['Plantel', 'Etadistica']
+  cuarto: string = '1C'
 
   constructor(
     private location: Location,
@@ -41,6 +41,12 @@ export class EstadisticaPage implements OnInit {
   selectedTab(tab: any) {
     console.log(tab)
     this.activeTab = tab;
+  }
+
+  selectedCuarto(cuarto: string) {
+    this.cuarto = cuarto
+    console.log(this.cuarto)
+
   }
 
 }
