@@ -29,6 +29,10 @@ export const routes: Routes = [
     path: 'jugador',
     loadComponent: () => import('./pages/jugador/jugador.page').then( m => m.JugadorPage)
   },
+  {
+    path: 'estadistica',
+    loadComponent: () => import('./pages/estadistica/estadistica.page').then( m => m.EstadisticaPage)
+  },
 
 
 ]
