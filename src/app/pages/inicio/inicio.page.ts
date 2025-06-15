@@ -17,7 +17,7 @@ import { CardPartidoComponent } from 'src/app/components/card-partido/card-parti
 import { BannerTopComponent } from 'src/app/components/banner-top/banner-top.component';
 import { PlantelTablaComponent } from 'src/app/components/plantel-tabla/plantel-tabla.component';
 import { EstTemporadaComponent } from 'src/app/components/est-temporada/est-temporada.component';
-
+import { CardCrearpartidoComponent } from 'src/app/components/card-crearpartido/card-crearpartido.component';
 
 @Component({
   selector: 'app-inicio',
@@ -29,6 +29,7 @@ import { EstTemporadaComponent } from 'src/app/components/est-temporada/est-temp
     CardPartidoComponent,
     PlantelTablaComponent,
     EstTemporadaComponent,
+    CardCrearpartidoComponent,
     IonContent,
     CommonModule,
     FormsModule,
@@ -51,6 +52,7 @@ export class InicioPage implements OnInit, AfterViewInit {
   user: CurrentUser | null = null
 
   isLoading: boolean = false;
+  crear: boolean = false;
 
   constructor(
     private syncService: SyncPartidoService,
@@ -125,6 +127,23 @@ export class InicioPage implements OnInit, AfterViewInit {
 
   onPlayerSelected(jugador: any) {
     this.router.navigate(['/jugador'], { state: { jugador: jugador } });
+  }
+
+  onCrear() {
+    console.log('btn presionado')
+    document.querySelector('ion-content')?.classList.add('scroll-bloqueado');
+    this.crear = true;
+  }
+
+  onPartidoGuardado(partido: any) {
+    console.log('Partido recibido desde el hijo:', partido);
+    this.crear = false; // Ocultar el formulario
+    // Aquí puedes guardar o procesar los datos
+  }
+
+  onCancelarCrearPartido() {
+    console.log('Formulario cancelado');
+    this.crear = false; // Ocultar el formulario
   }
 
   stats: {
