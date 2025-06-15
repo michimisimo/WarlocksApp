@@ -6,6 +6,7 @@
   </app-banner-top>
 
   <ion-spinner name="bubbles" *ngIf="isLoading" class="loading"></ion-spinner>
+
   <div *ngIf="activeTab !== 'Plantel' && activeOTab !== 'Estadisticas'">
     <div *ngIf="partidosFiltrados?.length; else empty">
       <div *ngFor="let partido of partidosFiltrados">
@@ -17,7 +18,28 @@
           [equipoVisitante]="!partido.info_global.local ? 'warloks' : partido.info_global.contrincante"
           (click)="verPartido(partido)">
         </app-card-partido>
-
+        <app-card-partido [fecha]="(partido.info_global.fecha | date:'dd, MMM, yyyy') || ''"
+          [nombreLiga]="'Campeonato Juvenil'"
+          [equipoLocal]="partido.info_global.local ? 'warloks' : partido.info_global.contrincante"
+          [hora]="partido.info_global.hora.substring(0, 5) || ''"
+          [equipoVisitante]="!partido.info_global.local ? 'warloks' : partido.info_global.contrincante"
+          (click)="verPartido(partido)">
+        </app-card-partido>
+      </div>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div *ngIf="this.user! != null">
+      <div *ngIf="this.user!.rol === 'entrenador'">
+        <div class="contCrear">
+          <button>Crear partido</button>
+        </div>
       </div>
     </div>
   </div>

@@ -10,7 +10,7 @@ import { PartidoModel } from 'src/app/services/mappers/map-partido/map-partido.s
 import { UserService } from 'src/app/services/user/user.service';
 import { SincronizarMiembrosService } from 'src/app/services/sincronizar/sincronizar-miembros/sincronizar-miembros.service';
 import { MiembrosService } from 'src/app/services/miembros/miembros.service';
-import { TeamMember } from 'src/app/services/mappers/map-user/map-user.service';
+import { CurrentUser, TeamMember } from 'src/app/services/mappers/map-user/map-user.service';
 import { StatEntry } from 'src/app/components/est-temporada/est-temporada.component';
 
 import { CardPartidoComponent } from 'src/app/components/card-partido/card-partido.component';
@@ -48,6 +48,7 @@ export class InicioPage implements OnInit, AfterViewInit {
   partidos: PartidoModel[] = [];
   partidosFiltrados: PartidoModel[] = [];
   categoriaActiva: string = 'U11';
+  user: CurrentUser | null = null
 
   isLoading: boolean = false;
 
@@ -69,8 +70,9 @@ export class InicioPage implements OnInit, AfterViewInit {
 
       const dict = await this.partidoService.obtenerTodosLosPartidos();
       this.partidos = Object.values(dict);
-
-      await this.syncMiembros.sincronizarTodos(); // <-- le agregué await si es una promesa
+      this.user = await this.userService.getCurrentUser()
+      console.log(this.user)
+      await this.syncMiembros.sincronizarTodos();
     } catch (err) {
       console.error('Error cargando partidos:', err);
     } finally {
