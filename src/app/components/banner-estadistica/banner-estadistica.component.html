@@ -1,0 +1,46 @@
+<div class="container">
+
+  <!-- Banner superior con botón atrás y configuración -->
+  <div class="banner">
+
+    <div class="space">
+      <div class="back" (click)="onClickBack()">
+        <img src="../../../assets/icon/arrow_back.png" alt="Volver">
+      </div>
+      <div class="conf" (click)="onClickConfig()">
+        <img src="../../../assets/icon/settings.png" alt="Configuración">
+      </div>
+    </div>
+
+    <div class="detalle">
+      <div class="contrincante">
+        <h4>{{equipoVisitante}}</h4>
+      </div>
+      <div class="date">
+        <p>{{ hora }}</p>
+        <p>{{ fecha }}</p>
+      </div>
+      <div class="local">
+        <h4>Warlocks</h4>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Sub-pestañas naranjas (solo si showCat2 es true) -->
+  <div class="orange-tabs">
+    <div *ngFor="let oTab of oTabs" (click)="cambiarOTab(oTab)" [class.selected]="activeOTab === oTab"
+      class="orange-tab">
+      {{ oTab }}
+    </div>
+  </div>
+
+  <!-- Categorías (solo si showCat3 es true) -->
+  <div class="categories-bar" *ngIf="showCat3">
+    <div *ngFor="let cuarto of cuartos" (click)="selectCuarto(cuarto)"
+      [class.selected-category]="activeCuarto === cuarto" class="category">
+      {{ cuarto }}
+    </div>
+  </div>
+
+</div>
