@@ -29,7 +29,7 @@
     </div>
 
     <div *ngFor="let partido of partidos" class="fila">
-      <div>{{ partido.value.est.tiempo_juego[0]?.minutos!.toString().substring(3) || 0 }}</div>
+      <div>{{ partido.value.est.tiempo_juego[0]!.minutos!.toString().substring(3) || 0 }}</div>
       <div>{{ partido.value.est.lanzamientos.length }}</div>
       <div>{{ partido.value.est.rebotes.ofensivos.length + partido.value.est.rebotes.defensivos.length }}</div>
       <div>{{ partido.value.est.asistencias.length }}</div>

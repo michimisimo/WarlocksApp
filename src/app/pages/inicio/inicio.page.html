@@ -14,11 +14,12 @@
         <div *ngFor="let partido of partidosFiltrados">
 
           <app-card-partido [fecha]="(partido.info_global.fecha | date:'dd, MMM, yyyy') || ''"
-            [nombreLiga]="'Campeonato Juvenil'"
+            [nombreLiga]="'Campeonato Juvenil'" [usuario]="this.user!"
             [equipoLocal]="partido.info_global.local ? 'warloks' : partido.info_global.contrincante"
             [hora]="partido.info_global.hora.substring(0, 5) || ''"
             [equipoVisitante]="!partido.info_global.local ? 'warloks' : partido.info_global.contrincante"
-            (click)="verPartido(partido)">
+            (verPartido)="verPartido(partido)" (editar)="editarPartido(partido)">
+
           </app-card-partido>
         </div>
       </div>

@@ -46,5 +46,20 @@
                 }
             }
         }
+
+        .card-footer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 35px;
+            background-color: #00ABEE;
+            border-top: 1px solid #ccc;
+
+            .editar {
+                color: white;
+                font-weight: bold;
+            }
+        }
     }
 }

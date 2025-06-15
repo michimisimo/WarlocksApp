@@ -123,6 +123,11 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.router.navigate(['/partido'], { state: { partido: partido } });
   }
 
+  editarPartido(partido: PartidoModel) {
+    console.log(partido)
+    this.router.navigate(['/user'], { state: { partido: partido } });
+  }
+
   jugadores: TeamMember[] = [];
 
   onPlayerSelected(jugador: any) {

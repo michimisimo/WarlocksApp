@@ -10,13 +10,19 @@
       {{ nombreLiga }}
     </ion-card-header>
 
-    <ion-card-content class="card-content">
+    <ion-card-content class="card-content" (click)="verPartido_()">
       <div class="match-row">
         <div class="team-name">{{ equipoLocal }}</div>
         <div class="match-time">{{ hora }}</div>
         <div class="team-name">{{ equipoVisitante }}</div>
       </div>
     </ion-card-content>
+
+    <div *ngIf="this.usuario !== null && this.usuario.rol !== 'jugador'">
+      <div class="card-footer" (click)="editar_()">
+        <div class="editar">Editar</div>
+      </div>
+    </div>
 
   </ion-card>
 </div>
