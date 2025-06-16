@@ -5,10 +5,12 @@ import { IonContent } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 
 import { PartidoModel } from 'src/app/services/mappers/map-partido/map-partido.service';
+import { TeamMember } from 'src/app/services/mappers/map-user/map-user.service';
 
 import { BannerEstadisticaComponent } from 'src/app/components/banner-estadistica/banner-estadistica.component';
 import { TableSeleccionarPlantelComponent } from 'src/app/components/table-seleccionar-plantel/table-seleccionar-plantel.component';
-import { TeamMember } from 'src/app/services/mappers/map-user/map-user.service';
+import { CardCrearestadisticaComponent } from 'src/app/components/card-crearestadistica/card-crearestadistica.component';
+import { TableJugadoresEstadisticaComponent } from 'src/app/components/table-jugadores-estadistica/table-jugadores-estadistica.component';
 
 @Component({
   selector: 'app-estadistica',
@@ -18,14 +20,20 @@ import { TeamMember } from 'src/app/services/mappers/map-user/map-user.service';
   imports: [IonContent, CommonModule, FormsModule,
     BannerEstadisticaComponent,
     TableSeleccionarPlantelComponent,
+    CardCrearestadisticaComponent,
+    TableJugadoresEstadisticaComponent,
   ]
 })
+
 export class EstadisticaPage implements OnInit {
 
   partido: PartidoModel | null = null;
-  activeTab: string = "Plantel"
-  tabs = ['Plantel', 'Etadistica']
-  cuarto: string = '1C'
+  activeTab: string = "Plantel";
+  tabs = ['Plantel', 'Estadistica'];
+  cuarto: string = '1C';
+
+  entrenadores: TeamMember[] = [];
+  jugadores: TeamMember[] = [];
 
   constructor(
     private location: Location,
@@ -53,12 +61,12 @@ export class EstadisticaPage implements OnInit {
   }
 
   actualizarEntrenadores(lista: TeamMember[]) {
-    console.log('Entrenadores actualizados:', lista);
+    this.entrenadores = lista;
     // Aquí puedes guardarlo, validarlo, etc.
   }
 
   actualizarJugadores(lista: TeamMember[]) {
-    console.log('Jugadores actualizados:', lista);
+    this.jugadores = lista;
   }
 
 }

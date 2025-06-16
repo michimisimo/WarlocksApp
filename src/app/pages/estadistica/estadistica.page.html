@@ -9,4 +9,9 @@
       (jugadoresActualizados)="actualizarJugadores($event)"></app-table-seleccionar-plantel>
   </div>
 
+  <div [hidden]="activeTab!=='Estadistica'">
+    <app-table-jugadores-estadistica [jugadores]="this.jugadores"></app-table-jugadores-estadistica>
+
+  </div>
+
 </ion-content>

@@ -61,37 +61,47 @@ export class TableSeleccionarPlantelComponent implements OnInit {
   agregarUsuario(event: any) {
     const seleccionados: TeamMember[] = event.detail.value;
 
-    // Evitar duplicados
+    let agregoJugadores = false;
+    let agregoEntrenadores = false;
+
     seleccionados.forEach(usuario => {
-      const yaExiste = this.entrenadoresNomina.some(e => e.rut === usuario.rut) || this.jugadoresNomina.some(j => j.rut === usuario.rut)
+      const yaExiste = this.entrenadoresNomina.some(e => e.rut === usuario.rut) || this.jugadoresNomina.some(j => j.rut === usuario.rut);
 
       if (!yaExiste) {
         if (usuario.rol === 'jugador') {
           this.jugadoresNomina.push(usuario);
-          this.jugadoresActualizados.emit(this.jugadoresNomina);
+          agregoJugadores = true;
         } else {
-          this.entrenadoresNomina.push(usuario)
-          this.entrenadoresActualizados.emit(this.entrenadoresNomina);
+          this.entrenadoresNomina.push(usuario);
+          agregoEntrenadores = true;
         }
       }
-    })
-  }
+    });
 
-  onEditar(usuario: any) {
-    console.log('Editar usuario', usuario);
-    // Lógica para editar
+    if (agregoJugadores) {
+      this.jugadoresActualizados.emit([...this.jugadoresNomina]);
+    }
+    if (agregoEntrenadores) {
+      this.entrenadoresActualizados.emit([...this.entrenadoresNomina]);
+    }
   }
 
   onEliminar(usuario: any) {
-    if (usuario.rol! === 'jugador') {
-      this.jugadoresNomina = this.jugadoresNomina.filter(u => u.rut !== usuario.rut)
-      this.jugadoresActualizados.emit(this.jugadoresNomina);
+    if (usuario.rol === 'jugador') {
+      const originalLength = this.jugadoresNomina.length;
+      this.jugadoresNomina = this.jugadoresNomina.filter(u => u.rut !== usuario.rut);
+      if (this.jugadoresNomina.length !== originalLength) {
+        this.jugadoresActualizados.emit([...this.jugadoresNomina]);
+      }
     } else {
-      this.entrenadoresNomina = this.entrenadoresNomina.filter(u => u.rut !== usuario.rut)
-      this.entrenadoresActualizados.emit(this.entrenadoresNomina);
-
+      const originalLength = this.entrenadoresNomina.length;
+      this.entrenadoresNomina = this.entrenadoresNomina.filter(u => u.rut !== usuario.rut);
+      if (this.entrenadoresNomina.length !== originalLength) {
+        this.entrenadoresActualizados.emit([...this.entrenadoresNomina]);
+      }
     }
   }
+
 
 
 }
