@@ -1,0 +1,33 @@
+<div class="back">
+  <div class="contenedor">
+    <!-- Imagen de cancha -->
+    <div class="rectangulo1"></div>
+
+    <!-- Capa de interacción -->
+    <div class="rectangulo2">
+      <div *ngFor="let y of gridY; let iY = index" class="fila">
+        <div *ngFor="let x of gridX; let iX = index" class="celda" (click)="prepararLanzamiento(iX, iY)">
+        </div>
+      </div>
+
+      <!-- Punto seleccionado -->
+      <div *ngIf="lanzamientoUsuario" class="tiro" [ngClass]="{
+             'encestado': lanzamientoUsuario.encestado,
+             'fallado': !lanzamientoUsuario.encestado
+           }" [ngStyle]="{
+             left: lanzamientoUsuario.x + '%',
+             top: lanzamientoUsuario.y + '%'
+           }">
+      </div>
+    </div>
+  </div>
+
+  <!-- Botones de confirmación -->
+  <div class="botones-lanzamiento" *ngIf="pendienteConfirmacion">
+    <button class="si" (click)="confirmarLanzamiento(true)">Encestado</button>
+    <button class="no" (click)="confirmarLanzamiento(false)">Fallado</button>
+  </div>
+
+  <!-- Botón cancelar permanente -->
+  <button class="cancelar" (click)="cancelar()">Cancelar</button>
+</div>
