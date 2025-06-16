@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { PartidoModel } from 'src/app/services/mappers/map-partido/map-partido.service';
 import { TeamMember } from 'src/app/services/mappers/map-user/map-user.service';
 import { PartidoService } from 'src/app/services/partido/partido.service';
+import { SincronizarEstadisticaService } from 'src/app/services/sincronizar/sincronizar-estadistica/sincronizar-estadistica.service';
 
 import { BannerEstadisticaComponent } from 'src/app/components/banner-estadistica/banner-estadistica.component';
 import { TableSeleccionarPlantelComponent } from 'src/app/components/table-seleccionar-plantel/table-seleccionar-plantel.component';
@@ -59,6 +60,7 @@ export class EstadisticaPage implements OnInit {
     private location: Location,
     private router: Router,
     private partidoService: PartidoService,
+    private syncEstService: SincronizarEstadisticaService,
   ) { }
 
   ngDoCheck() {
@@ -311,15 +313,29 @@ export class EstadisticaPage implements OnInit {
   }
 
   async guardar() {
-    this.partido!.estadisticas.asistencias = this.asistenciasTotales;
-    this.partido!.estadisticas.bloqueos = this.bloqueosTotales;
-    this.partido!.estadisticas.faltas = this.faltasTotales;
-    this.partido!.estadisticas.lanzamientos = this.lanzamientosTotales;
-    this.partido!.estadisticas.rebotes.defensivos = this.rebotesTotales.filter(r => r.id_tipo_rebote === 2);
-    this.partido!.estadisticas.rebotes.ofensivos = this.rebotesTotales.filter(r => r.id_tipo_rebote === 1);
-    this.partido!.estadisticas.robos = this.robosTotales;
+    const estadistica = {
+      asistencias: this.asistenciasTotales,
+      bloqueos: this.bloqueosTotales,
+      faltas: this.faltasTotales,
+      lanzamientos: this.lanzamientosTotales,
+      rebotes: {
+        defensivos: this.rebotesTotales.filter(r => r.id_tipo_rebote === 2),
+        ofensivos: this.rebotesTotales.filter(r => r.id_tipo_rebote === 1)
+      },
+      robos: this.robosTotales
+    };
 
-    console.log('Partido a guardar:', this.partido);
+    const miembros = [...this.jugadores];
+
+    const nomina = miembros.map(miembro => ({
+      rut: miembro.rut,
+      id_partido: this.partido!.id_partido
+    }));
+
+    console.log('Estadística a enviar:', estadistica);
+    console.log('nomina a enviar:', nomina);
+
+    await this.syncEstService.subirEstadistica(this.partido!.id_partido.toString(), estadistica, nomina)
   }
 
 }

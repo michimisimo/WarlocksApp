@@ -153,4 +153,28 @@ export class SincronizarEstadisticaService {
     }
   }
 
+  public async subirEstadistica(id_partido: string, estadistica: any, nomina: any) {
+    console.log("subiendo estadistica");
+
+    const headers = await this.getHeaders();
+
+    try {
+      const respuesta = await this.http
+        .post<any>(`${this.apiUrl}/estadistica/${id_partido}`, estadistica, { headers })
+        .toPromise();
+
+      const nominaRes = await this.http
+        .post<any>(`${this.apiUrl}/nomina/${id_partido}`, nomina, { headers })
+        .toPromise();
+
+      console.log('Respuesta backend estadistica:', respuesta);
+      console.log('Respuesta backend nomina:', nominaRes);
+
+    } catch (err) {
+      console.error('Error al subir estadística o nómina:', err);
+
+    }
+  }
+
 }
+
