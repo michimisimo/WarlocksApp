@@ -1,0 +1,100 @@
+<div class="container">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{jugador!.pnombre!.substring(0,1)}}. {{jugador!.appaterno!}}</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+
+      <!-- asistencias -->
+      <ion-row class="ion-align-items-center">
+        <ion-col size="10">
+          <ion-label class="ion-padding-start">Asistencia</ion-label>
+        </ion-col>
+        <ion-col size="2" class="ion-text-end">
+          <div class="add" (click)="asistencias()">
+            <img src="../../../assets/icon/add.png" width="20" height="20" />
+          </div>
+        </ion-col>
+      </ion-row>
+
+      <!-- Faltas -->
+      <ion-row class="ion-align-items-center">
+        <ion-col size="10">
+          <ion-label class="ion-padding-start">Faltas</ion-label>
+        </ion-col>
+        <ion-col size="2" class="ion-text-end">
+          <div class="add" (click)="faltas()">
+            <img src="../../../assets/icon/add.png" width="20" height="20" />
+          </div>
+        </ion-col>
+      </ion-row>
+
+      <!-- Robos -->
+      <ion-row class="ion-align-items-center">
+        <ion-col size="10">
+          <ion-label class="ion-padding-start">Robos</ion-label>
+        </ion-col>
+        <ion-col size="2" class="ion-text-end">
+          <div class="add" (click)="robos()">
+            <img src="../../../assets/icon/add.png" width="20" height="20" />
+          </div>
+        </ion-col>
+      </ion-row>
+
+      <!-- Bloqueos -->
+      <ion-row class="ion-align-items-center">
+        <ion-col size="10">
+          <ion-label class="ion-padding-start">Bloqueos</ion-label>
+        </ion-col>
+        <ion-col size="2" class="ion-text-end">
+          <div class="add" (click)="bloqueos()">
+            <img src="../../../assets/icon/add.png" width="20" height="20" />
+          </div>
+        </ion-col>
+      </ion-row>
+
+      <!-- Rebotes -->
+      <ion-row class="ion-align-items-center">
+        <ion-col size="5">
+          <ion-label class="ion-padding-start">Rebote</ion-label>
+        </ion-col>
+        <ion-col size="5">
+          <ion-select interface="popover" name="rebote" placeholder="Seleccionar" required
+            [(ngModel)]="reboteSeleccionado">
+            <ion-select-option value="ofensivo">Ofensivo</ion-select-option>
+            <ion-select-option value="Defensivo">Defensivo</ion-select-option>
+          </ion-select>
+        </ion-col>
+        <ion-col size="2" class="ion-text-end">
+          <div class="add" [class.disabled]="!reboteSeleccionado" (click)="rebote(reboteSeleccionado)">
+            <img src="../../../assets/icon/add.png" width="20" height="20" />
+          </div>
+        </ion-col>
+      </ion-row>
+
+      <!-- Lanzamiento -->
+      <ion-row class="ion-align-items-center">
+        <ion-col size="5">
+          <ion-label class="ion-padding-start">Lanzamientos</ion-label>
+        </ion-col>
+        <ion-col size="5">
+          <ion-select interface="popover" name="lanzamiento" placeholder="Seleccionar" required
+            [(ngModel)]="lanzamientoSeleccionado">
+            <ion-select-option value="Tiro libre">Tiro libre</ion-select-option>
+            <ion-select-option value="Tiro campo">Tiro campo</ion-select-option>
+            <ion-select-option value="Tiro triple">Tiro triple</ion-select-option>
+          </ion-select>
+        </ion-col>
+        <ion-col size="2" class="ion-text-end">
+          <div class="add" [class.disabled]="!lanzamientoSeleccionado" (click)="lanzamiento(lanzamientoSeleccionado)">
+            <img src="../../../assets/icon/add.png" width="20" height="20" />
+          </div>
+        </ion-col>
+      </ion-row>
+
+      <ion-button fill="clear" class="cancelar" (click)="cancelar()">Cancelar</ion-button>
+
+    </ion-card-content>
+  </ion-card>
+</div>
