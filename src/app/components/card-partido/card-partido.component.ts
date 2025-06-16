@@ -22,10 +22,8 @@ export class CardPartidoComponent implements OnInit {
   @Input() equipoVisitante: string = '';
   @Input() usuario: CurrentUser | null = null
 
-
   @Output() verPartido = new EventEmitter<void>();
   @Output() editar = new EventEmitter<void>();
-
 
   verPartido_() {
     this.verPartido.emit();

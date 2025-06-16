@@ -7,6 +7,8 @@ import { Router } from '@angular/router';
 import { PartidoModel } from 'src/app/services/mappers/map-partido/map-partido.service';
 
 import { BannerEstadisticaComponent } from 'src/app/components/banner-estadistica/banner-estadistica.component';
+import { TableSeleccionarPlantelComponent } from 'src/app/components/table-seleccionar-plantel/table-seleccionar-plantel.component';
+import { TeamMember } from 'src/app/services/mappers/map-user/map-user.service';
 
 @Component({
   selector: 'app-estadistica',
@@ -15,6 +17,7 @@ import { BannerEstadisticaComponent } from 'src/app/components/banner-estadistic
   standalone: true,
   imports: [IonContent, CommonModule, FormsModule,
     BannerEstadisticaComponent,
+    TableSeleccionarPlantelComponent,
   ]
 })
 export class EstadisticaPage implements OnInit {
@@ -47,6 +50,15 @@ export class EstadisticaPage implements OnInit {
     this.cuarto = cuarto
     console.log(this.cuarto)
 
+  }
+
+  actualizarEntrenadores(lista: TeamMember[]) {
+    console.log('Entrenadores actualizados:', lista);
+    // Aquí puedes guardarlo, validarlo, etc.
+  }
+
+  actualizarJugadores(lista: TeamMember[]) {
+    console.log('Jugadores actualizados:', lista);
   }
 
 }

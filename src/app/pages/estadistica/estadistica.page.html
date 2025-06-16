@@ -4,4 +4,9 @@
     (otabChanged)="selectedTab($event)" (categorySelected)="selectedCuarto($event)" [oTabs]="tabs"
     [activeOTab]="activeTab"></app-banner-estadistica>
 
+  <div [hidden]="activeTab!=='Plantel'">
+    <app-table-seleccionar-plantel [partido]="this.partido!" (entrenadoresActualizados)="actualizarEntrenadores($event)"
+      (jugadoresActualizados)="actualizarJugadores($event)"></app-table-seleccionar-plantel>
+  </div>
+
 </ion-content>
