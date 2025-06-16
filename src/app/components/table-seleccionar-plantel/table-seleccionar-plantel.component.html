@@ -1,0 +1,66 @@
+<div class="container">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title> Cuerpo técnico </ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+
+      <!-- ion-select para elegir usuarios -->
+      <ion-item>
+        <ion-label>Agregar técnico</ion-label>
+        <ion-select ion-select multiple="true" selectedText="Seleccionar entrenador" placeholder="Selecciona entrenador"
+          (ionChange)="agregarUsuario($event)">
+          <ion-select-option *ngFor="let entrenador of this.entrenadores" [value]="entrenador">
+            {{ entrenador.pnombre }} {{ entrenador.appaterno }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <!-- Tabla de usuarios activos -->
+      <ion-grid>
+        <ion-row *ngFor="let usuario of entrenadoresNomina; let last = last" [ngClass]="{ 'fila-con-borde': !last }">
+          <ion-col size="9">{{ usuario.pnombre }} {{ usuario.appaterno }}</ion-col>
+          <ion-col size="2" class="ion-text-center">
+            <ion-button fill="clear" size="small" (click)="onEliminar(usuario)">Borrar</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+</div>
+
+
+
+<div class="container">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title> Jugadores </ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <!-- ion-select para elegir usuarios -->
+      <ion-item>
+        <ion-label>Agregar jugador</ion-label>
+        <ion-select multiple="true" placeholder="Selecciona jugadores" selectedText="Seleccionar jugador"
+          (ionChange)="agregarUsuario($event)">
+          <ion-select-option *ngFor="let jugador of jugadores" [value]="jugador">
+            {{ jugador.pnombre }} {{ jugador.appaterno }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+
+      <!-- Tabla de usuarios activos -->
+      <ion-grid>
+        <ion-row *ngFor="let usuario of jugadoresNomina; let last = last" [ngClass]="{ 'fila-con-borde': !last }">
+          <ion-col size="9">{{ usuario.pnombre }} {{ usuario.appaterno }}</ion-col>
+
+          <ion-col size="2" class="ion-text-center">
+            <ion-button fill="clear" size="small" (click)="onEliminar(usuario)">Borrar</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+</div>
