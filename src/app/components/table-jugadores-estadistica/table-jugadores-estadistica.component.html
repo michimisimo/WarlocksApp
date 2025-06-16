@@ -1,0 +1,42 @@
+<div class="container">
+
+  <!-- EN CANCHA -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>En Cancha</ion-card-title>
+    </ion-card-header>
+    <ion-grid>
+      <ion-row *ngFor="let jugador of jugadoresTitulares">
+        <ion-col size="8">{{ jugador.pnombre }} {{ jugador.appaterno }}</ion-col>
+        <ion-col size="2">
+          <div class="crear" (click)="agregar(jugador)">
+            <img src="../../../assets/icon/add.png" alt="">
+          </div>
+        </ion-col>
+        <ion-col size="2">
+          <div class="cambiar" (click)="hacerCambio(jugador)">
+            <img src="../../../assets/icon/cambiar.png" alt="">
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+
+  <!-- EN BANCA -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>En Banca</ion-card-title>
+    </ion-card-header>
+    <ion-grid>
+      <ion-row *ngFor="let jugador of jugadoresBanca">
+        <ion-col size="10">{{ jugador.pnombre }} {{ jugador.appaterno }}</ion-col>
+        <ion-col size="2">
+          <div class="cambiar" (click)="hacerCambio(jugador)">
+            <img src="../../../assets/icon/cambiar.png" alt="">
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+
+</div>
