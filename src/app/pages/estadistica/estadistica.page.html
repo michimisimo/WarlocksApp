@@ -10,8 +10,22 @@
   </div>
 
   <div [hidden]="activeTab!=='Estadistica'">
-    <app-table-jugadores-estadistica [jugadores]="this.jugadores"></app-table-jugadores-estadistica>
+    <app-table-jugadores-estadistica (enviarJugador)="estadisticaJugador($event)"
+      [jugadores]="this.jugadores"></app-table-jugadores-estadistica>
 
+    <div *ngIf="agregarEst==true">
+      <app-card-crearestadistica [jugador]="this.jugadorEstadistica" (enviarAsistencia)="asistencias()"
+        (enviarFaltas)="faltas()" (enviarBloqueos)="bloqueos()" (enviarRobos)="robos()"
+        (enviarLanzamiento)="lanzamientos($event)" (enviarRebote)="rebotes($event)"
+        (cerrar)="cerrarEstadistica()"></app-card-crearestadistica>
+    </div>
+
+    <div *ngIf="coordenadas">
+      <app-tabla-tiro-estadistica (lanzarConfirmado)="lanzarConfirmado($event)"
+        (cancelarLanzamiento)="cancelarLanzamiento()"></app-tabla-tiro-estadistica>
+    </div>
   </div>
+
+  <button (click)="guardar()">Guardar Estadistica</button>
 
 </ion-content>
