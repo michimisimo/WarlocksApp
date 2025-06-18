@@ -163,4 +163,26 @@ export class SyncPartidoService {
       }
     }
   }
+
+  async subirpartido(partido: any) {
+
+    if (!await this.isOnline()) {
+      console.warn('📴 Sin conexión, usando datos locales.');
+      await this.presentOfflineToast();
+      return;
+    }
+
+    const headers = await this.getHeaders();
+
+    try {
+      const respuesta = await this.http
+        .post<any>(`${this.apiUrl}/partidos/`, partido, { headers })
+        .toPromise();
+
+      console.log('Respuesta backend partido:', respuesta);
+    } catch (err) {
+      console.error('Error al subir estadística o nómina:', err);
+    }
+  }
+
 }

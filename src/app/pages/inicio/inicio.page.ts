@@ -140,10 +140,40 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.crear = true;
   }
 
-  onPartidoGuardado(partido: any) {
+  obtenerIdCategoria(nombre: string): number | null {
+    const categorias: Record<string, number> = {
+      'U11': 1,
+      'U13': 2,
+      'U15': 3,
+      'U18': 4,
+      'ALL': 5
+    };
+
+    return categorias[nombre] ?? null;
+  }
+
+  obtenerValorLocalidad(tipo: string): number | null {
+    const localidades: Record<string, number> = {
+      'local': 1,
+      'visitante': 0
+    };
+
+    return localidades[tipo.toLowerCase()] ?? null;
+  }
+
+  async onPartidoGuardado(partido: any) {
+
+    partido.categoria = this.obtenerIdCategoria(partido.categoria)
+    partido.local = this.obtenerValorLocalidad(partido.local)
+
     console.log('Partido recibido desde el hijo:', partido);
-    this.crear = false; // Ocultar el formulario
-    // Aquí puedes guardar o procesar los datos
+
+    await this.syncService.subirpartido(partido)
+    await this.syncService.sincronizarTodos();
+
+    const dict = await this.partidoService.obtenerTodosLosPartidos();
+    this.partidos = Object.values(dict);
+    this.crear = false;
   }
 
   onCancelarCrearPartido() {
