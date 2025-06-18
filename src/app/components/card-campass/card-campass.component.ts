@@ -42,7 +42,6 @@ export class CardCampassComponent implements OnInit {
   }
 
   async cambiarContrasena() {
-
     // 2) Validamos que las nuevas contraseñas coincidan
     if (this.nuevaContrasena !== this.confirmarContrasena) {
       const alert = await this.alertCtrl.create({
@@ -105,7 +104,5 @@ export class CardCampassComponent implements OnInit {
     this.nuevaContrasena = '';
     this.confirmarContrasena = '';
   }
-
-
 
 }

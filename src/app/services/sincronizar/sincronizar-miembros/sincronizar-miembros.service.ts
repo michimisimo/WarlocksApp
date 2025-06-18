@@ -5,7 +5,7 @@ import { ToastController } from '@ionic/angular';
 import { timeout } from 'rxjs/operators';
 import { firstValueFrom } from 'rxjs';
 
-import { TeamMember } from '../../mappers/map-user/map-user.service';
+import { MiembroEquipoBase, TeamMember } from '../../mappers/map-user/map-user.service';
 import { MiembrosService } from '../../miembros/miembros.service';
 import { VersionMiembrosService } from '../../version/version-miembros/version-miembros.service';
 import { UserService } from '../../user/user.service';
@@ -165,5 +165,42 @@ export class SincronizarMiembrosService {
     const todos = await this.miembrosService.getAllMembers();
     console.log(todos);
   }
+
+  public async postMiembro(miembro: TeamMember) {
+    console.log("subiendo miembro");
+
+    const headers = await this.getHeaders();
+
+    try {
+      const respuesta = await this.http
+        .put<any>(`${this.apiUrl}/miembro_equipo/upsertMiembro/${miembro.rut}`, miembro, { headers })
+        .toPromise();
+
+      console.log('Respuesta backend miembro:', respuesta);
+
+    } catch (err) {
+      console.error('Error al subir estadística o nómina:', err);
+
+    }
+  }
+
+  public async deleteMiembro(rut: string) {
+    console.log("subiendo miembro");
+
+    const headers = await this.getHeaders();
+
+    try {
+      const respuesta = await this.http
+        .patch<any>(`${this.apiUrl}/miembro_equipo/deleteMiembro/${rut}`, { headers })
+        .toPromise();
+
+      console.log('Respuesta backend miembro:', respuesta);
+
+    } catch (err) {
+      console.error('Error al subir estadística o nómina:', err);
+
+    }
+  }
+
 
 }

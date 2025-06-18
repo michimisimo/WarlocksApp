@@ -15,6 +15,7 @@ import { CardCampassComponent } from 'src/app/components/card-campass/card-campa
 import { CardCrearuserComponent } from 'src/app/components/card-crearuser/card-crearuser.component';
 import { CardEditaruserComponent } from 'src/app/components/card-editaruser/card-editaruser.component';
 import { Role } from 'src/app/services/mappers/map-user/map-user.service';
+import { SincronizarMiembrosService } from 'src/app/services/sincronizar/sincronizar-miembros/sincronizar-miembros.service';
 
 
 @Component({
@@ -22,7 +23,13 @@ import { Role } from 'src/app/services/mappers/map-user/map-user.service';
   templateUrl: './user.page.html',
   styleUrls: ['./user.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, BannerTopComponent, IonicModule, TableMiembrosConfigComponent, CardDatosComponent, CardCampassComponent, CardCrearuserComponent, CardEditaruserComponent]
+  imports: [CommonModule, FormsModule, IonicModule,
+    BannerTopComponent,
+    TableMiembrosConfigComponent,
+    CardDatosComponent,
+    CardCampassComponent,
+    CardCrearuserComponent,
+    CardEditaruserComponent]
 })
 export class UserPage implements OnInit, AfterViewInit {
 
@@ -50,6 +57,7 @@ export class UserPage implements OnInit, AfterViewInit {
     private router: Router,
     private userService: UserService,
     private miembroService: MiembrosService,
+    private syncMiembroService: SincronizarMiembrosService,
   ) { }
 
   async ngOnInit() {
@@ -136,29 +144,27 @@ export class UserPage implements OnInit, AfterViewInit {
     this.rolSeleccionado = undefined;
   }
 
-  agregarUsuario(usuario: TeamMember) {
-
+  async agregarUsuario(usuario: TeamMember) {
+    await this.syncMiembroService.postMiembro(usuario)
+    this.syncMiembroService.sincronizarTodos()
     this.cerrarModalCrear();
   }
 
-  editarUsuario(usuario: TeamMember) {
+  async editarUsuario(usuario: TeamMember) {
+    await this.syncMiembroService.postMiembro(usuario)
+    this.syncMiembroService.sincronizarTodos()
     console.log('Editar usuario:', usuario);
-    // Lógica de edición aquí
   }
 
-  eliminarUsuario(usuario: TeamMember) {
+  async eliminarUsuario(usuario: TeamMember) {
+    await this.syncMiembroService.deleteMiembro(usuario.rut)
+    this.syncMiembroService.sincronizarTodos()
     console.log('Eliminar usuario:', usuario);
-    if (usuario.rol === 'entrenador') {
-      this.entrenadoresFiltrados = this.entrenadoresFiltrados.filter(u => u !== usuario);
-    } else if (usuario.rol === 'estadistico') {
-      this.estadisticosFiltrados = this.estadisticosFiltrados.filter(u => u !== usuario);
-    } else if (usuario.rol === 'jugador') {
-      this.jugadoresFiltrados = this.jugadoresFiltrados.filter(u => u !== usuario);
-    }
   }
 
-  actualizarUsuario(usuarioActualizado: TeamMember) {
-    console.log('Usuario actualizado:', usuarioActualizado);
+  async actualizarUsuario(usuarioActualizado: TeamMember) {
+    await this.syncMiembroService.postMiembro(usuarioActualizado)
+    this.syncMiembroService.sincronizarTodos()
     this.cerrarModalEditar();
   }
 }
