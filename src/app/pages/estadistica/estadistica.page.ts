@@ -336,6 +336,8 @@ export class EstadisticaPage implements OnInit {
     console.log('nomina a enviar:', nomina);
 
     await this.syncEstService.subirEstadistica(this.partido!.id_partido.toString(), estadistica, nomina)
+
+    this.router.navigate(['/inicio']);
   }
 
 }
